@@ -6,7 +6,7 @@
   <link href="https://yarrow.ren/atom.xml" rel="self"/>
   
   <link href="https://yarrow.ren/"/>
-  <updated>2024-03-04T09:36:25.478Z</updated>
+  <updated>2024-03-07T10:31:30.966Z</updated>
   <id>https://yarrow.ren/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Real-CUGAN 超分辨率</title>
+    <link href="https://yarrow.ren/2024/03/07/Real-CUGAN-%E8%B6%85%E5%88%86%E8%BE%A8%E7%8E%87/"/>
+    <id>https://yarrow.ren/2024/03/07/Real-CUGAN-%E8%B6%85%E5%88%86%E8%BE%A8%E7%8E%87/</id>
+    <published>2024-03-07T10:30:36.000Z</published>
+    <updated>2024-03-07T10:31:30.966Z</updated>
+    
+    
+    
+    
+    
+    <category term="人工智能" scheme="https://yarrow.ren/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+  </entry>
   
   <entry>
     <title>Auckland</title>
@@ -522,33 +537,6 @@
       
       
     <summary type="html">&lt;h1 id=&quot;覆盖技术&quot;&gt;&lt;a href=&quot;#覆盖技术&quot; class=&quot;headerlink&quot; title=&quot;覆盖技术&quot;&gt;&lt;/a&gt;覆盖技术&lt;/h1&gt;&lt;p&gt;早期计算机内存很小，因此经常出现内存大小不够使用的情况，因此人们引入了覆盖技术，用来解决“程序大小超过物理内存总和”的问题&lt;</summary>
-      
-    
-    
-    
-    <category term="计算机基础" scheme="https://yarrow.ren/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"/>
-    
-    <category term="操作系统" scheme="https://yarrow.ren/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
-    
-    <category term="操作系统" scheme="https://yarrow.ren/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>21-内存与内存管理</title>
-    <link href="https://yarrow.ren/2021/12/19/21-%E5%86%85%E5%AD%98%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
-    <id>https://yarrow.ren/2021/12/19/21-%E5%86%85%E5%AD%98%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</id>
-    <published>2021-12-19T09:57:53.000Z</published>
-    <updated>2023-06-15T06:44:35.740Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="内存基础知识"><a href="#内存基础知识" class="headerlink" title="内存基础知识"></a>内存基础知识</h1><blockquote><p>内存(Memory)是计算机的重要部件之一，也称内存储器和主存储器，它用于暂时存放CPU中的运算数据，与硬盘等外部存储器交换的数据。它是外存与CPU进行沟通的桥梁。只要计算机开始运行，操作系统就会把需要运算的数据从内存调到CPU中进行运算，当运算完成，CPU将结果传送出来。</p></blockquote><p>在多道程序环境下，同一时间可能会有多个程序并发执行，即有多个程序的数据需要同时存放在内存中，此时，为了区分内存中不同数据存放的位置，就需要引入存储单元的概念</p><blockquote><p>存储单元：一般应具有存储数据和读写数据的功能，以8位二进制作为一个存储单元，也就是一个字节。每个单元有一个地址，是一个整数编码，可以表示为二进制整数。程序中的变量和主存储器的存储单元相对应。变量的名字对应着存储单元的地址，变量内容对应着单元所存储的数据。存储地址一般用十六进制数表示，而每一个存储器地址中又存放着一组二进制（或十六进制）表示的数，通常称为该地址的内容。</p><ol><li>如果计算机“按字节编址”则每个存储单元大小为1字节即1B，即8个二进制位</li><li>如果字长为16位的计算机“按字编址”，则每个存储单元大小为1字，每个字大小为16个二进制位</li></ol></blockquote><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/dhauidhwuiahuidwhaui.png"></p><p>内存在进程运行过程中的操作</p><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211220184336.png"></p><p>可见，我们写的代码要翻译成CPU能识别的指令。这些指令会告诉CPU应该去内存的哪个地址存/取数据，这个数据应该做什么样的处理。在这个例子中，指令中直接给出了变量x的实际存放地址（物理地址）。但实际在生成机器指令的时候并不知道该进程的数据会被放到什么位置。所以编译生成的指令中一般是使用逻辑地址（相对地址)</p><p>逻辑地址与相对地址的区别</p><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211220184704.png"></p><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211220184911.png"></p><p>链接的三种方式</p><ol><li>静态链接:在程序运行之前，先将各目标模块及它们所需的库函数连接成一个完整的可执行文件（装入模块)，之后不再拆开。</li><li>装入时动态链接:将各目标模块装入内存时，边装入边链接的链接方式。</li><li>运行时动态链接:在程序执行中需要该目标模块时，才对它进行链接。其优点是便于修改和更新，便于实现对目标模块的共享。</li></ol><p>装入的三种方式：<br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211220185617.png"></p><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211220190022.png"></p><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211220190215.png"></p><h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><p>操作系统作为系统资源的管理者，当然也需要对内存进行管理，这些管理涉及到：</p><ol><li>操作系统负责<strong>内存控件的分配与回收</strong></li><li>操作系统需要提供某种技术从逻辑上<strong>对内存控件进行扩充</strong></li><li>操作系统需要提供<strong>地址转换功能</strong>，负责程序的逻辑地址与物理地址的转换（通过上文所说的三种装入方法）</li><li>操作系统需要提供<strong>内存保护</strong>功能，保证各个进程在各自的存储空间内运行，互不干扰</li></ol><h2 id="内存保护的概念与实现方法"><a href="#内存保护的概念与实现方法" class="headerlink" title="内存保护的概念与实现方法"></a>内存保护的概念与实现方法</h2><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211221210302.png"></p><h3 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h3><p>在CPU中设置一堆上下限寄存器，存放进程的上下限地址。进程的指令要访问某个地址时，CPU检查是否越界</p><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211221210449.png"></p><h3 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h3><p>采用重定位寄存器（又称基址寄存器）和界地址寄存器(又称限长寄存器)进行越界检查。重定位寄存器中存放的是进程的起始物理地址。界地址寄存器中存放的是进程的最大逻辑地址。</p><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211221210621.png"></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;内存基础知识&quot;&gt;&lt;a href=&quot;#内存基础知识&quot; class=&quot;headerlink&quot; title=&quot;内存基础知识&quot;&gt;&lt;/a&gt;内存基础知识&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;内存(Memory)是计算机的重要部件之一，也称内存储器和主存储器，它用于暂时存放</summary>
       
     
     
