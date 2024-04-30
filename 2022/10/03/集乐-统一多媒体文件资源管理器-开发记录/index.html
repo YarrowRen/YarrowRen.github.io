@@ -1,0 +1,456 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>集乐-统一多媒体文件资源管理器-开发记录 | Yarrow Blog</title><meta name="keywords" content="Electron,JavaWeb,Java,Vue,集乐,开发记录"><meta name="author" content="Yarrow"><meta name="copyright" content="Yarrow"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><!-- 谷歌的html标记--><meta name="google-site-verification" content="e05stg5wY6bE2nZ7DYwitbpUAf0hfp7tPDLASJDu8Uo"><!-- 百度的html标记--><meta name="baidu-site-verification" content="codeva-ZVXA4m7EfR"><meta name="description" content="开发初衷市面上常见的多媒体资源管理器并不少见，比如很有名的本地电子书管理工具-Calibre，图片管理工具-Eagle，以及音频爱好者喜爱的foobar2000。它们在各自的领域内都完美解决了诸多痛点，但人的需求是在不断变化的，互联网的环境也是在不断发生改变的。 作为一名仓鼠党，很多时候面对资源的收集与整理都会手足无措，起初多媒体文件数量相对较少的情况下，可以采用较为随意的管理方式对文件进行管理，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集乐-统一多媒体文件资源管理器-开发记录">
+<meta property="og:url" content="https://yarrow.ren/2022/10/03/%E9%9B%86%E4%B9%90-%E7%BB%9F%E4%B8%80%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8-%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="Yarrow Blog">
+<meta property="og:description" content="开发初衷市面上常见的多媒体资源管理器并不少见，比如很有名的本地电子书管理工具-Calibre，图片管理工具-Eagle，以及音频爱好者喜爱的foobar2000。它们在各自的领域内都完美解决了诸多痛点，但人的需求是在不断变化的，互联网的环境也是在不断发生改变的。 作为一名仓鼠党，很多时候面对资源的收集与整理都会手足无措，起初多媒体文件数量相对较少的情况下，可以采用较为随意的管理方式对文件进行管理，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yarrow.ren/img/illust_3518827_20191113_165540.jpg">
+<meta property="article:published_time" content="2022-10-03T09:18:40.000Z">
+<meta property="article:modified_time" content="2023-06-15T06:46:15.517Z">
+<meta property="article:author" content="Yarrow">
+<meta property="article:tag" content="Electron">
+<meta property="article:tag" content="JavaWeb">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="集乐">
+<meta property="article:tag" content="开发记录">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yarrow.ren/img/illust_3518827_20191113_165540.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="https://yarrow.ren/2022/10/03/%E9%9B%86%E4%B9%90-%E7%BB%9F%E4%B8%80%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8-%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '集乐-统一多媒体文件资源管理器-开发记录',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-06-15 18:46:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    document.addEventListener('pjax:complete', detectApple)})(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Yarrow Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/ywrby.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">144</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">17</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> Bilibili</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-video"></i><span> 追番列表</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-music"></i><span> B站主页</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/illust_3518827_20191113_165540.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Yarrow Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> Bilibili</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-video"></i><span> 追番列表</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-music"></i><span> B站主页</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">集乐-统一多媒体文件资源管理器-开发记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-10-03T09:18:40.000Z" title="Created 2022-10-03 22:18:40">2022-10-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-06-15T06:46:15.517Z" title="Updated 2023-06-15 18:46:15">2023-06-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/">项目开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="集乐-统一多媒体文件资源管理器-开发记录"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="开发初衷"><a href="#开发初衷" class="headerlink" title="开发初衷"></a>开发初衷</h1><p>市面上常见的多媒体资源管理器并不少见，比如很有名的本地电子书管理工具-Calibre，图片管理工具-Eagle，以及音频爱好者喜爱的foobar2000。它们在各自的领域内都完美解决了诸多痛点，但人的需求是在不断变化的，互联网的环境也是在不断发生改变的。</p>
+<p>作为一名仓鼠党，很多时候面对资源的收集与整理都会手足无措，起初多媒体文件数量相对较少的情况下，可以采用较为随意的管理方式对文件进行管理，但随着文件资源数量的增加，如果没有或缺乏一个合理的文件管理方式就会导致文件之间关系混乱，渐渐地，自己也会疲于维护与管理。而避免这种问题的方式就是通过文件管理工具对我们收集的资源或文件进行统一管理。</p>
+<p>理想的情况是我们在软件使用初期定义我们的行为习惯，后续我们只需要将所有文件统一化的保存，工具就会帮我们进行统一的管理。这种管理方式在Calibre中就有所体现，我们在初次使用过程中定义电子书的保存地址，同时定义我们的元数据链接，后续我们在保存电子书的过程中就可以自动帮我们利用元数据链接（豆瓣，亚马逊等）获取电子书基本信息，从而进行统一管理。</p>
+<p>而现有的多媒体文件资源管理器应用虽然数量众多，但有些在功能性上有所欠缺，有些在兼容性上出现问题，无法真正确保对大部分资源的统一管理。所以才有了开发针对于个人的统一多媒体文件资源管理器的想法。</p>
+<h1 id="功能分析"><a href="#功能分析" class="headerlink" title="功能分析"></a>功能分析</h1><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E6%9C%AA%E5%91%BD%E5%90%8D%E7%99%BD%E6%9D%BFdhuahdshahdsa22.jpg" alt="暂定合集类型"></p>
+<h1 id="开发过程记录"><a href="#开发过程记录" class="headerlink" title="开发过程记录"></a>开发过程记录</h1><h2 id="图片的瀑布流展示实现"><a href="#图片的瀑布流展示实现" class="headerlink" title="图片的瀑布流展示实现"></a>图片的瀑布流展示实现</h2><p>瀑布流实现的主要思路是：</p>
+<ol>
+<li>确定所有图片的固定宽度</li>
+<li>实时监听-获取窗口当前宽度</li>
+<li>根据图片固定宽度和窗口宽度确定每行排列的图片数量</li>
+<li>依次获取图片信息，准备开始进行瀑布流渲染</li>
+<li>根据图片原尺寸信息以及固定宽度进行图片的缩放并保存缩放后的图片长度</li>
+<li>第一行图片只需要按照顺序依次渲染图片</li>
+<li>从第二行开始，根据之前保存的缩放图片长度确定当前最短列，在该位置渲染图片，直到整个渲染过程结束</li>
+</ol>
+<p>瀑布流扩展功能：</p>
+<ol>
+<li>通过功能键（CTRL+鼠标滚轮滑动）实现图片的放大缩小（主要在于调整图片的固定宽度计算图片新长度以及重新实现渲染图片过程）</li>
+<li>懒加载，在滑动到图片位置前不加载图片以节省系统开销</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">el-scrollbar</span> <span class="attr">v-if</span>=<span class="string">&quot;targetVal == contentArr.length&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">el-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;enlargeImage&quot;</span>&gt;</span>enlargeImage<span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">el-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;decreaseImage&quot;</span>&gt;</span>decreaseImage<span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">el-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;getContentArr&quot;</span>&gt;</span>getContentArr<span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">&quot;(column, index) in columns&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;index&quot;</span> <span class="attr">class</span>=<span class="string">&quot;column&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">&quot;(item, i) in column.columnArr&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;i&quot;</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span> <span class="attr">:style</span>=<span class="string">&quot;&#123; width: itemWidth + &#x27;px&#x27; &#125;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">el-image</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">              <span class="attr">:src</span>=<span class="string">&quot;item.src&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">              <span class="attr">fit</span>=<span class="string">&quot;cover&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">              <span class="attr">:style</span>=<span class="string">&quot;&#123; height: item.height + &#x27;px&#x27;, width: itemWidth + &#x27;px&#x27; &#125;&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">              <span class="attr">class</span>=<span class="string">&quot;image&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">              <span class="attr">lazy</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">            /&gt;</span></span></span><br><span class="line"><span class="xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">el-scrollbar</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">props</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//从父组件获取图集信息</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="attr">contentArr</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">type</span>: <span class="built_in">Object</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">required</span>: <span class="literal">true</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="keyword">return</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">itemWidth</span>: <span class="number">220</span>, <span class="comment">//默认图片框宽度</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">targetVal</span>: <span class="number">0</span>, <span class="comment">//标志值，用来记录已读取图片信息数目，待全部读取完成后显示瀑布流</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">columns</span>: [],</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">arrIndex</span>: []</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">// pageSize: 25,</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">// startPage: 1,</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">// pageNum: 1</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">watch</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//监听标志值变化，直到所有图片长度成功获取</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="attr">targetVal</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="function"><span class="title">handler</span>(<span class="params">newValue, oldValue</span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">if</span> (newValue == <span class="built_in">this</span>.contentArr.length) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="built_in">this</span>.initPage()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">immediate</span>: <span class="literal">true</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="function"><span class="title">created</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="built_in">this</span>.getImgHeight()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">// this.initPage()</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//监听键盘与鼠标（CTRL+鼠标滚轮）实现瀑布流图片缩放</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="built_in">this</span>.keyDownAndScroll()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">methods</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//初始化页面</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">initPage</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">//调用初始化方法</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.init()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">//在页面大小出现变化时重新加载瀑布流</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">window</span>.onresize = <span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">this</span>.init()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//获取当前列下最短长度位置（用来确定下一张图片插入位置）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">getMinHeight</span>(<span class="params">arr</span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">let</span> a = []</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        a.push(<span class="built_in">parseInt</span>(arr[i].height) + <span class="built_in">parseInt</span>(arr[i].top))</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">return</span> <span class="built_in">Math</span>.min.apply(<span class="literal">null</span>, a)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//获取指定长度位置后，进一步获取该位置索引值以确定图片插入位置</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">getMinIndex</span>(<span class="params">val</span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="built_in">this</span>.columns.length; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> height = <span class="built_in">this</span>.columns[i].columnArr[<span class="built_in">this</span>.columns[i].columnArr.length - <span class="number">1</span>].height</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> top = <span class="built_in">this</span>.columns[i].columnArr[<span class="built_in">this</span>.columns[i].columnArr.length - <span class="number">1</span>].top</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">if</span> (<span class="built_in">parseInt</span>(height) + <span class="built_in">parseInt</span>(top) == val) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="built_in">this</span>.arrIndex.push(i)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//异步获取图像宽高等基本信息</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="keyword">async</span> <span class="function"><span class="title">getImgHeight</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">//在异步方法下的this与JS全局中的this意义不同，</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">//所以在方法开始时重新定义全局this变量用来获得全局数据</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">let</span> sel = <span class="built_in">this</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">//遍历contentArr（从父组件获取并传递过来）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="built_in">this</span>.contentArr.length; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">console</span>.log(i)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> img = <span class="keyword">new</span> Image() <span class="comment">//初始化图像对象</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">//获取指定图像（在请求路径后加入随机数保证强制刷新请求）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        img.src = <span class="built_in">this</span>.contentArr[i].src + <span class="string">&#x27;?&#x27;</span> + <span class="built_in">Date</span>.parse(<span class="keyword">new</span> <span class="built_in">Date</span>())</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">//利用promise异步构造获取图像宽高等基本信息</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">var</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">reslove</span>) =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          img.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="keyword">let</span> scale = sel.itemWidth / img.width <span class="comment">//通过固定宽度计算长度缩放比例</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="keyword">let</span> width = img.width</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="keyword">var</span> height = <span class="built_in">Math</span>.floor(scale * img.height) <span class="comment">//对原长度进行缩放（height是真实展示在页面上的长度）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="keyword">let</span> trueHeight = img.height <span class="comment">//同时保存图片的实际长度（文件真实长度，用来方便后续在同步方法中刷新展示长度）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="comment">//将展示长度与真实长度作为返回值传递出去</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="keyword">let</span> data = &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">              <span class="attr">height</span>: height,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">              <span class="attr">trueHeight</span>: trueHeight,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">              <span class="attr">width</span>: width</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            reslove(data)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">await</span> promise</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">//等待异步方法执行完成后，对图片列表数据进行刷新</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        promise.then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="built_in">console</span>.log(data)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          sel.contentArr[i].height = data.height</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          sel.contentArr[i].trueHeight = data.trueHeight</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          sel.contentArr[i].width = data.width</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          sel.targetVal++</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//测试方法，打印contentArr</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">getContentArr</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.contentArr)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//刷新图片高度</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">refreshImageHeight</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">//刷新图片高度（用于在页面中通过CTRL+鼠标滚轮或滑动条动态调整图片宽度后进行图片高度的刷新）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">//由于在页面初始化中执行的getImgHeight方法已经获取到了图片的真实高度，</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">//所以在此处就只需要重新计算宽度修改过之后的长度缩放比例以及新的高度（避免了在刷新页面过程中使用异步方法）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="built_in">this</span>.contentArr.length; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">//计算缩放比例</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> scale = <span class="built_in">this</span>.itemWidth / <span class="built_in">this</span>.contentArr[i].width</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> trueHeight = <span class="built_in">this</span>.contentArr[i].trueHeight</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> height = <span class="built_in">Math</span>.floor(scale * trueHeight) <span class="comment">//对原长度进行缩放（height是真实展示在页面上的长度）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">//更新刷新后的新高度</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">this</span>.contentArr[i].height = height</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">// console.log(this.contentArr[i])</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//初始化（重载）页面瀑布流</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">init</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.columns = []</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">let</span> contentLen = <span class="built_in">this</span>.contentArr.length</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">// let contentLen = this.pageSize</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">// 根据可视区域的宽度判断需要几列</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">let</span> cWidth = <span class="built_in">document</span>.documentElement.clientWidth || <span class="built_in">document</span>.body.clientWidth</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">// 假设图片宽度为240px</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">let</span> cLen = <span class="built_in">Math</span>.floor(cWidth / (<span class="built_in">this</span>.itemWidth + <span class="number">20</span>) - <span class="number">1</span>)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">console</span>.log(cLen)</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">// 初始化每一列的第一行元素</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; cLen; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">this</span>.contentArr[i].top = <span class="number">0</span> <span class="comment">//预设距离顶部值为0</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">this</span>.columns.push(&#123; <span class="attr">columnArr</span>: [<span class="built_in">this</span>.contentArr[i]] &#125;)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="comment">// 对剩余元素的判断，应该放到哪一列</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">for</span> (<span class="keyword">var</span> index = cLen; index &lt; contentLen; index++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">this</span>.arrIndex = []</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> arr = [] <span class="comment">//找到高度最小的一列，可能有多个</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> minHeight = <span class="number">0</span> <span class="comment">//高度最小的一列的高度</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> pushIndex = <span class="number">0</span> <span class="comment">//高度最小的一列所在位置的索引</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="built_in">this</span>.columns.length; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          arr.push(&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">height</span>: <span class="built_in">this</span>.columns[i].columnArr[<span class="built_in">this</span>.columns[i].columnArr.length - <span class="number">1</span>].height,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">top</span>: <span class="built_in">this</span>.columns[i].columnArr[<span class="built_in">this</span>.columns[i].columnArr.length - <span class="number">1</span>].top</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          &#125;)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        minHeight = <span class="built_in">this</span>.getMinHeight(arr)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">this</span>.getMinIndex(minHeight)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">if</span> (<span class="built_in">this</span>.arrIndex.length &gt; <span class="number">0</span>) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          pushIndex = <span class="built_in">Math</span>.min.apply(<span class="literal">null</span>, <span class="built_in">this</span>.arrIndex) <span class="comment">//出现高度一样的，去索引最小的</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">this</span>.contentArr[index].top = minHeight + <span class="number">20</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">this</span>.columns[pushIndex].columnArr.push(<span class="built_in">this</span>.contentArr[index])</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//图像放大（宽度加10）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">enlargeImage</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.itemWidth += <span class="number">10</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.refreshImageHeight()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.init()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">//图片缩小（宽度减10）</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">decreaseImage</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.itemWidth -= <span class="number">10</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.refreshImageHeight()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.init()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="comment">// 监听键盘和鼠标滚轮组合</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">keyDownAndScroll</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">let</span> ctrlDown = <span class="literal">false</span> <span class="comment">//ctrl按键按压情况</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      ;(<span class="built_in">document</span>.onkeydown = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">//事件对象兼容</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">let</span> e1 = e || event || <span class="built_in">window</span>.event || <span class="built_in">arguments</span>.callee.caller.arguments[<span class="number">0</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">//按下CTRL键下后记录当前情况</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">if</span> (e1.keyCode === <span class="number">17</span>) ctrlDown = <span class="literal">true</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;),</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        (<span class="built_in">document</span>.onkeyup = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="keyword">let</span> e1 = e || event || <span class="built_in">window</span>.event || <span class="built_in">arguments</span>.callee.caller.arguments[<span class="number">0</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="comment">//松开后修改CTRL键按压情况</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="keyword">if</span> (e1.keyCode === <span class="number">17</span>) ctrlDown = <span class="literal">false</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;),</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="comment">//监听鼠标滚轮情况</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="built_in">document</span>.addEventListener(</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="string">&#x27;mousewheel&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="comment">// e.preventDefault()</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="keyword">let</span> e1 = e || event || <span class="built_in">window</span>.event || <span class="built_in">arguments</span>.callee.caller.arguments[<span class="number">0</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="comment">//判断CTRL键是否被按下</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="keyword">if</span> (ctrlDown) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">              <span class="keyword">if</span> (e1.wheelDeltaY &gt; <span class="number">0</span>) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="comment">// 放大</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="built_in">console</span>.log(<span class="string">&#x27;放大&#x27;</span>)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="built_in">this</span>.enlargeImage()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">              &#125; <span class="keyword">else</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="comment">// 缩小</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="built_in">console</span>.log(<span class="string">&#x27;缩小&#x27;</span>)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="built_in">this</span>.decreaseImage()</span></span></span><br><span class="line"><span class="javascript"><span class="xml">              &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">          <span class="literal">false</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        )</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="开发进度"><a href="#开发进度" class="headerlink" title="开发进度"></a>开发进度</h1><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>完成内容</th>
+<th>待处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2022/1/26</td>
+<td>框架搭建，文件夹选择器，IndexedDB测试用例</td>
+<td>文件夹内文件预览，打开</td>
+</tr>
+<tr>
+<td>2022/1/27</td>
+<td>文件内文件预览，文件打开以及所在文件夹打开</td>
+<td>文件信息编辑（加tag，改名，移除等）</td>
+</tr>
+<tr>
+<td>2022/1/27-2</td>
+<td>窗体最小宽度调整，图片预览部分功能按键设置</td>
+<td></td>
+</tr>
+<tr>
+<td>2022/1/28</td>
+<td>在card下打开所在文件夹，删除该文件，编辑文件名等功能，以及打分模块示例</td>
+<td></td>
+</tr>
+<tr>
+<td>2022/1/30</td>
+<td>视频封面选择测试，图片压缩功能测试</td>
+<td></td>
+</tr>
+<tr>
+<td>2022/2/3</td>
+<td>右键菜单，视频封面图选择与删除</td>
+<td>压缩文件第一张图片预览</td>
+</tr>
+<tr>
+<td>2022/2/4</td>
+<td>压缩文件读取与选择性解压，设置压缩文件封面</td>
+<td>高级选择表单</td>
+</tr>
+<tr>
+<td>2022/2/4-2</td>
+<td>本地文件分页</td>
+<td></td>
+</tr>
+<tr>
+<td>2022/4/6</td>
+<td>本地重新部署</td>
+<td>调用python执行功能性文件，页面设计</td>
+</tr>
+<tr>
+<td>2022/7/7</td>
+<td>全局变量文件Global.vue测试</td>
+<td></td>
+</tr>
+<tr>
+<td>2022/7/8</td>
+<td>引入NaiveUI</td>
+<td></td>
+</tr>
+<tr>
+<td>2022/7/9</td>
+<td>完成全局路径基本配置,配置electron builder进行前端打包，解决打包后iconfont显示问题，后端基本部署完成，H2数据库引入完成，测试基本使用功能正常，由后端监听启动前端部分测试成功</td>
+<td>资源管理方式定义，资源信息存储方式，后端打包方式，H2数据库可视化部分测试</td>
+</tr>
+<tr>
+<td>2022/7/10</td>
+<td>添加图集功能测试，前后端连接，H2数据库构建，图集录入功能实现</td>
+<td>图集展示功能</td>
+</tr>
+<tr>
+<td>2022/7/23</td>
+<td>图集选择栏</td>
+<td>图集展示功能</td>
+</tr>
+<tr>
+<td>2022/7/25</td>
+<td>瀑布流图片展示功能demo完成</td>
+<td>进一步优化瀑布流展示</td>
+</tr>
+<tr>
+<td>2022/7/26</td>
+<td>瀑布流优化，还有进一步优化空间</td>
+<td>creted,mounted选择</td>
+</tr>
+<tr>
+<td>2022/7/27</td>
+<td>瀑布流功能暂定版（修正数据加载跳闪，数据多次重加载）</td>
+<td>图像信息表单主动填入，图像多种展示方式</td>
+</tr>
+<tr>
+<td>2022/7/28</td>
+<td>瀑布流下拉无线刷新初版</td>
+<td></td>
+</tr>
+<tr>
+<td>2022/8/26</td>
+<td>瀑布流图片放大缩小功能实现，同时监听鼠标滚轮和CTRL按键后进行放大缩小实现</td>
+<td>功能继续测试与整合</td>
+</tr>
+<tr>
+<td>2022/8/28</td>
+<td>实现后端自动获取视频缩略图功能，实现前端获取后端生成的视频缩略图功能</td>
+<td>缩略图保存位置以及数据统一</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Yarrow</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://yarrow.ren/2022/10/03/%E9%9B%86%E4%B9%90-%E7%BB%9F%E4%B8%80%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8-%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">https://yarrow.ren/2022/10/03/集乐-统一多媒体文件资源管理器-开发记录/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Electron/">Electron</a><a class="post-meta__tags" href="/tags/JavaWeb/">JavaWeb</a><a class="post-meta__tags" href="/tags/Java/">Java</a><a class="post-meta__tags" href="/tags/Vue/">Vue</a><a class="post-meta__tags" href="/tags/%E9%9B%86%E4%B9%90/">集乐</a><a class="post-meta__tags" href="/tags/%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">开发记录</a></div><div class="post_share"><div class="social-share" data-image="/img/illust_3518827_20191113_165540.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/05/27/%E9%9B%86%E4%B9%90-%E7%BB%9F%E4%B8%80%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8/"><img class="prev-cover" src="/img/81691339_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">集乐-统一多媒体文件资源管理器</div></div></a></div><div class="next-post pull-right"><a href="/2022/01/24/IndexedDB%E6%B5%8F%E8%A7%88%E5%99%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/"><img class="next-cover" src="/img/80857290_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">IndexedDB浏览器数据库基本概念</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/05/27/%E9%9B%86%E4%B9%90-%E7%BB%9F%E4%B8%80%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8/" title="集乐-统一多媒体文件资源管理器"><img class="cover" src="/img/81691339_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-27</div><div class="title">集乐-统一多媒体文件资源管理器</div></div></a></div><div><a href="/2021/07/15/1-Electron%E5%9F%BA%E7%A1%80/" title="1-Electron基础"><img class="cover" src="/img/67888138_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-15</div><div class="title">1-Electron基础</div></div></a></div><div><a href="/2021/03/03/1-Junit%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" title="1-Junit单元测试"><img class="cover" src="/img/72175872_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">1-Junit单元测试</div></div></a></div><div><a href="/2021/03/03/10-Servlet/" title="10-Servlet"><img class="cover" src="/img/81691339_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">10-Servlet</div></div></a></div><div><a href="/2021/03/03/11-Http%E6%A6%82%E8%BF%B0/" title="11-Http概述"><img class="cover" src="/img/66150863_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">11-Http概述</div></div></a></div><div><a href="/2021/03/03/12-Request%E5%AF%B9%E8%B1%A1+Response%E5%AF%B9%E8%B1%A1/" title="12-Request对象+Response对象"><img class="cover" src="/img/77593329_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">12-Request对象+Response对象</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/ywrby.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Yarrow</div><div class="author-info__description">天将降大任于枫叶使🍁枫门永存🛐</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">144</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">28</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">17</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/YarrowRen"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fab fa-bilibili"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2278431384&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E5%88%9D%E8%A1%B7"><span class="toc-number">1.</span> <span class="toc-text">开发初衷</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">功能分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95"><span class="toc-number">3.</span> <span class="toc-text">开发过程记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E7%9A%84%E7%80%91%E5%B8%83%E6%B5%81%E5%B1%95%E7%A4%BA%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.1.</span> <span class="toc-text">图片的瀑布流展示实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%BF%9B%E5%BA%A6"><span class="toc-number">4.</span> <span class="toc-text">开发进度</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/04/Auckland/" title="Auckland"><img src="/img/72175872_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Auckland"/></a><div class="content"><a class="title" href="/2024/03/04/Auckland/" title="Auckland">Auckland</a><time datetime="2024-03-04T08:55:35.000Z" title="Created 2024-03-04 21:55:35">2024-03-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/07/GREEDY-ALGORITHMS-II/" title="GREEDY ALGORITHMS II"><img src="/img/72124553_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GREEDY ALGORITHMS II"/></a><div class="content"><a class="title" href="/2023/08/07/GREEDY-ALGORITHMS-II/" title="GREEDY ALGORITHMS II">GREEDY ALGORITHMS II</a><time datetime="2023-08-07T05:05:58.000Z" title="Created 2023-08-07 17:05:58">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/05/GREEDY-ALGORITHMS/" title="GREEDY ALGORITHMS"><img src="/img/72124553_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GREEDY ALGORITHMS"/></a><div class="content"><a class="title" href="/2023/08/05/GREEDY-ALGORITHMS/" title="GREEDY ALGORITHMS">GREEDY ALGORITHMS</a><time datetime="2023-08-05T09:30:05.000Z" title="Created 2023-08-05 21:30:05">2023-08-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/02/Arithmetic-Progression-Graphs/" title="Arithmetic Progression Graphs"><img src="/img/73870940_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Arithmetic Progression Graphs"/></a><div class="content"><a class="title" href="/2023/08/02/Arithmetic-Progression-Graphs/" title="Arithmetic Progression Graphs">Arithmetic Progression Graphs</a><time datetime="2023-08-02T09:52:10.000Z" title="Created 2023-08-02 21:52:10">2023-08-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/07/30/Perrin-Numbers/" title="Perrin Numbers"><img src="/img/68304874_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Perrin Numbers"/></a><div class="content"><a class="title" href="/2023/07/30/Perrin-Numbers/" title="Perrin Numbers">Perrin Numbers</a><time datetime="2023-07-30T03:53:49.000Z" title="Created 2023-07-30 15:53:49">2023-07-30</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/illust_3518827_20191113_165540.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Yarrow</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="aplayer no-destroy" data-id="5402995011" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-lrctype=0	data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
