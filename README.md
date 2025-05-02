@@ -1,8 +1,4 @@
----
-layout: ../layouts/AboutLayout.astro
-title: "About"
-lang: "en"
----
+
 
 ## Hi, I’m Boyu(Yarrow) Ren 👋 [中文版](./about)
 
