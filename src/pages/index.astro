@@ -1,0 +1,116 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Socials from "@/components/Socials.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import Card from "@/components/Card.astro";
+import Hr from "@/components/Hr.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+import IconRss from "@/assets/icons/IconRss.svg";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import { SITE } from "@/config";
+import { SOCIALS } from "@/constants";
+
+const posts = await getCollection("blog");
+
+const sortedPosts = getSortedPosts(posts);
+const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+---
+
+<Layout>
+  <Header />
+  <main id="main-content" data-layout="index">
+    <section id="hero" class="py-8 border-b">
+      <div class="flex flex-col sm:flex-row sm:items-center max-w-5xl mx-auto px-4 gap-8">
+        <!-- 左侧 20%：头像 + 社交 -->
+        <div class="w-full sm:w-[25%] flex flex-col items-center sm:items-start text-center sm:text-left shrink-0">
+          <img src="/title.jpg" alt="avatar" class="w-24 h-24 rounded-full border shadow mb-4" />
+          <div class="flex gap-3 justify-center sm:justify-start">
+            <a href="https://github.com/YarrowRen" target="_blank" aria-label="GitHub">
+              <img src="/icons/github.svg" class="w-5 h-5" />
+            </a>
+            <a href="https://space.bilibili.com/353923033" aria-label="Bilibili">
+              <img src="/icons/bilibili.svg" class="w-5 h-5" />
+            </a>
+            <a href="mailto:yarrowren@gmail.com" aria-label="Email">
+              <img src="/icons/email.svg" class="w-5 h-5" />
+            </a>
+            <a href="https://www.linkedin.com/in/boyu-ren/" target="_blank" aria-label="LinkedIn">
+              <img src="/icons/linkedin.svg" class="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+    
+        <!-- 右侧 80%：简介信息 -->
+        <div class="w-full sm:w-[75%]">
+          <h1 class="text-3xl sm:text-4xl font-bold mb-2">Boyu(Yarrow) Ren</h1>
+          <p class="text-muted text-sm mb-1">机器学习苦手 ｜ 大模型门外汉 ｜ 人工智能一生之敌 ｜ API调用专家</p>
+          <p class="text-sm italic mt-2">
+            🤖 新西兰 - 奥克兰大学 - AI硕士<br />
+            💻 重庆 - 西南大学 - CS学士<br />
+            🎮 Splatoon - 搞笑选手 & 人体描边大师
+          </p>
+          <div class="mt-4 flex gap-4 flex-wrap">
+            <LinkButton href="/about">关于我</LinkButton>
+            <LinkButton href="/posts">博客</LinkButton>
+            <LinkButton href="/projects">项目</LinkButton>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <Hr />
+
+    {
+      featuredPosts.length > 0 && (
+        <>
+          <section id="featured" class="pt-12 pb-6">
+            <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
+            <ul>
+              {featuredPosts.map(data => (
+                <Card variant="h3" {...data} />
+              ))}
+            </ul>
+          </section>
+          {recentPosts.length > 0 && <Hr />}
+        </>
+      )
+    }
+
+    {
+      recentPosts.length > 0 && (
+        <section id="recent-posts" class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
+          <ul>
+            {recentPosts.map(
+              (data, index) =>
+                index < SITE.postPerIndex && <Card variant="h3" {...data} />
+            )}
+          </ul>
+        </section>
+      )
+    }
+
+    <div class="my-8 text-center">
+      <LinkButton href="/posts/">
+        All Posts
+        <IconArrowRight class="inline-block" />
+      </LinkButton>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset?.layout;
+    if (indexLayout) {
+      sessionStorage.setItem("backUrl", "/");
+    }
+  });
+</script>
