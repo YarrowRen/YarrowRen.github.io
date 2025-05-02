@@ -4,8 +4,8 @@ title: "About"
 lang: "en"
 ---
 
-## Hi, I’m Boyu(Yarrow) Ren 👋 [中文版](https://yarrow.ren/about.en)
-<!-- <h2>Hi, I’m Boyu(Yarrow) Ren 👋 <a href="/about">中文版</a></h2> -->
+<!-- ## Hi, I’m Boyu(Yarrow) Ren 👋 [中文版](/about) -->
+<h2>Hi, I’m Boyu(Yarrow) Ren 👋 <a href="/about">中文版</a></h2>
 
 
 I'm a master's student at the **University of Auckland**, specializing in **Artificial Intelligence**. My interests lie in **Natural Language Processing (NLP)**, **Retrieval-Augmented Generation (RAG)**, and **Machine Learning**, with a particular focus on AI architecture and system design.
