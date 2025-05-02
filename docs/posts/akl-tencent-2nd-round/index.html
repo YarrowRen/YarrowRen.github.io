@@ -1,0 +1,712 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://yarrowren.github.io/posts/akl-tencent-2nd-round/"><meta name="generator" content="Astro v5.7.4"><!-- General Meta Tags --><title>奥克兰腾讯光子工作室群 - 二面 - 面试总结 | Yarrow Ren&#39;s Blog</title><meta name="title" content="奥克兰腾讯光子工作室群 - 二面 - 面试总结 | Yarrow Ren's Blog"><meta name="description" content="腾讯机器学习实习二面 - 聚焦并发编程、传输协议与联机游戏网络优化，涵盖最小生成树算法、GIL 与多线程限制、自旋锁与 CAS 原理，以及 UDP 在 FPS 游戏中的可靠通信与高丢包环境下的体验优化策略。"><meta name="author" content="Boyu Ren"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="奥克兰腾讯光子工作室群 - 二面 - 面试总结 | Yarrow Ren's Blog"><meta property="og:description" content="腾讯机器学习实习二面 - 聚焦并发编程、传输协议与联机游戏网络优化，涵盖最小生成树算法、GIL 与多线程限制、自旋锁与 CAS 原理，以及 UDP 在 FPS 游戏中的可靠通信与高丢包环境下的体验优化策略。"><meta property="og:url" content="https://yarrowren.github.io/posts/akl-tencent-2nd-round/"><meta property="og:image" content="https://yarrowren.github.io/posts/akl-tencent-2nd-round/index.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2025-04-23T09:09:06.000Z"><meta property="article:modified_time" content="2025-04-23T09:09:06.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://yarrowren.github.io/posts/akl-tencent-2nd-round/"><meta property="twitter:title" content="奥克兰腾讯光子工作室群 - 二面 - 面试总结 | Yarrow Ren's Blog"><meta property="twitter:description" content="腾讯机器学习实习二面 - 聚焦并发编程、传输协议与联机游戏网络优化，涵盖最小生成树算法、GIL 与多线程限制、自旋锁与 CAS 原理，以及 UDP 在 FPS 游戏中的可靠通信与高丢包环境下的体验优化策略。"><meta property="twitter:image" content="https://yarrowren.github.io/posts/akl-tencent-2nd-round/index.png"><!-- Google JSON-LD Structured data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"奥克兰腾讯光子工作室群 - 二面 - 面试总结 | Yarrow Ren's Blog","image":"https://yarrowren.github.io/posts/akl-tencent-2nd-round/index.png","datePublished":"2025-04-23T09:09:06.000Z","dateModified":"2025-04-23T09:09:06.000Z","author":[{"@type":"Person","name":"Boyu Ren","url":"https://satnaing.dev/"}]}</script><!-- Enable RSS feed auto-discovery  --><!-- https://docs.astro.build/en/recipes/rss/#enabling-rss-feed-auto-discovery --><link rel="alternate" type="application/rss+xml" title="Yarrow Ren's Blog" href="https://yarrowren.github.io/rss.xml"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.BZs-2RF_.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/about.bVZ8u9ts.css">
+<style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+[data-astro-image]{width:100%;height:auto;object-fit:var(--fit);object-position:var(--pos);aspect-ratio:var(--w) / var(--h)}[data-astro-image=responsive]{max-width:calc(var(--w) * 1px);max-height:calc(var(--h) * 1px)}[data-astro-image=fixed]{width:calc(var(--w) * 1px);height:calc(var(--h) * 1px)}
+</style><style>[data-astro-transition-scope="astro-fam6wyqg-1"] { view-transition-name: \5965\514B\5170\817E\8BAF\5149\5B50\5DE5\4F5C\5BA4\7FA4-\4E8C\9762-\9762\8BD5\603B\7ED3; }@layer astro { ::view-transition-old(\5965\514B\5170\817E\8BAF\5149\5B50\5DE5\4F5C\5BA4\7FA4-\4E8C\9762-\9762\8BD5\603B\7ED3) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\5965\514B\5170\817E\8BAF\5149\5B50\5DE5\4F5C\5BA4\7FA4-\4E8C\9762-\9762\8BD5\603B\7ED3) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\5965\514B\5170\817E\8BAF\5149\5B50\5DE5\4F5C\5BA4\7FA4-\4E8C\9762-\9762\8BD5\603B\7ED3) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\5965\514B\5170\817E\8BAF\5149\5B50\5DE5\4F5C\5BA4\7FA4-\4E8C\9762-\9762\8BD5\603B\7ED3) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-2"] { view-transition-name: tencent; }@layer astro { ::view-transition-old(tencent) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(tencent) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(tencent) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(tencent) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-3"] { view-transition-name: \6700\5C0F\751F\6210\6811; }@layer astro { ::view-transition-old(\6700\5C0F\751F\6210\6811) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\6700\5C0F\751F\6210\6811) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\6700\5C0F\751F\6210\6811) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\6700\5C0F\751F\6210\6811) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-4"] { view-transition-name: \81EA\65CB\9501; }@layer astro { ::view-transition-old(\81EA\65CB\9501) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\81EA\65CB\9501) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\81EA\65CB\9501) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\81EA\65CB\9501) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-5"] { view-transition-name: \8BA1\7B97\673A\7F51\7EDC; }@layer astro { ::view-transition-old(\8BA1\7B97\673A\7F51\7EDC) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\8BA1\7B97\673A\7F51\7EDC) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\8BA1\7B97\673A\7F51\7EDC) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\8BA1\7B97\673A\7F51\7EDC) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body data-astro-cid-sckkx6r4>  <header> <a id="skip-to-content" href="#main-content" class="absolute -top-full left-16 z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4">
+Skip to content
+</a> <div id="nav-container" class="mx-auto flex max-w-[960px] flex-col items-center justify-between sm:flex-row"> <div id="top-nav-wrap" class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"> <a href="/" class="absolute py-1 text-2xl leading-7 font-semibold whitespace-nowrap sm:static"> Yarrow Ren&#39;s Blog </a> <nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"> <button id="menu-btn" class="focus-outline self-end p-2 sm:hidden" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden" id="close-icon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-menu-deep" id="menu-icon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 6h16" /><path d="M7 12h13" /><path d="M10 18h10" /></svg> </button> <ul id="menu-items" class="mt-4 grid w-44 grid-cols-2 place-content-center gap-2 [&#38;>li>a]:block [&#38;>li>a]:px-4 [&#38;>li>a]:py-3 [&#38;>li>a]:text-center [&#38;>li>a]:font-medium [&#38;>li>a]:hover:text-accent sm:[&#38;>li>a]:px-2 sm:[&#38;>li>a]:py-1 hidden sm:mt-0 sm:ml-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0"> <li class="col-span-2"> <a href="/posts" class="active-nav">
+Posts
+</a> </li> <li class="col-span-2"> <a href="/tags">
+Tags
+</a> </li> <li class="col-span-2"> <a href="/about">
+About
+</a> </li> <li class="col-span-2"> <a href="/archives" class="group inline-block hover:text-accent focus-outline flex justify-center p-3 sm:p-1" aria-label="archives" title="Archives"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden sm:inline-block"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" /><path d="M10 12l4 0" /></svg> <span class="sm:sr-only">Archives</span> </a> </li> <li class="col-span-1 flex items-center justify-center"> <a href="/search" class="group inline-block hover:text-accent focus-outline flex p-3 sm:p-1" aria-label="search" title="Search"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg> <span class="sr-only">Search</span> </a> </li> <li class="col-span-1 flex items-center justify-center"> <button id="theme-btn" class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent" title="Toggles light & dark" aria-label="auto" aria-live="polite"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg> </button> </li> </ul> </nav> </div> </div> <div class="max-w-[960px] mx-auto px-4"> <hr class="border-border" aria-hidden="true"> </div> </header> <script type="module">function s(){const e=document.querySelector("#menu-btn"),t=document.querySelector("#menu-items"),n=document.querySelector("#menu-icon"),o=document.querySelector("#close-icon");!e||!t||!n||!o||e.addEventListener("click",()=>{const c=e.getAttribute("aria-expanded")==="true";e.setAttribute("aria-expanded",c?"false":"true"),e.setAttribute("aria-label",c?"Open Menu":"Close Menu"),t.classList.toggle("hidden"),n.classList.toggle("hidden"),o.classList.toggle("hidden")})}s();document.addEventListener("astro:after-swap",s);</script> <div class="mx-auto flex w-full max-w-[960px] items-center justify-start px-2"><a id="back-button" href="/" class="group inline-block hover:text-accent focus-outline mt-8 mb-2 flex hover:text-foreground/75"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg><span>Go back</span></a></div><script type="module">function o(){const t=document.querySelector("#back-button"),e=sessionStorage.getItem("backUrl");e&&t&&(t.href=e)}document.addEventListener("astro:page-load",o);o();</script> <main id="main-content" class="mx-auto w-full max-w-[960px] px-4 pb-12" data-pagefind-body> <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl" data-astro-transition-scope="astro-fam6wyqg-1"> 奥克兰腾讯光子工作室群 - 二面 - 面试总结 </h1> <div class="flex items-center gap-4"> <div class="flex items-end space-x-2 opacity-80 my-2"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 min-w-[1.375rem]"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg> <span class="sr-only">Published:</span> <span class="text-sm italic sm:text-base"> <time datetime="2025-04-23T09:09:06.000Z">23 Apr, 2025</time> <span aria-hidden="true"> | </span> <span class="sr-only">&nbsp;at&nbsp;</span> <span class="text-nowrap">04:09 PM</span> </span> </div> <!-- <EditPost class="max-sm:hidden" {hideEditPost} {post} /> --> </div> <article id="article" class="mx-auto prose mt-8 max-w-[960px]"> <h2 id="table-of-contents">Table of contents</h2>
+<p></p><details><summary>Open Table of contents</summary><p></p>
+<ul>
+<li><a href="#-part-1%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E9%97%AE%E9%A2%98mstkruskal%E7%AE%97%E6%B3%95">🧮 Part 1：最小生成树问题（MST）——Kruskal算法</a>
+<ul>
+<li><a href="#%E9%A2%98%E7%9B%AE%E7%AE%80%E8%BF%B0">题目简述</a></li>
+<li><a href="#%E8%BE%93%E5%85%A5%E8%AF%B4%E6%98%8E">输入说明</a></li>
+<li><a href="#%E8%BE%93%E5%87%BA%E8%AF%B4%E6%98%8E">输出说明</a></li>
+<li><a href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90">解题思路分析</a></li>
+<li><a href="#python-%E5%AE%9E%E7%8E%B0kruskal--union-find">Python 实现（Kruskal + Union-Find）</a></li>
+<li><a href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6">时间复杂度</a></li>
+</ul>
+</li>
+<li><a href="#-%E4%B8%BA%E4%BB%80%E4%B9%88-python-%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97">🔧 为什么 Python 不能使用多线程并行计算？</a>
+<ul>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88--%E5%A4%9A%E8%BF%9B%E7%A8%8Bmultiprocessing">解决方案 —— 多进程（multiprocessing）</a></li>
+</ul>
+</li>
+<li><a href="#-%E7%BA%BF%E7%A8%8B-vs-%E8%BF%9B%E7%A8%8B">🧠 线程 vs 进程</a>
+<ul>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E5%AE%9A%E4%B9%89">线程、进程定义</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB">线程、进程核心区别</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%90%8C%E7%82%B9">线程、进程相同点</a></li>
+<li><a href="#%E5%A6%82%E6%9E%9C%E6%98%AF%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B%E8%83%BD%E5%90%A6%E5%AE%9E%E7%8E%B0%E8%BF%9B%E7%A8%8B%E4%B9%8B%E9%97%B4%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB">如果是多进程模型，能否实现进程之间内存共享？</a></li>
+</ul>
+</li>
+<li><a href="#%EF%B8%8F-%E5%9C%A8%E5%90%8C%E4%B8%80%E8%BF%9B%E7%A8%8B%E5%86%85%E5%A4%9A%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90%E6%97%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%88%96%E7%A8%8B%E5%BA%8F%E6%98%AF%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%B5%84%E6%BA%90%E5%86%B2%E7%AA%81%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98%E7%9A%84">⚖️ 在同一进程内多个线程共享资源时，操作系统或程序是如何解决资源冲突/同步问题的？</a>
+<ul>
+<li><a href="#%E6%A0%B8%E5%BF%83%E9%97%AE%E9%A2%98%E5%A4%9A%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E6%97%B6%E5%A6%82%E4%BD%95%E5%90%8C%E6%AD%A5">核心问题：<strong>多个线程共享内存时如何同步？</strong></a></li>
+</ul>
+</li>
+<li><a href="#-%E8%87%AA%E6%97%8B%E9%94%81%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">🔒 自旋锁实现原理？</a>
+<ul>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E5%8E%9F%E5%AD%90%E7%9A%84">为什么是原子的？</a></li>
+<li><a href="#%E7%BC%BA%E7%82%B9">缺点</a></li>
+</ul>
+</li>
+<li><a href="#-%E8%81%94%E6%9C%BAfps%E6%B8%B8%E6%88%8F%E7%9A%84%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE%E5%BA%94%E8%AF%A5%E5%A6%82%E4%BD%95%E9%80%89%E7%94%A8">🎮 联机FPS游戏的传输层协议应该如何选用？</a>
+<ul>
+<li><a href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81-udp-%E4%B8%8B%E9%87%8D%E8%A6%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%A2">如何保证 UDP 下重要数据不丢？</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90%E7%8E%A9%E5%AE%B6%E6%AD%BB%E4%BA%A1%E4%BA%8B%E4%BB%B6">例子：玩家死亡事件</a></li>
+</ul>
+</li>
+<li><a href="#-%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88%E9%AB%98%E4%B8%A2%E5%8C%85%E5%9C%BA%E6%99%AF">📶 移动网络优化方案（高丢包场景）</a></li>
+</ul>
+<p></p></details><p></p>
+<h2 id="-part-1最小生成树问题mstkruskal算法">🧮 Part 1：最小生成树问题（MST）——Kruskal算法</h2>
+<h3 id="题目简述">题目简述</h3>
+<p>大山里有 N 个村落，人们通过长时间勘测，确定了 M 条道路的修建方案。每条道路连接且仅连接 2 个村落。请在这 M 个方案里，挑选适量的道路，使得挑选出来的方案建成后能让所有村落之间都能互相连通，且建设长度最小。</p>
+<h3 id="输入说明">输入说明</h3>
+<p>第一行输入2个整数 N 和 M。 接下来 M 行，每行 X Y Z 共 3 个整数，代表第 i 个方案连通 X 和 Y 村，长度为 Z（村落从 0 开始编号）。</p>
+<h3 id="输出说明">输出说明</h3>
+<p>如果所有道路都建设后也仍不能全部连通，输出 IMPOSSIBLE；否则输出建设的道路总长度。</p>
+<h3 id="解题思路分析">解题思路分析</h3>
+<p>本题可以抽象为<strong>图的最小生成树（MST）问题</strong>，即：在一个无向加权图中，选择一些边，使得所有节点连通，且边的权值总和最小。</p>
+<p>由于边的数量不一定形成连通图，我们还需考虑无法连通的情况。</p>
+<p>我们选择使用 <strong>Kruskal 算法</strong> 来求解，核心思路如下：</p>
+<ol>
+<li>
+<p><strong>初始化</strong>：每个村落看作一个节点，所有道路看作无向边，边权为道路长度。</p>
+</li>
+<li>
+<p><strong>贪心排序</strong>：将所有边按照权重从小到大排序。</p>
+</li>
+<li>
+<p><strong>并查集辅助判断连通性</strong>：</p>
+<ul>
+<li>每次从小权重边开始尝试加入结果集中；</li>
+<li>使用并查集判断两个端点是否属于同一集合（是否已连通）；</li>
+<li>若不连通，则将这条边加入最小生成树，并合并两个集合。</li>
+</ul>
+</li>
+<li>
+<p><strong>终止条件</strong>：</p>
+<ul>
+<li>成功加入 <code>N-1</code> 条边时（生成树的特性），算法结束，输出当前总权重；</li>
+<li>若遍历完所有边仍未连通所有节点（加入边数 &#x3C; <code>N-1</code>），说明原图不连通，返回 <code>IMPOSSIBLE</code>。</li>
+</ul>
+</li>
+</ol>
+<h3 id="python-实现kruskal--union-find">Python 实现（Kruskal + Union-Find）</h3>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">def</span><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> find</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">(</span><span style="color:#FF9800;--shiki-dark:#7FDBCA">parent</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#FF9800;--shiki-dark:#7FDBCA"> x</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">)</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    if</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> parent</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">x</span><span style="color:#212121;--shiki-dark:#D6DEEB">]</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> !=</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> x</span><span style="color:#212121;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">        parent</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">x</span><span style="color:#212121;--shiki-dark:#D6DEEB">]</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6"> find</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#82AAFF">parent</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#212121;--shiki-dark:#82AAFF"> parent</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#212121;--shiki-dark:#82AAFF">x</span><span style="color:#212121;--shiki-dark:#D6DEEB">])</span><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">  # 路径压缩</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    return</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> parent</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">x</span><span style="color:#212121;--shiki-dark:#D6DEEB">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">def</span><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> union</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">(</span><span style="color:#FF9800;--shiki-dark:#7FDBCA">parent</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#FF9800;--shiki-dark:#7FDBCA"> rank</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#FF9800;--shiki-dark:#7FDBCA"> x</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#FF9800;--shiki-dark:#7FDBCA"> y</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">)</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    rootX </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6"> find</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#82AAFF">parent</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#212121;--shiki-dark:#82AAFF"> x</span><span style="color:#212121;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    rootY </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6"> find</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#82AAFF">parent</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#212121;--shiki-dark:#82AAFF"> y</span><span style="color:#212121;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    if</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> rootX </span><span style="color:#D32F2F;--shiki-dark:#C792EA">==</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> rootY</span><span style="color:#212121;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">        return</span><span style="color:#1976D2;--shiki-dark:#FF5874"> False</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    if</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> rank</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">rootX</span><span style="color:#212121;--shiki-dark:#D6DEEB">]</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> &#x3C;</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> rank</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">rootY</span><span style="color:#212121;--shiki-dark:#D6DEEB">]:</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">        parent</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">rootX</span><span style="color:#212121;--shiki-dark:#D6DEEB">]</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> rootY</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    else</span><span style="color:#212121;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">        parent</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">rootY</span><span style="color:#212121;--shiki-dark:#D6DEEB">]</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> =</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> rootX</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">        if</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> rank</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">rootX</span><span style="color:#212121;--shiki-dark:#D6DEEB">]</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> ==</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> rank</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">rootY</span><span style="color:#212121;--shiki-dark:#D6DEEB">]:</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">            rank</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">rootX</span><span style="color:#212121;--shiki-dark:#D6DEEB">]</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> +=</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 1</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    return</span><span style="color:#1976D2;--shiki-dark:#FF5874"> True</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">def</span><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> kruskal</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">(</span><span style="color:#FF9800;--shiki-dark:#7FDBCA">N</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#FF9800;--shiki-dark:#7FDBCA"> edges</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">)</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    edges</span><span style="color:#212121;--shiki-dark:#D6DEEB">.</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6">sort</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#D7DBE0">key</span><span style="color:#D32F2F;--shiki-dark:#C792EA">=lambda</span><span style="color:#FF9800;--shiki-dark:#7FDBCA"> x</span><span style="color:#212121;--shiki-dark:#82AAFF">: x</span><span style="color:#212121;--shiki-dark:#D6DEEB">[</span><span style="color:#1976D2;--shiki-dark:#F78C6C">2</span><span style="color:#212121;--shiki-dark:#D6DEEB">])</span><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">  # 按照权重排序</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    parent </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD"> [</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">i </span><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">for</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> i </span><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">in</span><span style="color:#6F42C1;--shiki-dark:#C5E478"> range</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#82AAFF">N</span><span style="color:#212121;--shiki-dark:#D6DEEB">)</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">]</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    rank </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD"> [</span><span style="color:#1976D2;--shiki-dark:#F78C6C">0</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD">]</span><span style="color:#D32F2F;--shiki-dark:#C792EA"> *</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> N</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    total_weight </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 0</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    edge_count </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    for</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> u</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> v</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> w </span><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">in</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> edges</span><span style="color:#212121;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">        if</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6"> union</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#82AAFF">parent</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#212121;--shiki-dark:#82AAFF"> rank</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#212121;--shiki-dark:#82AAFF"> u</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#212121;--shiki-dark:#82AAFF"> v</span><span style="color:#212121;--shiki-dark:#D6DEEB">):</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">            total_weight </span><span style="color:#D32F2F;--shiki-dark:#C792EA">+=</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> w</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">            edge_count </span><span style="color:#D32F2F;--shiki-dark:#C792EA">+=</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 1</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">            if</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> edge_count </span><span style="color:#D32F2F;--shiki-dark:#C792EA">==</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> N </span><span style="color:#D32F2F;--shiki-dark:#C792EA">-</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 1</span><span style="color:#212121;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">                break</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    return</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> total_weight </span><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">if</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> edge_count </span><span style="color:#D32F2F;--shiki-dark:#C792EA">==</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> N </span><span style="color:#D32F2F;--shiki-dark:#C792EA">-</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 1</span><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic"> else</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> "</span><span style="color:#22863A;--shiki-dark:#ECC48D">IMPOSSIBLE</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic"># 读取输入</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">N</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> M </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#6F42C1;--shiki-dark:#C5E478"> map</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#1976D2;--shiki-dark:#C5E478">int</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#6F42C1;--shiki-dark:#C5E478"> input</span><span style="color:#212121;--shiki-dark:#D6DEEB">()</span><span style="color:#212121;--shiki-dark:#82AAFF">.</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6">split</span><span style="color:#212121;--shiki-dark:#D6DEEB">())</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">edges </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#24292EFF;--shiki-dark:#D9F5DD"> []</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">for</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> _ </span><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">in</span><span style="color:#6F42C1;--shiki-dark:#C5E478"> range</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#82AAFF">M</span><span style="color:#212121;--shiki-dark:#D6DEEB">):</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    u</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> v</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> w </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#6F42C1;--shiki-dark:#C5E478"> map</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#1976D2;--shiki-dark:#C5E478">int</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#6F42C1;--shiki-dark:#C5E478"> input</span><span style="color:#212121;--shiki-dark:#D6DEEB">()</span><span style="color:#212121;--shiki-dark:#82AAFF">.</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6">split</span><span style="color:#212121;--shiki-dark:#D6DEEB">())</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    edges</span><span style="color:#212121;--shiki-dark:#D6DEEB">.</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6">append</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#82AAFF">(u, v, w)</span><span style="color:#212121;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic"># 输出结果</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#C5E478">print</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#6F42C1;--shiki-dark:#B2CCD6">kruskal</span><span style="color:#212121;--shiki-dark:#D6DEEB">(</span><span style="color:#212121;--shiki-dark:#82AAFF">N</span><span style="color:#212121;--shiki-dark:#D9F5DD">,</span><span style="color:#212121;--shiki-dark:#82AAFF"> edges</span><span style="color:#212121;--shiki-dark:#D6DEEB">))</span></span></code></pre>
+<h3 id="时间复杂度">时间复杂度</h3>
+<ul>
+<li>排序：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>M</mi><mi>log</mi><mo>⁡</mo><mi>M</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(M \log M)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">)</span></span></span></span></li>
+<li>并查集操作：接近常数时间，整体近似 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>M</mi><mi>log</mi><mo>⁡</mo><mi>M</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(M \log M)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<hr>
+<h2 id="-为什么-python-不能使用多线程并行计算">🔧 为什么 Python 不能使用多线程并行计算？</h2>
+<blockquote>
+<p>核心原因是 <strong>GIL（全局解释器锁）</strong>。GIL，全称是 <strong>Global Interpreter Lock（全局解释器锁）</strong>，是 <strong>CPython</strong>（最常用的 Python 实现）中的一个机制。<strong>它的作用是：同一时间只允许一个线程执行 Python 字节码。</strong></p>
+</blockquote>
+<p>在 <strong>CPU 密集型任务</strong> 中（如：图像处理、大量计算、加密解密等），即使开了多个线程，由于 GIL 的存在，它们依然是<strong>轮流执行的</strong>，不是并行。</p>
+<p>但对于 <strong>IO 密集型任务</strong>（如网络请求、文件读写等），Python 多线程仍然有意义，因为线程会在等待 IO 时释放 GIL，其他线程就可以继续执行。</p>
+<h3 id="解决方案--多进程multiprocessing">解决方案 —— 多进程（multiprocessing）</h3>
+<p>为了实现真正的并行计算，Python 提供了 <code>multiprocessing</code> 模块，它通过<strong>多个进程</strong>来绕过 GIL。</p>
+<ul>
+<li>每个进程都有自己的 Python 解释器和内存空间；</li>
+<li>所以它们可以<strong>真正并行运行</strong>在多个 CPU 核心上；</li>
+<li>适合处理 CPU 密集型任务。</li>
+</ul>
+<hr>
+<h2 id="-线程-vs-进程">🧠 线程 vs 进程</h2>
+<h3 id="线程进程定义">线程、进程定义</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>名称</th><th>概念说明</th></tr></thead><tbody><tr><td><strong>进程（Process）</strong></td><td>操作系统分配资源的最小单位。一个进程包含代码、数据、内存、打开的文件等，是一个<strong>完整的程序运行实例</strong>。</td></tr><tr><td><strong>线程（Thread）</strong></td><td>CPU 调度执行的最小单位。一个进程中可以包含多个线程，它们<strong>共享该进程的资源</strong>（如内存、文件描述符等）。</td></tr></tbody></table>
+<h3 id="线程进程核心区别">线程、进程核心区别</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>对比维度</th><th>线程</th><th>进程</th></tr></thead><tbody><tr><td><strong>资源隔离</strong></td><td>同一进程内多个线程共享资源（内存空间等）</td><td>不同进程资源互相隔离</td></tr><tr><td><strong>开销大小</strong></td><td>创建和销毁开销小，切换速度快</td><td>创建和切换的开销大</td></tr><tr><td><strong>通信方式</strong></td><td>直接共享内存，通信快，但容易出错</td><td>通过进程间通信（如管道、队列），通信复杂但更安全</td></tr><tr><td><strong>稳定性</strong></td><td>某个线程崩溃可能影响整个进程</td><td>一个进程崩溃不会影响其他进程</td></tr><tr><td><strong>并行性</strong></td><td>受 GIL 限制（在 CPython 中不能并行）</td><td>每个进程有独立解释器，可并行运行</td></tr></tbody></table>
+<hr>
+<h3 id="线程进程相同点">线程、进程相同点</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>相同点</th><th>说明</th></tr></thead><tbody><tr><td>都是<strong>并发编程模型</strong></td><td>都可用于提高程序运行效率，利用多核资源</td></tr><tr><td>都由操作系统调度</td><td>无论线程还是进程，最终都要被 CPU 执行</td></tr><tr><td>都有创建、销毁、切换的生命周期</td><td>系统会分配时间片和处理上下文切换</td></tr><tr><td>都可被阻塞、唤醒</td><td>如等待 IO、信号等</td></tr></tbody></table>
+<hr>
+<h3 id="如果是多进程模型能否实现进程之间内存共享">如果是多进程模型，能否实现进程之间内存共享？</h3>
+<p>虽然多进程模型下每个进程的内存是隔离的，但操作系统提供了共享内存机制，可以让多个进程访问同一块物理内存。共享内存是最快的进程间通信方式，但需要借助同步原语避免数据冲突。这在高性能系统中非常常见，比如数据库、图像处理等场景。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>方法</th><th>说明</th></tr></thead><tbody><tr><td>共享内存（shmget）</td><td>映射物理内存至多个进程地址空间</td></tr><tr><td>mmap 文件映射</td><td>利用磁盘文件映射为共享内存区域</td></tr><tr><td>管道、队列等 IPC</td><td>不共享内存，但能通信</td></tr></tbody></table>
+<hr>
+<h2 id="️-在同一进程内多个线程共享资源时操作系统或程序是如何解决资源冲突同步问题的">⚖️ 在同一进程内多个线程共享资源时，操作系统或程序是如何解决资源冲突/同步问题的？</h2>
+<h3 id="核心问题多个线程共享内存时如何同步">核心问题：<strong>多个线程共享内存时如何同步？</strong></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>同步机制</th><th>特点/使用场景</th></tr></thead><tbody><tr><td>互斥锁（mutex）</td><td>最常见，适合保护单个资源</td></tr><tr><td>信号量（semaphore）</td><td>控制并发数量，如线程池或连接池</td></tr><tr><td>条件变量（condition）</td><td>等待特定状态，适合生产者消费者模型</td></tr><tr><td>自旋锁（spinlock）</td><td>忙等待，不适合耗时长的锁定</td></tr></tbody></table>
+<hr>
+<h2 id="-自旋锁实现原理">🔒 自旋锁实现原理？</h2>
+<p>自旋锁是一种忙等待（busy-wait）锁机制。它通过不断轮询一个共享变量（通常是原子变量）来判断锁是否可用，常使用 原子操作（如 CAS: compare-and-swap） 来实现加锁与解锁，从而避免线程上下文切换的开销，适合锁持有时间非常短的场景。</p>
+<blockquote>
+<p>CAS = Compare-And-Swap：比较当前值与预期值，如果相等则替换为新值</p>
+</blockquote>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="c"><code><span class="line"><span style="color:#D32F2F;--shiki-dark:#C792EA">bool</span><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> CAS</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">(addr</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> expected</span><span style="color:#212121;--shiki-dark:#D6DEEB">,</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> new) {</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">    if</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> (</span><span style="color:#D32F2F;--shiki-dark:#7FDBCA">*</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">addr </span><span style="color:#D32F2F;--shiki-dark:#C792EA">==</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> expected) {</span></span>
+<span class="line"><span style="color:#D32F2F;--shiki-dark:#7FDBCA">        *</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">addr </span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> new;</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">        return</span><span style="color:#1976D2;--shiki-dark:#82AAFF"> true</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">;</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    } </span><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">else</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> {</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">        return</span><span style="color:#1976D2;--shiki-dark:#82AAFF"> false</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">;</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">    }</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#D6DEEB">}</span></span></code></pre>
+<hr>
+<h3 id="为什么是原子的">为什么是原子的？</h3>
+<ul>
+<li>因为 <strong>CPU 提供了原子指令支持</strong>（如 x86 的 <code>CMPXCHG</code>）；</li>
+<li>保证在执行过程中不会被中断、切换线程。</li>
+</ul>
+<hr>
+<h3 id="缺点">缺点</h3>
+<ul>
+<li><strong>ABA问题</strong>：值从 A→B→A，CAS 不知道其实变过；</li>
+<li><strong>自旋浪费 CPU</strong>：尤其在多核激烈竞争下；</li>
+<li><strong>一次只操作一个变量</strong>：不能原子更新多个内存块。</li>
+</ul>
+<hr>
+<h2 id="-联机fps游戏的传输层协议应该如何选用">🎮 联机FPS游戏的传输层协议应该如何选用？</h2>
+<blockquote>
+<p>✅ <strong>UDP 为首选</strong>：低延迟、无连接，适合实时数据；
+❌ TCP 会引入拥塞控制、队头阻塞，破坏游戏体验</p>
+</blockquote>
+<hr>
+<h3 id="如何保证-udp-下重要数据不丢">如何保证 UDP 下重要数据不丢？</h3>
+<ul>
+<li>使用 <strong>应用层协议模拟可靠传输机制</strong>
+<ol>
+<li>为重要消息添加唯一编号（sequence ID）</li>
+<li>发送后等待 ACK（确认）</li>
+<li>超时未收到 ACK → 自动重发</li>
+<li>收到重复包时进行“去重”</li>
+<li>关键消息列表缓存机制</li>
+</ol>
+</li>
+</ul>
+<h3 id="例子玩家死亡事件">例子：玩家死亡事件</h3>
+<ul>
+<li>玩家死亡后发送一个 player_dead 消息（带 msg_id=555）；</li>
+<li>服务端确认后回复一个 ACK 555；</li>
+<li>客户端记录该消息已确认；</li>
+<li>如果 ACK 没收到，客户端将在 300ms 后再次发送 msg_id=555；</li>
+<li>服务端如果重复收到 msg_id=555，可丢弃或仅处理一次（幂等）。</li>
+</ul>
+<hr>
+<h2 id="-移动网络优化方案高丢包场景">📶 移动网络优化方案（高丢包场景）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>技术点</th><th>说明</th></tr></thead><tbody><tr><td>冗余包发送</td><td>关键消息重复发送几次，提升成功率</td></tr><tr><td>客户端预测</td><td>临时“假象”动作，服务器回正</td></tr><tr><td>差分压缩</td><td>只发送变更部分，减少带宽</td></tr><tr><td>关键帧机制</td><td>每隔 N 帧全量发一次状态包，防丢包恢复</td></tr><tr><td>自适应重传</td><td>根据 RTT 和丢包动态调节超时和重试频率</td></tr><tr><td>FEC 纠错码</td><td>多发校验信息，少数包丢失也能恢复数据</td></tr></tbody></table>
+<hr> </article> <hr class="my-8 border-dashed"> <div class="opacity-80 sm:hidden"><span aria-hidden="true" class="max-sm:hidden">
+|
+</span><a class="space-x-1.5 hover:opacity-75" href="https://github.com/satnaing/astro-paper/edit/main/src/data/blog/akl-tencent-2nd-round.md" rel="noopener noreferrer" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg><span class="italic max-sm:text-sm sm:inline">Suggest Changes</span></a></div> <ul class="mt-4 mb-8 sm:my-8"> <li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/tags/tencent/" class="relative pr-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-2"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -mr-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>Tencent</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/tags/最小生成树/" class="relative pr-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-3"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -mr-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>最小生成树</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/tags/自旋锁/" class="relative pr-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-4"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -mr-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>自旋锁</span> </a> </li><li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/tags/计算机网络/" class="relative pr-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-5"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -mr-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>计算机网络</span> </a> </li> </ul> <div class="flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end sm:gap-4"> <div class="flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"> <span class="italic">Share this post on:</span> <div class="text-center"> <a href="https://wa.me/?text=https://yarrowren.github.io/posts/akl-tencent-2nd-round/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg> <span class="sr-only">Share this post via WhatsApp</span> </a><a href="https://www.facebook.com/sharer.php?u=https://yarrowren.github.io/posts/akl-tencent-2nd-round/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" /></svg> <span class="sr-only">Share this post on Facebook</span> </a><a href="https://x.com/intent/post?url=https://yarrowren.github.io/posts/akl-tencent-2nd-round/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on X"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg> <span class="sr-only">Share this post on X</span> </a><a href="https://t.me/share/url?url=https://yarrowren.github.io/posts/akl-tencent-2nd-round/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg> <span class="sr-only">Share this post via Telegram</span> </a><a href="https://pinterest.com/pin/create/button/?url=https://yarrowren.github.io/posts/akl-tencent-2nd-round/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 20l4 -9" /><path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /></svg> <span class="sr-only">Share this post on Pinterest</span> </a><a href="mailto:?subject=See%20this%20post&#38;body=https://yarrowren.github.io/posts/akl-tencent-2nd-round/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg> <span class="sr-only">Share this post via email</span> </a> </div> </div> <button id="back-to-top" class="focus-outline py-1 whitespace-nowrap hover:opacity-75"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block rotate-90"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg> <span>Back to Top</span> </button> </div> <hr class="my-6 border-dashed"> <!-- Previous/Next Post Buttons --> <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2"> <a href="/posts/akl-tencent-3rd-round" class="flex w-full gap-1 hover:opacity-75"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block flex-none"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg> <div> <span>Previous Post</span> <div class="text-sm text-accent/85">奥克兰腾讯光子工作室群 - 三面 - 面试总结</div> </div> </a> <a href="/posts/GDPR" class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"> <div> <span>Next Post</span> <div class="text-sm text-accent/85">GDPR - 通用数据保护法规</div> </div> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block flex-none"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6l6 6l-6 6" /></svg> </a> </div> </main> <footer class="w-full mt-auto"> <div class="max-w-[960px] mx-auto px-0"> <hr class="border-border" aria-hidden="true"> </div> <div class="flex flex-col items-center justify-center py-6 sm:py-4"> <!-- <Socials centered /> --> <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"> <span>Copyright &#169; 2022 - 2025</span> <span class="hidden sm:inline">&nbsp;|&nbsp;</span> <span>All rights reserved.</span> </div> </div> </footer>  <div id="image-lightbox" class="hidden fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center"> <img id="lightbox-image" src="" alt="Zoomed Image" class="max-w-[90%] max-h-[90%] rounded shadow-lg"> </div>  </body></html> <script data-astro-rerun>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    document.addEventListener("scroll", () => {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (document) {
+        const myBar = document.getElementById("myBar");
+        if (myBar) {
+          myBar.style.width = scrolled + "%";
+        }
+      }
+    });
+  }
+  updateScrollProgress();
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    const headings = Array.from(
+      document.querySelectorAll("h2, h3, h4, h5, h6")
+    );
+    for (const heading of headings) {
+      heading.classList.add("group");
+      const link = document.createElement("a");
+      link.className =
+        "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
+      link.href = "#" + heading.id;
+
+      const span = document.createElement("span");
+      span.ariaHidden = "true";
+      span.innerText = "#";
+      link.appendChild(span);
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    const copyButtonLabel = "Copy";
+    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (const codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-muted px-2 py-1 text-xs leading-4 text-foreground font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      const code = block.querySelector("code");
+      const text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+
+  /* Go to page start after page swap */
+  document.addEventListener("astro:after-swap", () =>
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
+  );
+
+  /** Image Lightbox: click to zoom */
+  function enableImageLightbox() {
+    const lightbox = document.getElementById("image-lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+
+    document.querySelectorAll("article img").forEach((img) => {
+      img.classList.add("cursor-zoom-in");
+      img.addEventListener("click", () => {
+        lightboxImage.src = img.src;
+        lightbox.classList.remove("hidden");
+      });
+    });
+
+    lightbox.addEventListener("click", () => {
+      lightbox.classList.add("hidden");
+      lightboxImage.src = "";
+    });
+  }
+  enableImageLightbox();
+</script>

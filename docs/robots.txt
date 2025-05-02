@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://yarrowren.github.io/sitemap-index.xml

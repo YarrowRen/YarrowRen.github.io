@@ -13,6 +13,7 @@ import rehypeKatex from "rehype-katex";
 export default defineConfig({
   site: SITE.website,
   base: "/",
+  outDir: "docs", // 添加这一行
   integrations: [
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
