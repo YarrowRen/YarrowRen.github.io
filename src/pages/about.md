@@ -4,8 +4,8 @@ title: "About"
 lang: "cn"
 ---
 
-<!-- ## Hi，这里是Yarrow 👋 [English Version](/about.en) -->
-<h2>Hi，这里是Yarrow 👋 <a href="/about.en">English Version</a></h2>
+## Hi，这里是Yarrow 👋 [English Version](https://yarrow.ren/about.en)
+<!-- <h2>Hi，这里是Yarrow 👋 <a href="/about.en">English Version</a></h2> -->
 
 
 我毕业于**奥克兰大学（University of Auckland）**人工智能硕士专业，研究方向主要包括**自然语言处理（NLP）**、**RAG增强生成（Retrieval-Augmented Generation）**、**机器学习**，并对 AI 架构和系统设计有浓厚兴趣。
