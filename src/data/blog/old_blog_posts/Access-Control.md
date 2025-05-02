@@ -9,7 +9,7 @@ draft: false
 tags:
 - 网络安全
 - 计算机安全
-description: '- Identify access control requirements'
+description: '向系统实体授予权利或权限以提供对特定资源的访问的过程，也称访问控制（Access Control）'
 ---
 
 # FOCUS OF THIS LECTURE

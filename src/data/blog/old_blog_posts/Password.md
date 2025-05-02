@@ -9,13 +9,13 @@ draft: false
 tags:
 - 网络安全
 - 计算机安全
-description: '- Understand identification and authentication'
+description: 'Understand identification and authentication, Learn how passwords are protected'
 ---
 
 # FOCUS OF THIS LECTURE
 
 - Understand identification and authentication
--  Learn how passwords are protected
+- Learn how passwords are protected
 
 
 # 身份识别和认证

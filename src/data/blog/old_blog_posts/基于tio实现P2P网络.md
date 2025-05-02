@@ -10,7 +10,7 @@ tags:
 - tio
 - P2P
 - 区块链
-description: '```xml'
+description: ''
 ---
 
 # 基于tio实现P2P网络结构

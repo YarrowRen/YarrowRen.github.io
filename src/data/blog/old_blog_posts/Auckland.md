@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Auckland
-description: '![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/1709543365750.jpg)'
+description: ''
 ---
 
 ![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/1709543365750.jpg)
