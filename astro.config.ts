@@ -12,8 +12,6 @@ import rehypeKatex from "rehype-katex";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
-  base: "/",
-  outDir: "docs", // 添加这一行
   integrations: [
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
