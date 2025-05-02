@@ -3,34 +3,53 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-AstroPaper is a minimal, responsive and SEO-friendly Astro blog theme. I designed and crafted this based on [my personal blog](https://satnaing.dev/blog).
+## Hi, I’m Boyu Ren (任博宇) 👋
 
-This theme is aimed to be accessible out of the box. Light and dark mode are supported by
-default and additional color schemes can also be configured.
+I'm a master's student at the **University of Auckland**, specializing in **Artificial Intelligence**. My interests lie in **Natural Language Processing (NLP)**, **Retrieval-Augmented Generation (RAG)**, and **Machine Learning**, with a particular focus on AI architecture and system design.
 
-This theme is self-documented \_ which means articles/posts in this theme can also be considered as documentations. So, see the documentation for more info.
+I have hands-on experience in both academic research and real-world applications, having contributed to AI projects in **multimodal content tagging**, **intelligent dialogue systems**, and **storybook generation**. My technical stack includes **Python**, **PyTorch**, **TensorFlow**, **LLMs**, **GNNs**, and **RAG or MultiAgent** systems.
 
-<div>
-  <img src="/dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
-</div>
 
-## Tech Stack
+### 🧠 Education
 
-This theme is written in vanilla JavaScript (+ TypeScript for type checking) and a little bit of ReactJS for some interactions. TailwindCSS is used for styling; and Markdown is used for blog contents.
+- **University of Auckland (2023–2025)**  
+  MSc in Artificial Intelligence  
+  Courses: NLP (A), AI Architecture (A+), Cybersecurity (A+), Statistics (A+)
 
-## Features
+- **Southwest University (2019–2023)**  
+  BSc in Computer Science  
+  Awarded *Excellent Thesis*, *Volunteering Award*, and *New Student Honor*
 
-Here are certain features of this site.
+### 💼 Work Experience
 
-- fully responsive and accessible
-- SEO-friendly
-- light & dark mode
-- fuzzy search
-- super fast performance
-- draft posts
-- pagination
-- sitemap & rss feed
-- highly customizable
+- **Machine Learning Intern @ Tencent Lightspeed Studios 🐧**  
+  Involved in smart system development and full model pipeline optimization.
 
-If you like this theme, you can star/contribute to the [repo](https://github.com/satnaing/astro-paper).  
-Or you can even give any feedback via my [email](mailto:contact@satnaing.dev).
+- **AI Developer Intern @ HOUGARDEN.COM 🏠**  
+  Integrated AI models into real estate products and collaborated across teams for performance improvement.
+
+### 🔍 Research & Projects
+
+- **RAG System Research (LIU AI Lab)**  
+  Exploring multi-view retrieval and hierarchical abstraction using structural entropy and GNNs.
+
+- **Smart Real Estate Chatbot (HOUGARDEN)**  
+  Designed a multi-agent RAG architecture for property Q&A, including knowledge base, API integration, and map toolkits.
+
+- **Multimodal Auto-Tagging System**  
+  Combined image, text, and geolocation data to detect fraud and auto-generate property tags with GNNs.
+
+- **AI Storybook Generation**  
+  Developed a multi-agent system with multilingual TTS capabilities, supporting diverse narrative voices and styles.
+
+
+### 🛠️ Skills
+
+- **Languages:** Python, Java  
+- **Tech:** LLM, GNN, RAG, Agent Frameworks, TTS  
+- **Tools:** TensorFlow, PyTorch, HuggingFace  
+- **Languages:** Chinese, English (DEP 8)
+
+---
+
+For collaboration, research, or just to connect, feel free to [reach out](mailto:YarrowRen@gmail.com) or explore my blog at [Yarrow.Ren](https://Yarrow.Ren).
