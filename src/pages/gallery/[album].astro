@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import { initGallery } from "public/scripts/gallery-init.js";
+import { initGallery } from "@/scripts/gallery-init.js";
 import fs from "fs";
 import path from "path";
 
@@ -64,9 +64,9 @@ export async function getStaticPaths() {
   <Footer />
 
   <!-- LightGallery 初始化 -->
-  <script type="module">
+  <script type="module" is:inline>
     // import { initGallery } from "/src/scripts/gallery-init.js";
-    import { initGallery } from "/scripts/gallery-init.js";
+    import { initGallery } from "../../scripts/gallery-init.js"; // ✅ Vite 处理
 
     initGallery();
   </script>
