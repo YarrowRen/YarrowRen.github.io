@@ -62,35 +62,37 @@ export async function getStaticPaths() {
     <button onclick="hideLightbox()" class="absolute top-6 right-6 text-white text-3xl">&times;</button>
   </div>
 
-  <!-- Script -->
+  <!-- 修改后的脚本 -->
   <script is:raw>
     function showLightbox(src) {
-        document.getElementById("lightbox-img").src = src;
-        document.getElementById("lightbox").classList.remove("hidden");
+      document.getElementById("lightbox-img").src = src;
+      document.getElementById("lightbox").classList.remove("hidden");
+    }
+
+    function hideLightbox() {
+      document.getElementById("lightbox").classList.add("hidden");
+    }
+
+    // 点击遮罩层关闭（事件委托到document）
+    document.addEventListener('click', function(e) {
+      const lightbox = document.getElementById('lightbox');
+      if (lightbox && !lightbox.classList.contains('hidden') && e.target === lightbox) {
+        hideLightbox();
       }
-    
-      function hideLightbox() {
-        document.getElementById("lightbox").classList.add("hidden");
+    });
+
+    // 键盘事件关闭
+    document.addEventListener('keydown', function(e) {
+      const lightbox = document.getElementById('lightbox');
+      if (lightbox && !lightbox.classList.contains('hidden') && e.key === 'Escape') {
+        hideLightbox();
       }
-    
-      function bindLightboxEvents() {
-        const lightbox = document.getElementById("lightbox");
-        if (!lightbox.dataset.bound) {
-          lightbox.addEventListener("click", (e) => {
-            if (e.target.id === "lightbox") hideLightbox();
-          });
-          lightbox.dataset.bound = "true";
-        }
-      }
-    
-      // 页面首次加载
-      document.addEventListener("DOMContentLoaded", bindLightboxEvents);
-      // 页面后退返回（缓存恢复）
-      window.addEventListener("pageshow", bindLightboxEvents);
+    });
   </script>
+
   <style is:global>
     #lightbox {
-      background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
+      background-color: rgba(0, 0, 0, 0.6);
     }
   </style>
 </Layout>
