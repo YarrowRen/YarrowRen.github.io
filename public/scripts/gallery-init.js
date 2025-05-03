@@ -24,16 +24,19 @@
 // }
 
 
-// public/scripts/gallery-init.js
 import lightGallery from "https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/+esm";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const el = document.getElementById("gallery");
-  if (el) {
-    lightGallery(el, {
+function setupGallery() {
+  const gallery = document.getElementById("gallery");
+  if (gallery && !gallery.classList.contains("lg-initialized")) {
+    lightGallery(gallery, {
       selector: "a",
       download: false,
     });
   }
-});
+}
+
+// ✅ 保证首次加载和历史记录恢复都能触发
+window.addEventListener("astro:page-load", setupGallery);
+document.addEventListener("DOMContentLoaded", setupGallery);
 
