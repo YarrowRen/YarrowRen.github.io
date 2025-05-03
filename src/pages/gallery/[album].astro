@@ -2,17 +2,35 @@
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import fs from "fs";
+import path from "path";
 
-// 获取路由参数
 const { album } = Astro.params;
+const albumPath = `/assets/gallery/${album}`;
+const absoluteDir = path.resolve("public" + albumPath);
 
-// 构造匹配路径（必须是绝对路径）
-const imageModules = import.meta.glob(`/public/assets/gallery/${album}/*.{jpg,jpeg,png,webp}`, {
-  eager: true
-});
+let imageSources: string[] = [];
 
-// 提取图片 src 列表
-const images = Object.values(imageModules).map((mod: any) => mod.default);
+if (fs.existsSync(absoluteDir)) {
+  imageSources = fs
+    .readdirSync(absoluteDir)
+    .filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))
+    .map((file) => `${albumPath}/${file}`);
+}
+
+// 动态路径列表生成
+export async function getStaticPaths() {
+  const baseDir = path.resolve("public/assets/gallery");
+  const albums = fs.existsSync(baseDir)
+    ? fs.readdirSync(baseDir).filter((name) =>
+        fs.statSync(path.join(baseDir, name)).isDirectory()
+      )
+    : [];
+
+  return albums.map((name) => ({
+    params: { album: name },
+  }));
+}
 ---
 
 <Layout>
@@ -22,7 +40,7 @@ const images = Object.values(imageModules).map((mod: any) => mod.default);
     <h1 class="text-3xl font-bold mb-6">📸 相册：{album}</h1>
 
     <div class="columns-1 sm:columns-2 lg:columns-3 gap-4">
-      {images.map((src, index) => (
+      {imageSources.map((src, index) => (
         <div class="mb-4 break-inside-avoid">
           <img
             src={src}
@@ -38,27 +56,41 @@ const images = Object.values(imageModules).map((mod: any) => mod.default);
 
   <Footer />
 
-  <!-- Lightbox Overlay -->
+  <!-- Lightbox -->
   <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
     <img id="lightbox-img" src="" alt="Preview" class="max-w-full max-h-[90vh] rounded-lg shadow-xl" />
     <button onclick="hideLightbox()" class="absolute top-6 right-6 text-white text-3xl">&times;</button>
   </div>
 
-  <!-- Lightbox Script -->
+  <!-- Script -->
   <script is:raw>
     function showLightbox(src) {
-      document.getElementById("lightbox-img").src = src;
-      document.getElementById("lightbox").classList.remove("hidden");
-    }
-
-    function hideLightbox() {
-      document.getElementById("lightbox").classList.add("hidden");
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("lightbox").addEventListener("click", (e) => {
-        if (e.target.id === "lightbox") hideLightbox();
-      });
-    });
+        document.getElementById("lightbox-img").src = src;
+        document.getElementById("lightbox").classList.remove("hidden");
+      }
+    
+      function hideLightbox() {
+        document.getElementById("lightbox").classList.add("hidden");
+      }
+    
+      function bindLightboxEvents() {
+        const lightbox = document.getElementById("lightbox");
+        if (!lightbox.dataset.bound) {
+          lightbox.addEventListener("click", (e) => {
+            if (e.target.id === "lightbox") hideLightbox();
+          });
+          lightbox.dataset.bound = "true";
+        }
+      }
+    
+      // 页面首次加载
+      document.addEventListener("DOMContentLoaded", bindLightboxEvents);
+      // 页面后退返回（缓存恢复）
+      window.addEventListener("pageshow", bindLightboxEvents);
   </script>
+  <style is:global>
+    #lightbox {
+      background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
+    }
+  </style>
 </Layout>
