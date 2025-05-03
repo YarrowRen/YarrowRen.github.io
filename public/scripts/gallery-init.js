@@ -26,14 +26,14 @@
 
 // public/scripts/gallery-init.js
 import lightGallery from "https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/+esm";
-import "https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/css/lightgallery-bundle.min.css";
 
 document.addEventListener("DOMContentLoaded", () => {
   const el = document.getElementById("gallery");
   if (el) {
     lightGallery(el, {
       selector: "a",
-      download: false
+      download: false,
     });
   }
 });
+
