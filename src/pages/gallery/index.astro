@@ -1,4 +1,5 @@
 ---
+// Astro frontmatter
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -8,12 +9,38 @@ import path from "path";
 import Main from "@/layouts/Main.astro";
 const albumDir = path.resolve("public/assets/gallery");
 
-// let albums = [];
-let albums: string[] = [];
+type Album = {
+  name: string;
+  cover: string | null;
+};
+
+let albums: Album[] = [];
+
 if (fs.existsSync(albumDir)) {
-  albums = fs.readdirSync(albumDir).filter((name) => {
+  const folderNames = fs.readdirSync(albumDir).filter((name) => {
     const fullPath = path.join(albumDir, name);
     return fs.statSync(fullPath).isDirectory();
+  });
+
+  albums = folderNames.map((folder) => {
+    const folderPath = path.join(albumDir, folder);
+    const files = fs.readdirSync(folderPath).filter((f) =>
+      /\.(jpe?g|png|webp|gif)$/i.test(f)
+    );
+
+    // 优先使用 cover.jpeg（忽略大小写）
+    const coverFile = files.find((f) => f.toLowerCase() === "cover.jpeg");
+
+    const coverImage = coverFile
+      ? `/assets/gallery/${folder}/${coverFile}`
+      : files.length > 0
+        ? `/assets/gallery/${folder}/${files.sort()[0]}`
+        : null;
+
+    return {
+      name: folder,
+      cover: coverImage,
+    };
   });
 }
 ---
@@ -22,43 +49,31 @@ if (fs.existsSync(albumDir)) {
   <Header />
 
   <Main pageTitle="📁 Gallery" pageDesc="A visual archive of places I’ve explored and captured.">
-
-    <!-- {albums.length === 0 ? (
-      <p class="text-gray-500 italic">暂无相册，快去旅行吧！🌏</p>
-    ) : (
-      <ul class="space-y-4">
-        {albums.map((album) => (
-          <li class="text-left">
-            <a
-              href={`/gallery/${album}`}
-              class="text-xl font-mono text-blue-600 hover:underline"
-            >
-              {album}
-            </a>
-            <p class="text-sm text-gray-600">View →</p>
-          </li>
-        ))}
-      </ul>
-    )} -->
     {albums.length === 0 ? (
       <p class="text-gray-500 italic">暂无相册，快去旅行吧！🌏</p>
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {albums.map((album) => (
+        {albums.map(({ name, cover }) => (
           <a
-            href={`/gallery/${album}`}
-            class="block bg-gray-100 p-4 rounded shadow hover:bg-gray-200 transition"
+            href={`/gallery/${name}`}
+            class="block bg-gray-100 rounded shadow hover:bg-gray-200 transition overflow-hidden"
           >
-            <h2 class="text-xl font-semibold capitalize">{album}</h2>
-            <p class="text-sm text-gray-600">View &rarr;</p>
+            {cover && (
+              <img
+                src={cover}
+                alt={`封面 - ${name}`}
+                class="w-full h-48 object-cover"
+              />
+            )}
+            <div class="p-4">
+              <h2 class="text-xl font-semibold capitalize">{name}</h2>
+              <p class="text-sm text-gray-600">View &rarr;</p>
+            </div>
           </a>
         ))}
       </div>
     )}
-    
   </Main>
-
-  
 
   <Footer />
 </Layout>
