@@ -5,6 +5,7 @@ import Footer from "@/components/Footer.astro";
 import fs from "fs";
 import path from "path";
 
+import Main from "@/layouts/Main.astro";
 const albumDir = path.resolve("public/assets/gallery");
 
 // let albums = [];
@@ -20,9 +21,25 @@ if (fs.existsSync(albumDir)) {
 <Layout>
   <Header />
 
-  <main class="max-w-6xl mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-6">📁 相册归档</h1>
+  <Main pageTitle="📁 Gallery" pageDesc="A visual archive of places I’ve explored and captured.">
 
+    <!-- {albums.length === 0 ? (
+      <p class="text-gray-500 italic">暂无相册，快去旅行吧！🌏</p>
+    ) : (
+      <ul class="space-y-4">
+        {albums.map((album) => (
+          <li class="text-left">
+            <a
+              href={`/gallery/${album}`}
+              class="text-xl font-mono text-blue-600 hover:underline"
+            >
+              {album}
+            </a>
+            <p class="text-sm text-gray-600">View →</p>
+          </li>
+        ))}
+      </ul>
+    )} -->
     {albums.length === 0 ? (
       <p class="text-gray-500 italic">暂无相册，快去旅行吧！🌏</p>
     ) : (
@@ -33,12 +50,15 @@ if (fs.existsSync(albumDir)) {
             class="block bg-gray-100 p-4 rounded shadow hover:bg-gray-200 transition"
           >
             <h2 class="text-xl font-semibold capitalize">{album}</h2>
-            <p class="text-sm text-gray-600">点击查看 &rarr;</p>
+            <p class="text-sm text-gray-600">View &rarr;</p>
           </a>
         ))}
       </div>
     )}
-  </main>
+    
+  </Main>
+
+  
 
   <Footer />
 </Layout>
