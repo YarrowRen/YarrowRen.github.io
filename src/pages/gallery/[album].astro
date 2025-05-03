@@ -1,0 +1,76 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { initGallery } from "@/scripts/gallery-init.js";
+import fs from "fs";
+import path from "path";
+
+// 获取当前访问路径的相册名
+const { album } = Astro.params;
+const albumPath = `/assets/gallery/${album}`;
+const absoluteDir = path.resolve("public" + albumPath);
+
+// 加载图片
+let imageSources = [];
+if (fs.existsSync(absoluteDir)) {
+  imageSources = fs
+    .readdirSync(absoluteDir)
+    .filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))
+    .map((file) => `${albumPath}/${file}`);
+}
+
+// 🔁 必须：动态路径列表
+export async function getStaticPaths() {
+  const baseDir = path.resolve("public/assets/gallery");
+  const albums = fs.existsSync(baseDir)
+    ? fs.readdirSync(baseDir).filter((name) =>
+        fs.statSync(path.join(baseDir, name)).isDirectory()
+      )
+    : [];
+
+  return albums.map((name) => ({
+    params: { album: name },
+  }));
+}
+---
+
+<Layout>
+  <Header />
+
+  <main class="mx-auto max-w-6xl p-4">
+    <h1 class="mb-6 text-3xl font-bold capitalize">📸 相册：{album}</h1>
+
+    <div id="gallery" class="columns-1 gap-4 sm:columns-2 lg:columns-3">
+      {
+        imageSources.map((src, index) => (
+          <div class="mb-4 break-inside-avoid">
+            <a href={src}>
+              <img
+                src={src}
+                alt={`Image ${index}`}
+                class="cursor-pointer rounded-lg hover:opacity-80"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- LightGallery 初始化 -->
+  <script type="module">
+    import { initGallery } from "/src/scripts/gallery-init.js";
+    initGallery();
+  </script>
+
+  <!-- 修改 LightGallery 背景透明度 -->
+  <style is:global>
+    .lg-backdrop {
+      background-color: rgba(0, 0, 0, 0.6) !important;
+    }
+  </style>
+</Layout>

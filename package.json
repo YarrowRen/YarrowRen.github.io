@@ -21,14 +21,14 @@
     "@tailwindcss/vite": "^4.0.14",
     "astro": "^5.5.2",
     "dayjs": "^1.11.13",
+    "lightgallery": "^2.8.3",
     "lodash.kebabcase": "^4.1.1",
     "rehype-katex": "^7.0.1",
     "remark-collapse": "^0.1.2",
     "remark-math": "^6.0.0",
     "remark-toc": "^9.0.0",
     "satori": "^0.12.1",
-    "sharp": "^0.33.5",
-    "tailwindcss": "^4.0.14"
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
@@ -44,6 +44,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^4.1.5",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1"
   }

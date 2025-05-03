@@ -8,9 +8,39 @@ lang: "cn"
 <h2>Hi，这里是Yarrow 👋 <a href="/about.en">English Version</a></h2>
 
 
-我毕业于**奥克兰大学（University of Auckland）**人工智能硕士专业，研究方向主要包括**自然语言处理（NLP）**、**RAG增强生成（Retrieval-Augmented Generation）**、**机器学习**，并对 AI 架构和系统设计有浓厚兴趣。
+<!-- 我毕业于**奥克兰大学（University of Auckland）**人工智能硕士专业，研究方向主要包括**自然语言处理（NLP）**、**RAG增强生成（Retrieval-Augmented Generation）**、**机器学习**，并对 AI 架构和系统设计有浓厚兴趣。
 
-我在学术研究和实际应用方面均有丰富经验，曾参与多个 AI 项目，包括**多模态内容标签系统**、**智能对话系统**以及**全流程AI生成系统**。技术栈涵盖 **Python**、**PyTorch**、**TensorFlow**、**大型语言模型（LLMs）**、**图神经网络（GNNs）** 以及 **RAG / 多智能体系统（Multi-Agent Systems）**。
+我在学术研究和实际应用方面均有丰富经验，曾参与多个 AI 项目，包括**多模态内容标签系统**、**智能对话系统**以及**全流程AI生成系统**。技术栈涵盖 **Python**、**PyTorch**、**TensorFlow**、**大型语言模型（LLMs）**、**图神经网络（GNNs）** 以及 **RAG / 多智能体系统（Multi-Agent Systems）**。 -->
+
+<div class="flex flex-col lg:flex-row gap-6 mt-4">
+  <!-- 左侧文本内容 -->
+  <div class="lg:w-4/5">
+    <p>
+      我毕业于<strong>奥克兰大学（University of Auckland）</strong>人工智能硕士专业，研究方向主要包括
+      <strong>自然语言处理（NLP）</strong>、
+      <strong>RAG增强生成（Retrieval-Augmented Generation）</strong>、
+      <strong>机器学习</strong>，并对 AI 架构和系统设计有浓厚兴趣。
+    </p>
+    <p class="mt-4">
+      我在学术研究和实际应用方面均有丰富经验，曾参与多个 AI 项目，包括
+      <strong>多模态内容标签系统</strong>、
+      <strong>智能对话系统</strong>以及
+      <strong>全流程AI生成系统</strong>。技术栈涵盖
+      <strong>Python</strong>、
+      <strong>PyTorch</strong>、
+      <strong>TensorFlow</strong>、
+      <strong>大型语言模型（LLMs）</strong>、
+      <strong>图神经网络（GNNs）</strong> 以及
+      <strong>RAG / 多智能体系统（Multi-Agent Systems）</strong>。
+    </p>
+  </div>
+
+  <!-- 右侧头像 -->
+  <div class="lg:w-1/5 hidden lg:block">
+    <img src="/title.jpg" alt="头像" class="rounded-xl shadow-md w-full h-auto object-cover" />
+  </div>
+</div>
+
 
 ### 🧠 教育背景
 

@@ -8,9 +8,32 @@ lang: "en"
 <h2>Hi, I’m Boyu(Yarrow) Ren 👋 <a href="/about">中文版</a></h2>
 
 
-I'm a master's student at the **University of Auckland**, specializing in **Artificial Intelligence**. My interests lie in **Natural Language Processing (NLP)**, **Retrieval-Augmented Generation (RAG)**, and **Machine Learning**, with a particular focus on AI architecture and system design.
+<div class="flex flex-col lg:flex-row gap-6 mt-4">
+  <!-- Left: Text -->
+  <div class="lg:w-4/5">
+    <p>
+      I'm a master's student at the <strong>University of Auckland</strong>, specializing in
+      <strong>Artificial Intelligence</strong>. My interests lie in
+      <strong>Natural Language Processing (NLP)</strong>,
+      <strong>Retrieval-Augmented Generation (RAG)</strong>, and
+      <strong>Machine Learning</strong>, with a particular focus on AI architecture and system design.
+    </p>
+    <p class="mt-4">
+      I have hands-on experience in both academic research and real-world applications, having contributed to
+      AI projects in <strong>multimodal content tagging</strong>,
+      <strong>intelligent dialogue systems</strong>, and
+      <strong>storybook generation</strong>. My technical stack includes
+      <strong>Python</strong>, <strong>PyTorch</strong>, <strong>TensorFlow</strong>,
+      <strong>LLMs</strong>, <strong>GNNs</strong>, and <strong>RAG or MultiAgent</strong> systems.
+    </p>
+  </div>
 
-I have hands-on experience in both academic research and real-world applications, having contributed to AI projects in **multimodal content tagging**, **intelligent dialogue systems**, and **storybook generation**. My technical stack includes **Python**, **PyTorch**, **TensorFlow**, **LLMs**, **GNNs**, and **RAG or MultiAgent** systems.
+  <!-- Right: Avatar -->
+  <div class="lg:w-1/5 hidden lg:block">
+    <img src="/title.jpg" alt="Profile photo" class="rounded-xl shadow-md w-full h-auto object-cover" />
+  </div>
+</div>
+
 
 
 ### 🧠 Education

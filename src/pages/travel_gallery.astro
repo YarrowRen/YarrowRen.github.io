@@ -1,0 +1,49 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { initGallery } from "@/scripts/gallery-init.js";
+
+const images = await Astro.glob("../assets/travel/*.{jpg,jpeg,png,webp}");
+const imageSources = images.map(img => img.default.src);
+---
+
+<Layout>
+  <Header />
+
+  <main class="mx-auto max-w-6xl p-4">
+    <h1 class="mb-6 text-3xl font-bold">📸 Travel Gallery</h1>
+
+    <!-- LightGallery expects anchor tags for each image -->
+    <div id="gallery" class="columns-1 gap-4 sm:columns-2 lg:columns-3">
+      {
+        imageSources.map((src, index) => (
+          <div class="mb-4 break-inside-avoid">
+            <a href={src}>
+              <img
+                src={src}
+                alt={`Travel image ${index}`}
+                class="cursor-pointer rounded-lg hover:opacity-80"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- LightGallery Init -->
+  <script type="module">
+    import { initGallery } from "/src/scripts/gallery-init.js";
+    initGallery();
+  </script>
+  <!-- 修改 LightGallery 背景透明度 -->
+  <style is:global>
+    .lg-backdrop {
+      background-color: rgba(0, 0, 0, 0.6) !important;
+    }
+  </style>
+</Layout>

@@ -57,3 +57,8 @@ html[data-theme="dark"] {
 .active-nav {
   @apply underline decoration-wavy decoration-2 underline-offset-4;
 }
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
