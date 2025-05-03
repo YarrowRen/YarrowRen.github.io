@@ -12,7 +12,9 @@ const albumPath = `/assets/gallery/${album}`;
 const absoluteDir = path.resolve("public" + albumPath);
 
 // 加载图片
-let imageSources = [];
+// let imageSources = [];
+let imageSources: string[] = []; // ✅
+
 if (fs.existsSync(absoluteDir)) {
   imageSources = fs
     .readdirSync(absoluteDir)
