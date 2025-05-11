@@ -1,5 +1,4 @@
 ---
-// Astro frontmatter
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -7,10 +6,15 @@ import fs from "fs";
 import path from "path";
 
 import Main from "@/layouts/Main.astro";
+
 const albumDir = path.resolve("public/assets/gallery");
 
 type Album = {
-  name: string;
+  folder: string;
+  title: string;
+  date?: string;
+  location?: string;
+  description?: string;
   cover: string | null;
 };
 
@@ -24,12 +28,22 @@ if (fs.existsSync(albumDir)) {
 
   albums = folderNames.map((folder) => {
     const folderPath = path.join(albumDir, folder);
+    const metaPath = path.join(folderPath, "meta.json");
+
+    let meta: any = {};
+    if (fs.existsSync(metaPath)) {
+      try {
+        meta = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
+      } catch (e) {
+        console.error(`读取 meta.json 失败: ${folder}`, e);
+      }
+    }
+
     const files = fs.readdirSync(folderPath).filter((f) =>
       /\.(jpe?g|png|webp|gif)$/i.test(f)
     );
 
-    // 优先使用 cover.jpeg（忽略大小写）
-    const coverFile = files.find((f) => f.toLowerCase() === "cover.jpeg");
+    let coverFile = meta.cover || files.find((f) => f.toLowerCase() === "cover.jpeg");
 
     const coverImage = coverFile
       ? `/assets/gallery/${folder}/${coverFile}`
@@ -38,9 +52,20 @@ if (fs.existsSync(albumDir)) {
         : null;
 
     return {
-      name: folder,
+      folder,
+      title: meta.title || folder,
+      date: meta.date,
+      location: meta.location,
+      description: meta.description,
       cover: coverImage,
     };
+  });
+
+  // 按日期降序排序（最新优先），无日期的排后
+  albums.sort((a, b) => {
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 }
 ---
@@ -53,21 +78,28 @@ if (fs.existsSync(albumDir)) {
       <p class="text-gray-500 italic">暂无相册，快去旅行吧！🌏</p>
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {albums.map(({ name, cover }) => (
+        {albums.map(({ folder, title, cover, date, location, description }) => (
           <a
-            href={`/gallery/${name}`}
+            href={`/gallery/${folder}`}
             class="block bg-gray-100 rounded shadow hover:bg-gray-200 transition overflow-hidden"
           >
             {cover && (
               <img
                 src={cover}
-                alt={`封面 - ${name}`}
+                alt={`封面 - ${title}`}
                 class="w-full h-48 object-cover"
               />
             )}
             <div class="p-4">
-              <h2 class="text-xl font-semibold capitalize">{name}</h2>
-              <p class="text-sm text-gray-600">View &rarr;</p>
+              <h2 class="text-xl font-semibold capitalize">{title}</h2>
+              {/* {location && <p class="text-sm text-gray-500">{location}</p>} */}
+              {date && <p class="text-sm text-gray-400">{date}</p>}
+              {/* {description && (
+                <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+                  {description}
+                </p>
+              )} */}
+              <p class="text-sm text-gray-400 mt-2">View &rarr;</p>
             </div>
           </a>
         ))}

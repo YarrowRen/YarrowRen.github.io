@@ -9,6 +9,7 @@ const { album } = Astro.params;
 const albumPath = `/assets/gallery/${album}`;
 const absoluteDir = path.resolve("public" + albumPath);
 
+// 读取相册图片
 let imageSources: string[] = [];
 
 if (fs.existsSync(absoluteDir)) {
@@ -18,7 +19,26 @@ if (fs.existsSync(absoluteDir)) {
     .map((file) => `${albumPath}/${file}`);
 }
 
-// 动态路径列表生成
+// 读取 meta.json
+let meta: any = {};
+const metaPath = path.join(absoluteDir, "meta.json");
+if (fs.existsSync(metaPath)) {
+  try {
+    meta = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
+  } catch (e) {
+    console.error(`读取 meta.json 失败: ${album}`, e);
+  }
+}
+
+// 提取经纬度
+let latitude = null;
+let longitude = null;
+
+if (meta.location && meta.location.includes(",")) {
+  [latitude, longitude] = meta.location.split(",").map(Number);
+}
+
+// 动态路径生成
 export async function getStaticPaths() {
   const baseDir = path.resolve("public/assets/gallery");
   const albums = fs.existsSync(baseDir)
@@ -37,7 +57,23 @@ export async function getStaticPaths() {
   <Header />
 
   <main id="main-content" class="max-w-6xl mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-6">📸 Album：{album}</h1>
+    <h1 class="text-3xl font-bold mb-2">📸 {meta.title || album}</h1>
+    {meta.date && <p class="text-gray-500">{meta.date}</p>}
+    {meta.description && <p class="mt-2">{meta.description}</p>}
+
+    {latitude && longitude && (
+      <div class="mt-6 mb-8">
+        <iframe
+          src={`https://maps.google.com/maps?q=${latitude},${longitude}&z=14&output=embed`}
+          width="100%"
+          height="250"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    )}
 
     <div class="columns-1 sm:columns-2 lg:columns-3 gap-4">
       {imageSources.map((src, index) => (
@@ -45,7 +81,7 @@ export async function getStaticPaths() {
           <img
             src={src}
             alt={`Image ${index}`}
-            class="rounded-lg cursor-pointer transition hover:opacity-80"
+            class="rounded-lg cursor-pointer transition-transform duration-300 hover:scale-102 "
             onclick={`showLightbox('${src}')`}
             loading="lazy"
           />
@@ -62,7 +98,7 @@ export async function getStaticPaths() {
     <button onclick="hideLightbox()" class="absolute top-6 right-6 text-white text-3xl">&times;</button>
   </div>
 
-  <!-- 修改后的脚本 -->
+  <!-- Lightbox Script -->
   <script is:raw>
     function showLightbox(src) {
       document.getElementById("lightbox-img").src = src;
@@ -73,7 +109,6 @@ export async function getStaticPaths() {
       document.getElementById("lightbox").classList.add("hidden");
     }
 
-    // 点击遮罩层关闭（事件委托到document）
     document.addEventListener('click', function(e) {
       const lightbox = document.getElementById('lightbox');
       if (lightbox && !lightbox.classList.contains('hidden') && e.target === lightbox) {
@@ -81,7 +116,6 @@ export async function getStaticPaths() {
       }
     });
 
-    // 键盘事件关闭
     document.addEventListener('keydown', function(e) {
       const lightbox = document.getElementById('lightbox');
       if (lightbox && !lightbox.classList.contains('hidden') && e.key === 'Escape') {
