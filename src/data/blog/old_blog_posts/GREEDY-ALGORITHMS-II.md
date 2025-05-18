@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - 算法
-description: '[算法图示：Bilibili《最短路径查找—Dijkstra算法》](https://www.bilibili.com/video/BV1zz4y1m7Nq)'
+description: '贪心算法（Greedy Algorithm）是一种常见的优化算法，用于解决一类最优化问题。在每一步选择中，贪心算法总是选择当前看起来最优的选择，而不考虑该选择会不会影响未来的选择。这种贪心选择的策略通常是局部最优的，但不一定是全局最优的。'
 ---
 
 # Dijkstra's algorithm

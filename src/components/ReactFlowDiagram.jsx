@@ -1,147 +1,191 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactFlow, {
   Background,
   Controls,
   MiniMap,
-  useNodesState,
-  useEdgesState,
-  addEdge,
   Handle,
   Position,
+  useNodesState,
+  useEdgesState
 } from 'reactflow';
 import 'reactflow/dist/style.css';
+import '../styles/flow-animation.css';
+import '../styles/CustomNode.css'; // ✅ 样式文件
+import yaml from 'js-yaml';
+import { NODE_COLORS, TITLE_COLORS, MAX_DESC_LENGTH } from '../config/nodeConfig';
 
-function ColorNode({ data }) {
-  return (
-    <div style={{ padding: 10 }}>
-      <label>Shape Color</label><br />
-      <input
-        type="color"
-        value={data.color}
-        onChange={(e) => data.onChange(e.target.value)}
-      />
-      <Handle type="source" position={Position.Right} />
-    </div>
-  );
-}
+// ------------------------
+// 自定义节点组件
+// ------------------------
+function CustomNode({ data }) {
+  const backgroundColor = NODE_COLORS[data.type] || NODE_COLORS.default;
+  const titleColor = TITLE_COLORS[data.type] || TITLE_COLORS.default;
 
-function ShapeTypeNode({ data }) {
-  return (
-    <div style={{ padding: 10 }}>
-      <label>Shape Type</label><br />
-      <label><input type="radio" name="shape" value="cube" checked={data.shape === 'cube'} onChange={() => data.onChange('cube')} /> Cube</label><br />
-      <label><input type="radio" name="shape" value="pyramid" checked={data.shape === 'pyramid'} onChange={() => data.onChange('pyramid')} /> Pyramid</label>
-      <Handle type="source" position={Position.Right} />
-    </div>
-  );
-}
+  const shortDesc = data.desc?.length > MAX_DESC_LENGTH
+    ? data.desc.slice(0, MAX_DESC_LENGTH) + '...'
+    : data.desc;
 
-function ZoomNode({ data }) {
-  return (
-    <div style={{ padding: 10 }}>
-      <label>Zoom Level</label><br />
-      <input
-        type="range"
-        min={1}
-        max={5}
-        value={data.zoom}
-        onChange={(e) => data.onChange(Number(e.target.value))}
-      />
-      <Handle type="source" position={Position.Right} />
-    </div>
-  );
-}
-
-function OutputNode({ data }) {
-  const shapes = [];
-
-  for (let i = 0; i < 30; i++) {
-    const size = 20 * data.zoom;
-    const left = Math.random() * 200;
-    const top = Math.random() * 200;
-    if (data.shape === 'cube') {
-      shapes.push(<div key={i} style={{ width: size, height: size, background: data.color, position: 'absolute', top, left }} />);
-    } else {
-      shapes.push(<div key={i} style={{
-        width: 0,
-        height: 0,
-        borderLeft: `${size}px solid transparent`,
-        borderRight: `${size}px solid transparent`,
-        borderBottom: `${size * 1.5}px solid ${data.color}`,
-        position: 'absolute',
-        top, left,
-      }} />);
-    }
-  }
+  const hasModel = data.modelName;
+  const hasParams = Array.isArray(data.parameters) && data.parameters.length > 0;
 
   return (
-    <div style={{ width: 250, height: 250, position: 'relative', background: '#fff', borderRadius: 10, overflow: 'hidden' }}>
-      <Handle type="target" position={Position.Left} />
-      {shapes}
+    <div className="custom-node" style={{ background: backgroundColor }}>
+      <strong className="custom-node-title" style={{ color: titleColor }}>
+        {data.title || 'Unnamed'}
+      </strong>
+      <div className="custom-node-type">
+        <em>Type: {data.type}</em>
+      </div>
+
+      {shortDesc && <div className="custom-node-desc">{shortDesc}</div>}
+
+      {hasModel && <div className="custom-node-model">Model: {data.modelName}</div>}
+
+      {hasParams && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 8 }}>
+          {data.parameters.map((param) => {
+            const name = typeof param === 'object' ? param.key : param;
+            const value = typeof param === 'object' ? param.value : undefined;
+
+            return (
+              <div className="custom-node-tag" key={name}>
+                <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {name?.toUpperCase()}
+                </span>
+                {value != null && (
+                  <span className="custom-node-tag-value">{String(value)}</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <Handle type="target" position={Position.Left} style={{ background: '#888' }} />
+      <Handle type="source" position={Position.Right} style={{ background: '#888' }} />
     </div>
   );
 }
 
 const nodeTypes = {
-  colorNode: ColorNode,
-  shapeNode: ShapeTypeNode,
-  zoomNode: ZoomNode,
-  outputNode: OutputNode,
+  customNode: CustomNode,
 };
 
+// ------------------------
+// 主组件
+// ------------------------
 export default function ReactFlowDiagram() {
-  const [color, setColor] = useState('#ff0071');
-  const [shape, setShape] = useState('pyramid');
-  const [zoom, setZoom] = useState(2);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-  const initialNodes = [
-    {
-      id: '1',
-      type: 'colorNode',
-      position: { x: 0, y: 50 },
-      data: { color, onChange: setColor },
-    },
-    {
-      id: '2',
-      type: 'shapeNode',
-      position: { x: 0, y: 200 },
-      data: { shape, onChange: setShape },
-    },
-    {
-      id: '3',
-      type: 'zoomNode',
-      position: { x: 0, y: 350 },
-      data: { zoom, onChange: setZoom },
-    },
-    {
-      id: '4',
-      type: 'outputNode',
-      position: { x: 350, y: 150 },
-      data: { color, shape, zoom },
-    },
-  ];
+  const yamlFilePath = '/assets/DeepResearch.yml';
 
-  const initialEdges = [
-    { id: 'e1-4', source: '1', target: '4', type: 'smoothstep' },
-    { id: 'e2-4', source: '2', target: '4', type: 'smoothstep' },
-    { id: 'e3-4', source: '3', target: '4', type: 'smoothstep' },
-  ];
+  useEffect(() => {
+    async function fetchAndParseYAML() {
+      try {
+        const response = await fetch(yamlFilePath);
+        const yamlText = await response.text();
+        const parsed = yaml.load(yamlText);
 
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+        const graph = parsed.workflow?.graph;
+        if (!graph || !Array.isArray(graph.nodes) || !Array.isArray(graph.edges)) {
+          console.error("Invalid or missing graph structure");
+          return;
+        }
+
+        function extractTextFromTree(node) {
+          let texts = [];
+          if (Array.isArray(node)) {
+            node.forEach((n) => texts.push(...extractTextFromTree(n)));
+          } else if (typeof node === 'object' && node !== null) {
+            if (typeof node.text === 'string') {
+              texts.push(node.text.trim());
+            }
+            Object.values(node).forEach((child) => {
+              texts.push(...extractTextFromTree(child));
+            });
+          }
+          return texts;
+        }
+
+        const convertedNodes = graph.nodes.map((node) => {
+          const rawData = node.data ?? {};
+          const type = rawData.type ?? node.type ?? 'unknown';
+          let title = rawData.title ?? 'Unnamed';
+          let desc = rawData.desc ?? '';
+
+          if (node.type === 'custom-note' || type === 'custom-note') {
+            try {
+              const noteJson = JSON.parse(rawData.text || '{}');
+              const textItems = extractTextFromTree(noteJson?.root?.children || []);
+              desc = textItems.join('\n');
+              title = textItems[0]?.slice(0, 20) || '笔记';
+            } catch (e) {
+              console.warn('Failed to parse note text:', e);
+              desc = '[无法解析笔记内容]';
+            }
+          }
+
+          const variables = rawData.variables || [];
+          const paramPairs = variables.map(v => ({
+            key: v.variable || v.label || '',
+            value: undefined,
+          }));
+
+          const modelName = type === 'llm' ? (rawData?.model?.name || '') : '';
+
+          if (type === 'tool') {
+            const toolConf = rawData?.tool_configurations || {};
+            Object.entries(toolConf || {}).forEach(([k, v]) => {
+              paramPairs.push({ key: k, value: v });
+            });
+          }
+
+          const nodeId = String(node.id); // ⚠️ 强制字符串以避免非法 ID
+
+          return {
+            id: nodeId,
+            type: 'customNode',
+            position: node.position || { x: 0, y: 0 },
+            data: {
+              title,
+              type,
+              desc,
+              width: node.width,
+              height: node.height,
+              modelName,
+              parameters: paramPairs,
+            },
+          };
+        });
+
+        const convertedEdges = graph.edges.map((edge) => ({
+          id: String(edge.id),
+          source: String(edge.source),
+          target: String(edge.target),
+          type: 'bezier',
+          style: {
+            stroke: '#4a5568',
+            strokeWidth: 2,
+            strokeDasharray: '6 4',
+            animation: 'dash-flow 1.5s linear infinite',
+          },
+        }));
+
+        setNodes(convertedNodes);
+        setEdges(convertedEdges);
+      } catch (err) {
+        console.error('Failed to load YAML:', err);
+      }
+    }
+
+    fetchAndParseYAML();
+  }, []);
 
   return (
-    <div style={{ width: '100%', height: '600px' }}>
+    <div style={{ width: '100%', height: '700px' }}>
       <ReactFlow
-        nodes={nodes.map((node) =>
-          node.id === '4'
-            ? { ...node, data: { color, shape, zoom } }
-            : node.id === '1'
-              ? { ...node, data: { color, onChange: setColor } }
-              : node.id === '2'
-                ? { ...node, data: { shape, onChange: setShape } }
-                : { ...node, data: { zoom, onChange: setZoom } }
-        )}
+        nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}

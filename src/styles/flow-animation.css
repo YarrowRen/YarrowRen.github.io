@@ -1,0 +1,10 @@
+@keyframes dash-flow {
+    to {
+      stroke-dashoffset: -20;
+    }
+  }
+  
+  .react-flow__edge-path {
+    animation: dash-flow 1.5s linear infinite;
+  }
+  
