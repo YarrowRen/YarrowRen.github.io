@@ -73,15 +73,15 @@ if (fs.existsSync(albumDir)) {
 <Layout>
   <Header />
 
-  <Main pageTitle="📁 Gallery" pageDesc="A visual archive of places I’ve explored and captured.">
+  <Main pageTitle="📁 Gallery" pageDesc="A visual archive of places I've explored and captured.">
     {albums.length === 0 ? (
-      <p class="text-gray-500 italic">暂无相册，快去旅行吧！🌏</p>
+      <p class="text-gray-500 dark:text-gray-400 italic">暂无相册，快去旅行吧！🌏</p>
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {albums.map(({ folder, title, cover, date, location, description }) => (
           <a
             href={`/gallery/${folder}`}
-            class="block bg-gray-100 rounded shadow hover:bg-gray-200 transition overflow-hidden"
+            class="block bg-gray-100 dark:bg-gray-800 rounded shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition overflow-hidden"
           >
             {cover && (
               <img
@@ -91,15 +91,15 @@ if (fs.existsSync(albumDir)) {
               />
             )}
             <div class="p-4">
-              <h2 class="text-xl font-semibold capitalize">{title}</h2>
-              {/* {location && <p class="text-sm text-gray-500">{location}</p>} */}
-              {date && <p class="text-sm text-gray-400">{date}</p>}
+              <h2 class="text-xl font-semibold capitalize text-gray-900 dark:text-gray-100">{title}</h2>
+              {/* {location && <p class="text-sm text-gray-500 dark:text-gray-400">{location}</p>} */}
+              {date && <p class="text-sm text-gray-500 dark:text-gray-400">{date}</p>}
               {/* {description && (
-                <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+                <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
                   {description}
                 </p>
               )} */}
-              <p class="text-sm text-gray-400 mt-2">View &rarr;</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">View &rarr;</p>
             </div>
           </a>
         ))}
