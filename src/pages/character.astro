@@ -362,26 +362,35 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
 </style>
 
 <script>
-  let allImages = [];
+  interface ImageData {
+    src: string;
+    alt: string;
+    caption: string;
+  }
+
+  let allImages: ImageData[] = [];
   let currentIndex = 0;
 
   // 打开模态框
-  function openModal(clickedElement) {
+  function openModal(clickedElement: HTMLElement) {
     const modal = document.getElementById('image-modal');
-    const modalImage = document.getElementById('modal-image');
+    const modalImage = document.getElementById('modal-image') as HTMLImageElement;
     const modalCaption = document.getElementById('modal-caption');
     
     // 收集所有图片信息
-    allImages = Array.from(document.querySelectorAll('.character-image')).map(img => ({
-      src: img.dataset.src,
-      alt: img.dataset.alt,
-      caption: img.dataset.caption
-    }));
+    allImages = Array.from(document.querySelectorAll('.character-image')).map((img) => {
+      const element = img as HTMLElement;
+      return {
+        src: element.dataset.src || '',
+        alt: element.dataset.alt || '',
+        caption: element.dataset.caption || ''
+      };
+    });
     
     // 找到点击的图片在列表中的位置
     currentIndex = allImages.findIndex(img => img.src === clickedElement.dataset.src);
     
-    if (currentIndex !== -1) {
+    if (currentIndex !== -1 && modalImage && modalCaption && modal) {
       modalImage.src = allImages[currentIndex].src;
       modalImage.alt = allImages[currentIndex].alt;
       modalCaption.textContent = allImages[currentIndex].caption;
@@ -394,24 +403,28 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
   // 关闭模态框
   function closeModal() {
     const modal = document.getElementById('image-modal');
-    modal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
   }
 
   // 切换图片
-  function changeImage(direction) {
+  function changeImage(direction: number) {
     if (allImages.length === 0) return;
     
     currentIndex += direction;
     if (currentIndex < 0) currentIndex = allImages.length - 1;
     if (currentIndex >= allImages.length) currentIndex = 0;
     
-    const modalImage = document.getElementById('modal-image');
+    const modalImage = document.getElementById('modal-image') as HTMLImageElement;
     const modalCaption = document.getElementById('modal-caption');
     
-    modalImage.src = allImages[currentIndex].src;
-    modalImage.alt = allImages[currentIndex].alt;
-    modalCaption.textContent = allImages[currentIndex].caption;
+    if (modalImage && modalCaption) {
+      modalImage.src = allImages[currentIndex].src;
+      modalImage.alt = allImages[currentIndex].alt;
+      modalCaption.textContent = allImages[currentIndex].caption;
+    }
   }
 
   // 初始化页面
@@ -420,7 +433,8 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
     
     // 为所有角色图片添加点击事件
     document.querySelectorAll('.character-image').forEach(img => {
-      img.addEventListener('click', () => openModal(img));
+      const element = img as HTMLElement;
+      element.addEventListener('click', () => openModal(element));
     });
     
     // 模态框控制事件
@@ -430,7 +444,8 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
     
     // 点击模态框背景关闭
     document.getElementById('image-modal')?.addEventListener('click', (e) => {
-      if (e.target.id === 'image-modal') {
+      const target = e.target as HTMLElement;
+      if (target && target.id === 'image-modal') {
         closeModal();
       }
     });
@@ -438,7 +453,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
     // 键盘快捷键
     document.addEventListener('keydown', (e) => {
       const modal = document.getElementById('image-modal');
-      if (!modal.classList.contains('hidden')) {
+      if (modal && !modal.classList.contains('hidden')) {
         if (e.key === 'Escape') closeModal();
         if (e.key === 'ArrowLeft') changeImage(-1);
         if (e.key === 'ArrowRight') changeImage(1);
@@ -447,13 +462,14 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
 
     // 添加悬浮效果
     document.querySelectorAll('.character-image').forEach(img => {
-      img.addEventListener('mouseenter', () => {
-        img.style.transform = 'translateY(-2px)';
-        img.style.transition = 'all 0.3s ease';
+      const element = img as HTMLElement;
+      element.addEventListener('mouseenter', () => {
+        element.style.transform = 'translateY(-2px)';
+        element.style.transition = 'all 0.3s ease';
       });
       
-      img.addEventListener('mouseleave', () => {
-        img.style.transform = 'translateY(0)';
+      element.addEventListener('mouseleave', () => {
+        element.style.transform = 'translateY(0)';
       });
     });
   }

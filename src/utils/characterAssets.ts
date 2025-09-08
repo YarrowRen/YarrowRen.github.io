@@ -65,25 +65,6 @@ function getImagesFromDirectory(dirPath: string, category: string): CharacterIma
   );
 }
 
-// Find specific image file
-function findSpecificImage(dirPath: string, namePattern: string, category: string): CharacterImage | null {
-  if (!fs.existsSync(dirPath)) {
-    return null;
-  }
-
-  const files = fs.readdirSync(dirPath);
-  const imageExtensions = /\.(jpe?g|png|webp|gif)$/i;
-  
-  const matchingFile = files.find(file => 
-    file.toLowerCase().includes(namePattern.toLowerCase()) && imageExtensions.test(file)
-  );
-
-  if (matchingFile) {
-    return createCharacterImage(path.join(dirPath, matchingFile), category);
-  }
-
-  return null;
-}
 
 export function getCharacterAssets(): CharacterAssets {
   try {
@@ -109,9 +90,6 @@ export function getCharacterAssets(): CharacterAssets {
       img.src.includes("PoseSheet") && !img.src.includes("Q版")
     ) || null;
 
-    const qVersionMainArt = allImages.find(img => 
-      img.src.includes("Q版主设定图")
-    ) || null;
 
     const qVersionSheets = {
       front: allImages.find(img => img.src.includes("Q版三视图")) || null,
