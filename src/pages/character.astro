@@ -1,0 +1,466 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Main from "@/layouts/Main.astro";
+import { getCharacterAssets, type CharacterImage } from "@/utils/characterAssets";
+
+const characterAssets = getCharacterAssets();
+
+// Helper function to render image or placeholder
+function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: string, className: string = "h-64") {
+  if (image) {
+    return `
+      <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer ${className}" 
+           data-src="${image.src}" 
+           data-alt="${image.alt}" 
+           data-caption="${image.caption || image.alt}">
+        <img src="${image.src}" alt="${image.alt}" class="w-full h-full object-cover" loading="lazy">
+      </div>`;
+  } else {
+    return `
+      <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg ${className} flex items-center justify-center">
+        <span class="text-gray-500 dark:text-gray-400">${defaultText}</span>
+      </div>`;
+  }
+}
+---
+
+<Layout title="角色设定 - Yarrow Ren">
+  <Header />
+  <Main pageTitle="⭐ 角色设定" pageDesc="完整的角色设计档案，展示角色的各个方面和细节。">
+    
+    <!-- 角色基本信息区域 -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 p-6 rounded-lg mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">Yarrow</h2>
+            <div class="space-y-3 text-gray-700 dark:text-gray-300">
+              <p><strong>设定：</strong>白色短发、黄色眼睛、白色衬衫、蓝色蝴蝶结</p>
+              <p><strong>设定版本：</strong>v1.0</p>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            {characterAssets.mainArtwork.find(img => img.src.includes("头像")) ? (
+              <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer w-48 h-48" 
+                   data-src={characterAssets.mainArtwork.find(img => img.src.includes("头像"))!.src} 
+                   data-alt="头像" 
+                   data-caption="Yarrow 角色头像">
+                <img src={characterAssets.mainArtwork.find(img => img.src.includes("头像"))!.src} alt="头像" class="w-full h-full object-cover" loading="lazy" />
+              </div>
+            ) : (
+              <div class="w-48 h-48 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+                <span class="text-gray-500 dark:text-gray-400">头像位置</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 主设定图区域 -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 border-b-2 border-accent pb-2">
+        🎨 主设定图
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="main-artwork">
+        <!-- 原版主设定图 -->
+        <div>
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">原版设定</h4>
+          <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-96" 
+               data-src="/assets/character/主设定图.png" 
+               data-alt="主设定图" 
+               data-caption="Yarrow 主设定图">
+            <img src="/assets/character/主设定图.png" alt="主设定图" class="w-full h-full object-contain" loading="lazy" />
+          </div>
+        </div>
+
+        <!-- Q版主设定图 -->
+        <div>
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">Q版设定</h4>
+          <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-96" 
+               data-src="/assets/character/Q版主设定图.png" 
+               data-alt="Q版主设定图" 
+               data-caption="Yarrow Q版主设定图">
+            <img src="/assets/character/Q版主设定图.png" alt="Q版主设定图" class="w-full h-full object-contain" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 参考资料区域 -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 border-b-2 border-accent pb-2">
+        📋 参考资料
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- 三视图设定 -->
+        <div>
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">三视图设定</h4>
+          {characterAssets.referenceSheets.front ? (
+            <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+                 data-src={characterAssets.referenceSheets.front.src} 
+                 data-alt={characterAssets.referenceSheets.front.alt} 
+                 data-caption="角色三视图设定">
+              <img src={characterAssets.referenceSheets.front.src} alt={characterAssets.referenceSheets.front.alt} class="w-full h-full object-contain" loading="lazy" />
+            </div>
+          ) : (
+            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+              <span class="text-gray-500 dark:text-gray-400">三视图设定</span>
+            </div>
+          )}
+        </div>
+
+        <!-- 表情表 -->
+        <div>
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">表情表</h4>
+          {characterAssets.expressionSheet ? (
+            <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+                 data-src={characterAssets.expressionSheet.src} 
+                 data-alt={characterAssets.expressionSheet.alt} 
+                 data-caption="表情表">
+              <img src={characterAssets.expressionSheet.src} alt={characterAssets.expressionSheet.alt} class="w-full h-full object-contain" loading="lazy" />
+            </div>
+          ) : (
+            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+              <span class="text-gray-500 dark:text-gray-400">表情表</span>
+            </div>
+          )}
+        </div>
+
+        <!-- 姿势表 -->
+        <div>
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">姿势表</h4>
+          {characterAssets.poseSheet ? (
+            <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+                 data-src={characterAssets.poseSheet.src} 
+                 data-alt={characterAssets.poseSheet.alt} 
+                 data-caption="姿势表">
+              <img src={characterAssets.poseSheet.src} alt={characterAssets.poseSheet.alt} class="w-full h-full object-contain" loading="lazy" />
+            </div>
+          ) : (
+            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+              <span class="text-gray-500 dark:text-gray-400">姿势表</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 设计作品集区域 -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 border-b-2 border-accent pb-2">
+        🎨 设计作品集
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- 服装设计 -->
+        <div>
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">服装设计</h4>
+          {characterAssets.costumeDesigns.length > 0 ? (
+            <div class="flex justify-center">
+              {characterAssets.costumeDesigns.map(image => (
+                <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer w-full h-80" 
+                     data-src={image.src} 
+                     data-alt={image.alt} 
+                     data-caption={image.caption || image.alt}>
+                  <img src={image.src} alt={image.alt} class="w-full h-full object-contain" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+              <span class="text-gray-500 dark:text-gray-400">暂无服装设计</span>
+            </div>
+          )}
+        </div>
+
+        <!-- 3D模型作品 -->
+        <div>
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">3D模型作品</h4>
+          {characterAssets.hdArtwork.filter(img => img.src.includes("3D模型")).length > 0 ? (
+            <div class="flex justify-center">
+              {characterAssets.hdArtwork.filter(img => img.src.includes("3D模型")).map(image => (
+                <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer w-full h-80" 
+                     data-src={image.src} 
+                     data-alt={image.alt} 
+                     data-caption={image.caption || image.alt}>
+                  <img src={image.src} alt={image.alt} class="w-full h-full object-contain" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+              <span class="text-gray-500 dark:text-gray-400">暂无3D模型</span>
+            </div>
+          )}
+        </div>
+
+        <!-- 线稿作品 -->
+        <div>
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">线稿作品</h4>
+          {characterAssets.hdArtwork.filter(img => img.src.includes("线稿")).length > 0 ? (
+            <div class="flex justify-center">
+              {characterAssets.hdArtwork.filter(img => img.src.includes("线稿")).map(image => (
+                <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer w-full h-80" 
+                     data-src={image.src} 
+                     data-alt={image.alt} 
+                     data-caption={image.caption || image.alt}>
+                  <img src={image.src} alt={image.alt} class="w-full h-full object-contain" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+              <span class="text-gray-500 dark:text-gray-400">暂无线稿作品</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- 角色姿势作品区域 -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 border-b-2 border-accent pb-2">
+        🖼️ 角色姿势作品
+      </h3>
+      
+      <!-- 角色姿势作品 -->
+      <div class="mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {characterAssets.hdArtwork.filter(img => 
+            img.src.includes("站立") || img.src.includes("跪坐") || img.src.includes("蹲姿")
+          ).map(image => (
+            <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-64" 
+                 data-src={image.src} 
+                 data-alt={image.alt} 
+                 data-caption={image.caption || image.alt}>
+              <img src={image.src} alt={image.alt} class="w-full h-full object-contain" loading="lazy" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Q版设定区域 -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 border-b-2 border-accent pb-2">
+        🌟 Q版设定
+      </h3>
+      
+      <div class="mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Q版主设定图 -->
+          <div>
+            <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200">Q版主设定</h4>
+            {characterAssets.mainArtwork.find(img => img.src.includes("Q版主设定图")) ? (
+              <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+                   data-src={characterAssets.mainArtwork.find(img => img.src.includes("Q版主设定图"))!.src} 
+                   data-alt="Q版主设定图" 
+                   data-caption="Q版主设定图">
+                <img src={characterAssets.mainArtwork.find(img => img.src.includes("Q版主设定图"))!.src} alt="Q版主设定图" class="w-full h-full object-contain" loading="lazy" />
+              </div>
+            ) : (
+              <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+                <span class="text-gray-500 dark:text-gray-400">Q版主设定图</span>
+              </div>
+            )}
+          </div>
+          
+          <!-- Q版三视图 -->
+          <div>
+            <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200">Q版三视图</h4>
+            {characterAssets.qVersionSheets.front ? (
+              <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+                   data-src={characterAssets.qVersionSheets.front.src} 
+                   data-alt={characterAssets.qVersionSheets.front.alt} 
+                   data-caption="Q版三视图">
+                <img src={characterAssets.qVersionSheets.front.src} alt={characterAssets.qVersionSheets.front.alt} class="w-full h-full object-contain" loading="lazy" />
+              </div>
+            ) : (
+              <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+                <span class="text-gray-500 dark:text-gray-400">Q版三视图</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+
+      <div>
+        <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200">Q版单独姿势</h4>
+        <div class="grid grid-cols-3 gap-4" id="q-version-poses">
+          {characterAssets.qVersionPoses.filter(img => 
+            !img.src.includes("表情sheet") && 
+            !img.src.includes("Pose-sheet") &&
+            !img.src.includes("PoseSheet")
+          ).length > 0 ? 
+            characterAssets.qVersionPoses.filter(img => 
+              !img.src.includes("表情sheet") && 
+              !img.src.includes("Pose-sheet") &&
+              !img.src.includes("PoseSheet")
+            ).map(image => (
+              <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-48" 
+                   data-src={image.src} 
+                   data-alt={image.alt} 
+                   data-caption={image.caption || image.alt}>
+                <img src={image.src} alt={image.alt} class="w-full h-full object-contain" loading="lazy" />
+              </div>
+            ))
+            :
+            <div class="col-span-3 character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-48 flex items-center justify-center">
+              <span class="text-gray-500 dark:text-gray-400">暂无Q版单独姿势</span>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 图片预览模态框 -->
+    <div id="image-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-90 flex items-center justify-center p-4">
+      <div class="relative max-w-4xl max-h-full">
+        <button id="close-modal" class="absolute -top-12 right-0 text-white text-2xl hover:text-gray-300">✕</button>
+        <img id="modal-image" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
+        <div id="modal-caption" class="absolute -bottom-12 left-0 right-0 text-white text-center"></div>
+        <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center">‹</button>
+        <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center">›</button>
+      </div>
+    </div>
+
+  </Main>
+  <Footer />
+</Layout>
+
+<style>
+  .character-image-placeholder {
+    transition: all 0.3s ease;
+  }
+  
+  .character-image-placeholder:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .character-image {
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .character-image:hover {
+    transform: scale(1.05);
+  }
+  
+  .columns-1 img,
+  .columns-2 img,
+  .columns-3 img {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<script>
+  let allImages = [];
+  let currentIndex = 0;
+
+  // 打开模态框
+  function openModal(clickedElement) {
+    const modal = document.getElementById('image-modal');
+    const modalImage = document.getElementById('modal-image');
+    const modalCaption = document.getElementById('modal-caption');
+    
+    // 收集所有图片信息
+    allImages = Array.from(document.querySelectorAll('.character-image')).map(img => ({
+      src: img.dataset.src,
+      alt: img.dataset.alt,
+      caption: img.dataset.caption
+    }));
+    
+    // 找到点击的图片在列表中的位置
+    currentIndex = allImages.findIndex(img => img.src === clickedElement.dataset.src);
+    
+    if (currentIndex !== -1) {
+      modalImage.src = allImages[currentIndex].src;
+      modalImage.alt = allImages[currentIndex].alt;
+      modalCaption.textContent = allImages[currentIndex].caption;
+      
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  // 关闭模态框
+  function closeModal() {
+    const modal = document.getElementById('image-modal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }
+
+  // 切换图片
+  function changeImage(direction) {
+    if (allImages.length === 0) return;
+    
+    currentIndex += direction;
+    if (currentIndex < 0) currentIndex = allImages.length - 1;
+    if (currentIndex >= allImages.length) currentIndex = 0;
+    
+    const modalImage = document.getElementById('modal-image');
+    const modalCaption = document.getElementById('modal-caption');
+    
+    modalImage.src = allImages[currentIndex].src;
+    modalImage.alt = allImages[currentIndex].alt;
+    modalCaption.textContent = allImages[currentIndex].caption;
+  }
+
+  // 初始化页面
+  function initializePage() {
+    console.log('角色设定页面已初始化');
+    
+    // 为所有角色图片添加点击事件
+    document.querySelectorAll('.character-image').forEach(img => {
+      img.addEventListener('click', () => openModal(img));
+    });
+    
+    // 模态框控制事件
+    document.getElementById('close-modal')?.addEventListener('click', closeModal);
+    document.getElementById('prev-image')?.addEventListener('click', () => changeImage(-1));
+    document.getElementById('next-image')?.addEventListener('click', () => changeImage(1));
+    
+    // 点击模态框背景关闭
+    document.getElementById('image-modal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'image-modal') {
+        closeModal();
+      }
+    });
+    
+    // 键盘快捷键
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('image-modal');
+      if (!modal.classList.contains('hidden')) {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft') changeImage(-1);
+        if (e.key === 'ArrowRight') changeImage(1);
+      }
+    });
+
+    // 添加悬浮效果
+    document.querySelectorAll('.character-image').forEach(img => {
+      img.addEventListener('mouseenter', () => {
+        img.style.transform = 'translateY(-2px)';
+        img.style.transition = 'all 0.3s ease';
+      });
+      
+      img.addEventListener('mouseleave', () => {
+        img.style.transform = 'translateY(0)';
+      });
+    });
+  }
+
+  // 页面加载完成后初始化
+  document.addEventListener('DOMContentLoaded', initializePage);
+  
+  // 支持 Astro 页面切换
+  document.addEventListener('astro:page-load', initializePage);
+</script>
