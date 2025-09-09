@@ -11,7 +11,7 @@ const characterAssets = getCharacterAssets();
 function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: string, className: string = "h-64") {
   if (image) {
     return `
-      <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer ${className}" 
+      <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer ${className}" 
            data-src="${image.src}" 
            data-alt="${image.alt}" 
            data-caption="${image.caption || image.alt}">
@@ -19,16 +19,16 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
       </div>`;
   } else {
     return `
-      <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg ${className} flex items-center justify-center">
+      <div class="character-image-placeholder bg-white dark:bg-white rounded-lg ${className} flex items-center justify-center">
         <span class="text-gray-500 dark:text-gray-400">${defaultText}</span>
       </div>`;
   }
 }
 ---
 
-<Layout title="角色设定 - Yarrow Ren">
+<Layout title="Character - Yarrow Ren">
   <Header />
-  <Main pageTitle="⭐ 角色设定" pageDesc="完整的角色设计档案，展示角色的各个方面和细节。">
+  <Main pageTitle="⭐ Character" pageDesc="All created by gemini-2.5-flash-image-preview (aka Nano-Banana)">
     
     <!-- 角色基本信息区域 -->
     <section class="mb-12">
@@ -43,14 +43,14 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
           </div>
           <div class="flex justify-center">
             {characterAssets.mainArtwork.find(img => img.src.includes("头像")) ? (
-              <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer w-48 h-48" 
+              <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer w-48 h-48" 
                    data-src={characterAssets.mainArtwork.find(img => img.src.includes("头像"))!.src} 
                    data-alt="头像" 
                    data-caption="Yarrow 角色头像">
                 <img src={characterAssets.mainArtwork.find(img => img.src.includes("头像"))!.src} alt="头像" class="w-full h-full object-cover" loading="lazy" />
               </div>
             ) : (
-              <div class="w-48 h-48 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+              <div class="w-48 h-48 bg-white dark:bg-white rounded-lg flex items-center justify-center">
                 <span class="text-gray-500 dark:text-gray-400">头像位置</span>
               </div>
             )}
@@ -68,7 +68,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
         <!-- 原版主设定图 -->
         <div>
           <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">原版设定</h4>
-          <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-96" 
+          <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-96" 
                data-src="/assets/character/主设定图.png" 
                data-alt="主设定图" 
                data-caption="Yarrow 主设定图">
@@ -79,7 +79,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
         <!-- Q版主设定图 -->
         <div>
           <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">Q版设定</h4>
-          <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-96" 
+          <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-96" 
                data-src="/assets/character/Q版主设定图.png" 
                data-alt="Q版主设定图" 
                data-caption="Yarrow Q版主设定图">
@@ -95,53 +95,53 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
         📋 参考资料
       </h3>
       
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-10 gap-8">
         <!-- 三视图设定 -->
-        <div>
+        <div class="md:col-span-3">
           <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">三视图设定</h4>
           {characterAssets.referenceSheets.front ? (
-            <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+            <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-80" 
                  data-src={characterAssets.referenceSheets.front.src} 
                  data-alt={characterAssets.referenceSheets.front.alt} 
                  data-caption="角色三视图设定">
               <img src={characterAssets.referenceSheets.front.src} alt={characterAssets.referenceSheets.front.alt} class="w-full h-full object-contain" loading="lazy" />
             </div>
           ) : (
-            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+            <div class="character-image-placeholder bg-white dark:bg-white rounded-lg h-80 flex items-center justify-center">
               <span class="text-gray-500 dark:text-gray-400">三视图设定</span>
             </div>
           )}
         </div>
 
         <!-- 表情表 -->
-        <div>
+        <div class="md:col-span-4">
           <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">表情表</h4>
           {characterAssets.expressionSheet ? (
-            <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+            <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-80" 
                  data-src={characterAssets.expressionSheet.src} 
                  data-alt={characterAssets.expressionSheet.alt} 
                  data-caption="表情表">
               <img src={characterAssets.expressionSheet.src} alt={characterAssets.expressionSheet.alt} class="w-full h-full object-contain" loading="lazy" />
             </div>
           ) : (
-            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+            <div class="character-image-placeholder bg-white dark:bg-white rounded-lg h-80 flex items-center justify-center">
               <span class="text-gray-500 dark:text-gray-400">表情表</span>
             </div>
           )}
         </div>
 
         <!-- 姿势表 -->
-        <div>
+        <div class="md:col-span-3">
           <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">姿势表</h4>
           {characterAssets.poseSheet ? (
-            <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+            <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-80" 
                  data-src={characterAssets.poseSheet.src} 
                  data-alt={characterAssets.poseSheet.alt} 
                  data-caption="姿势表">
               <img src={characterAssets.poseSheet.src} alt={characterAssets.poseSheet.alt} class="w-full h-full object-contain" loading="lazy" />
             </div>
           ) : (
-            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+            <div class="character-image-placeholder bg-white dark:bg-white rounded-lg h-80 flex items-center justify-center">
               <span class="text-gray-500 dark:text-gray-400">姿势表</span>
             </div>
           )}
@@ -163,7 +163,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
           {characterAssets.costumeDesigns.length > 0 ? (
             <div class="flex justify-center">
               {characterAssets.costumeDesigns.map(image => (
-                <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer w-full h-80" 
+                <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer w-full h-80" 
                      data-src={image.src} 
                      data-alt={image.alt} 
                      data-caption={image.caption || image.alt}>
@@ -172,7 +172,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
               ))}
             </div>
           ) : (
-            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+            <div class="character-image-placeholder bg-white dark:bg-white rounded-lg h-80 flex items-center justify-center">
               <span class="text-gray-500 dark:text-gray-400">暂无服装设计</span>
             </div>
           )}
@@ -184,7 +184,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
           {characterAssets.hdArtwork.filter(img => img.src.includes("3D模型")).length > 0 ? (
             <div class="flex justify-center">
               {characterAssets.hdArtwork.filter(img => img.src.includes("3D模型")).map(image => (
-                <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer w-full h-80" 
+                <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer w-full h-80" 
                      data-src={image.src} 
                      data-alt={image.alt} 
                      data-caption={image.caption || image.alt}>
@@ -193,7 +193,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
               ))}
             </div>
           ) : (
-            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+            <div class="character-image-placeholder bg-white dark:bg-white rounded-lg h-80 flex items-center justify-center">
               <span class="text-gray-500 dark:text-gray-400">暂无3D模型</span>
             </div>
           )}
@@ -205,7 +205,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
           {characterAssets.hdArtwork.filter(img => img.src.includes("线稿")).length > 0 ? (
             <div class="flex justify-center">
               {characterAssets.hdArtwork.filter(img => img.src.includes("线稿")).map(image => (
-                <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer w-full h-80" 
+                <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer w-full h-80" 
                      data-src={image.src} 
                      data-alt={image.alt} 
                      data-caption={image.caption || image.alt}>
@@ -214,7 +214,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
               ))}
             </div>
           ) : (
-            <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+            <div class="character-image-placeholder bg-white dark:bg-white rounded-lg h-80 flex items-center justify-center">
               <span class="text-gray-500 dark:text-gray-400">暂无线稿作品</span>
             </div>
           )}
@@ -230,11 +230,11 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
       
       <!-- 角色姿势作品 -->
       <div class="mb-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-2">
           {characterAssets.hdArtwork.filter(img => 
             img.src.includes("站立") || img.src.includes("跪坐") || img.src.includes("蹲姿")
           ).map(image => (
-            <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-64" 
+            <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-64" 
                  data-src={image.src} 
                  data-alt={image.alt} 
                  data-caption={image.caption || image.alt}>
@@ -252,39 +252,33 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
       </h3>
       
       <div class="mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <!-- Q版主设定图 -->
-          <div>
-            <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200">Q版主设定</h4>
-            {characterAssets.mainArtwork.find(img => img.src.includes("Q版主设定图")) ? (
-              <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
-                   data-src={characterAssets.mainArtwork.find(img => img.src.includes("Q版主设定图"))!.src} 
-                   data-alt="Q版主设定图" 
-                   data-caption="Q版主设定图">
-                <img src={characterAssets.mainArtwork.find(img => img.src.includes("Q版主设定图"))!.src} alt="Q版主设定图" class="w-full h-full object-contain" loading="lazy" />
-              </div>
-            ) : (
-              <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
-                <span class="text-gray-500 dark:text-gray-400">Q版主设定图</span>
-              </div>
-            )}
-          </div>
-          
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
           <!-- Q版三视图 -->
-          <div>
+          <div class="md:col-span-3">
             <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200">Q版三视图</h4>
             {characterAssets.qVersionSheets.front ? (
-              <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-80" 
+              <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-80" 
                    data-src={characterAssets.qVersionSheets.front.src} 
                    data-alt={characterAssets.qVersionSheets.front.alt} 
                    data-caption="Q版三视图">
                 <img src={characterAssets.qVersionSheets.front.src} alt={characterAssets.qVersionSheets.front.alt} class="w-full h-full object-contain" loading="lazy" />
               </div>
             ) : (
-              <div class="character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-80 flex items-center justify-center">
+              <div class="character-image-placeholder bg-white dark:bg-white rounded-lg h-80 flex items-center justify-center">
                 <span class="text-gray-500 dark:text-gray-400">Q版三视图</span>
               </div>
             )}
+          </div>
+
+          <!-- Q版表情包 -->
+          <div class="md:col-span-2">
+            <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200">Q版表情包</h4>
+            <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-80" 
+                 data-src="/assets/character/Q版表情sheet_3*3.png" 
+                 data-alt="Q版表情包" 
+                 data-caption="Q版表情包">
+              <img src="/assets/character/Q版表情sheet_3*3.png" alt="Q版表情包" class="w-full h-full object-contain" loading="lazy" />
+            </div>
           </div>
         </div>
       </div>
@@ -303,7 +297,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
               !img.src.includes("Pose-sheet") &&
               !img.src.includes("PoseSheet")
             ).map(image => (
-              <div class="character-image bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer h-48" 
+              <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer h-48" 
                    data-src={image.src} 
                    data-alt={image.alt} 
                    data-caption={image.caption || image.alt}>
@@ -311,7 +305,7 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
               </div>
             ))
             :
-            <div class="col-span-3 character-image-placeholder bg-gray-100 dark:bg-gray-800 rounded-lg h-48 flex items-center justify-center">
+            <div class="col-span-3 character-image-placeholder bg-white dark:bg-white rounded-lg h-48 flex items-center justify-center">
               <span class="text-gray-500 dark:text-gray-400">暂无Q版单独姿势</span>
             </div>
           }
