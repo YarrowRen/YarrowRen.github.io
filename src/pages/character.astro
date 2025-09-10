@@ -28,7 +28,9 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
 
 <Layout title="Character - Yarrow Ren">
   <Header />
-  <Main pageTitle="⭐ Character" pageDesc="All created by gemini-2.5-flash-image-preview (aka Nano-Banana🍌)">
+  <Main pageTitle="⭐ Character" pageDesc={`All created by
+&nbsp;&nbsp;- gemini-2.5-flash-image-preview (aka Nano-Banana🍌)  
+&nbsp;&nbsp;- Doubao-Seedance-1.0-pro🌋`}>
     
     <!-- 角色基本信息区域 -->
     <section class="mb-12">
@@ -222,6 +224,80 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
       </div>
     </section>
 
+    <!-- 绘图过程展示区域 -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 border-b-2 border-accent pb-2">
+        🎨 绘图过程
+      </h3>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- 左侧轮播图区域 -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6">
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">绘制步骤</h4>
+          <div class="relative">
+            <div id="drawing-carousel" class="h-96 rounded-lg">
+              <div id="carousel-inner">
+                <div class="carousel-slide">
+                  <img src="/assets/character/签绘图1.png" alt="签绘图1">
+                  <div class="absolute bottom-4 left-4 right-4 text-center">
+                    <span class="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">第一步：线稿绘制</span>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="/assets/character/签绘图2.png" alt="签绘图2">
+                  <div class="absolute bottom-4 left-4 right-4 text-center">
+                    <span class="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">第二步：线稿细化</span>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="/assets/character/草稿图.png" alt="草稿图">
+                  <div class="absolute bottom-4 left-4 right-4 text-center">
+                    <span class="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">第三步：草稿构图</span>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="/assets/character/上色图.png" alt="上色图">
+                  <div class="absolute bottom-4 left-4 right-4 text-center">
+                    <span class="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">第四步：色彩填充</span>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="/assets/character/完成图.png" alt="完成图">
+                  <div class="absolute bottom-4 left-4 right-4 text-center">
+                    <span class="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">第五步：最终完成</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 轮播图控制按钮 -->
+            <button id="carousel-prev" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center">‹</button>
+            <button id="carousel-next" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center">›</button>
+            
+            <!-- 轮播图指示器 -->
+            <div class="flex justify-center mt-4 space-x-2">
+              <button class="carousel-indicator w-3 h-3 bg-gray-400 rounded-full hover:bg-gray-600 active" data-slide="0"></button>
+              <button class="carousel-indicator w-3 h-3 bg-gray-400 rounded-full hover:bg-gray-600" data-slide="1"></button>
+              <button class="carousel-indicator w-3 h-3 bg-gray-400 rounded-full hover:bg-gray-600" data-slide="2"></button>
+              <button class="carousel-indicator w-3 h-3 bg-gray-400 rounded-full hover:bg-gray-600" data-slide="3"></button>
+              <button class="carousel-indicator w-3 h-3 bg-gray-400 rounded-full hover:bg-gray-600" data-slide="4"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧视频区域 -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6">
+          <h4 class="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 text-center">🖼️ -> ▶️</h4>
+          <div class="h-96 rounded-lg overflow-hidden">
+            <video controls class="w-full h-full object-contain">
+              <source src="/assets/character/完成图生成视频.mp4" type="video/mp4">
+              您的浏览器不支持视频播放。
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 角色姿势作品区域 -->
     <section class="mb-12">
       <h3 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 border-b-2 border-accent pb-2">
@@ -315,10 +391,10 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
 
     <!-- 图片预览模态框 -->
     <div id="image-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-90 flex items-center justify-center p-4">
-      <div class="relative max-w-4xl max-h-full">
-        <button id="close-modal" class="absolute -top-12 right-0 text-white text-2xl hover:text-gray-300">✕</button>
-        <img id="modal-image" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
-        <div id="modal-caption" class="absolute -bottom-12 left-0 right-0 text-white text-center"></div>
+      <div class="relative w-full h-full flex items-center justify-center">
+        <button id="close-modal" class="absolute top-4 right-4 z-10 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center">✕</button>
+        <img id="modal-image" src="" alt="" class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain rounded-lg">
+        <div id="modal-caption" class="absolute bottom-4 left-4 right-4 text-white text-center bg-black bg-opacity-50 p-2 rounded"></div>
         <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center">‹</button>
         <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center">›</button>
       </div>
@@ -353,6 +429,35 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
     break-inside: avoid;
     margin-bottom: 1rem;
   }
+  
+  .carousel-indicator.active {
+    background-color: rgb(59 130 246) !important;
+  }
+  
+  #drawing-carousel {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  #carousel-inner {
+    display: flex;
+    width: 500%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .carousel-slide {
+    width: 20%;
+    height: 100%;
+    flex-shrink: 0;
+    position: relative;
+  }
+  
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 </style>
 
 <script>
@@ -364,6 +469,8 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
 
   let allImages: ImageData[] = [];
   let currentIndex = 0;
+  let carouselIndex = 0;
+  const totalCarouselSlides = 5;
 
   // 打开模态框
   function openModal(clickedElement: HTMLElement) {
@@ -421,6 +528,43 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
     }
   }
 
+  // 轮播图控制函数
+  function updateCarousel() {
+    const carouselInner = document.getElementById('carousel-inner');
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    
+    if (carouselInner) {
+      carouselInner.style.transform = `translateX(-${carouselIndex * 20}%)`;
+    }
+    
+    indicators.forEach((indicator, index) => {
+      if (index === carouselIndex) {
+        indicator.classList.add('active');
+        indicator.classList.remove('bg-gray-400');
+        indicator.classList.add('bg-blue-500');
+      } else {
+        indicator.classList.remove('active');
+        indicator.classList.remove('bg-blue-500');
+        indicator.classList.add('bg-gray-400');
+      }
+    });
+  }
+
+  function nextCarouselSlide() {
+    carouselIndex = (carouselIndex + 1) % totalCarouselSlides;
+    updateCarousel();
+  }
+
+  function prevCarouselSlide() {
+    carouselIndex = (carouselIndex - 1 + totalCarouselSlides) % totalCarouselSlides;
+    updateCarousel();
+  }
+
+  function goToCarouselSlide(index: number) {
+    carouselIndex = index;
+    updateCarousel();
+  }
+
   // 初始化页面
   function initializePage() {
     console.log('角色设定页面已初始化');
@@ -435,6 +579,18 @@ function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: str
     document.getElementById('close-modal')?.addEventListener('click', closeModal);
     document.getElementById('prev-image')?.addEventListener('click', () => changeImage(-1));
     document.getElementById('next-image')?.addEventListener('click', () => changeImage(1));
+    
+    // 轮播图控制事件
+    document.getElementById('carousel-prev')?.addEventListener('click', prevCarouselSlide);
+    document.getElementById('carousel-next')?.addEventListener('click', nextCarouselSlide);
+    
+    // 轮播图指示器点击事件
+    document.querySelectorAll('.carousel-indicator').forEach((indicator, index) => {
+      indicator.addEventListener('click', () => goToCarouselSlide(index));
+    });
+    
+    // 初始化轮播图
+    updateCarousel();
     
     // 点击模态框背景关闭
     document.getElementById('image-modal')?.addEventListener('click', (e) => {
