@@ -42,10 +42,8 @@ export function preloadCriticalResources() {
 export async function loadComponent(componentName: string) {
   try {
     switch (componentName) {
-      case 'gallery':
-        return await import('../components/Gallery.astro');
-      case 'search':
-        return await import('../components/Search.astro');
+      case 'reactflow':
+        return await import('reactflow');
       default:
         throw new Error(`Component ${componentName} not found`);
     }
@@ -71,12 +69,12 @@ export function registerServiceWorker() {
 export function initWebVitals() {
   if (typeof window !== 'undefined') {
     // 动态导入web-vitals库
-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-      getCLS(console.log);
-      getFID(console.log);
-      getFCP(console.log);
-      getLCP(console.log);
-      getTTFB(console.log);
+    import('web-vitals').then(({ onCLS, onINP, onFCP, onLCP, onTTFB }) => {
+      onCLS(console.log);
+      onINP(console.log); // INP replaces FID in web-vitals v4+
+      onFCP(console.log);
+      onLCP(console.log);
+      onTTFB(console.log);
     });
   }
 }
