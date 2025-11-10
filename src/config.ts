@@ -3,7 +3,7 @@ export const SITE = {
   author: "Boyu(Yarrow) Ren",
   profile: "https://satnaing.dev/",
   desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
-  title: "Yarrow Ren's Blog",
+  title: "Boyu Ren's Blog",
   ogImage: "logo.svg",
   lightAndDarkMode: true,
   postPerIndex: 10,

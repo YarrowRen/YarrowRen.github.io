@@ -37,7 +37,8 @@
     "remark-toc": "^9.0.0",
     "satori": "^0.12.1",
     "sharp": "^0.33.5",
-    "starlight": "^0.3.9"
+    "starlight": "^0.3.9",
+    "web-vitals": "^5.1.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

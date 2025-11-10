@@ -32,20 +32,47 @@ const {
 
 const socialImageURL = new URL(ogImage, Astro.url);
 
-const structuredData = {
+const structuredData = pubDatetime ? {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: `${title}`,
-  image: `${socialImageURL}`,
-  datePublished: `${pubDatetime?.toISOString()}`,
+  description: `${description}`,
+  image: {
+    "@type": "ImageObject",
+    url: `${socialImageURL}`,
+    width: 1200,
+    height: 630
+  },
+  datePublished: `${pubDatetime.toISOString()}`,
   ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
-    {
-      "@type": "Person",
-      name: `${author}`,
-      ...(profile && { url: profile }),
-    },
-  ],
+  author: {
+    "@type": "Person", 
+    name: `${author}`,
+    ...(profile && { url: profile }),
+  },
+  publisher: {
+    "@type": "Person",
+    name: `${author}`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${new URL("/favicon.svg", Astro.url)}`
+    }
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `${canonicalURL}`
+  }
+} : {
+  "@context": "https://schema.org", 
+  "@type": "WebPage",
+  name: `${title}`,
+  description: `${description}`,
+  url: `${canonicalURL}`,
+  author: {
+    "@type": "Person",
+    name: `${author}`,
+    ...(profile && { url: profile }),
+  }
 };
 ---
 
@@ -66,10 +93,14 @@ const structuredData = {
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.title} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:alt" content={`Cover image for ${title}`} />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Article Published/Modified time -->
     {
@@ -90,11 +121,14 @@ const structuredData = {
     }
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={socialImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@YarrowRen" />
+    <meta name="twitter:creator" content="@YarrowRen" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+    <meta name="twitter:image:alt" content={`Cover image for ${title}`} />
 
     <!-- Google JSON-LD Structured data -->
     <script
@@ -111,8 +145,29 @@ const structuredData = {
       title={SITE.title}
       href={new URL("rss.xml", Astro.site)}
     />
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json" />
 
-    <meta name="theme-color" content="" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="bingbot" content="index, follow" />
+    
+    <!-- Preconnect to improve performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//pagefind.app" />
+    
+    <!-- Alternative favicon formats -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.svg" />
 
     {
       // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,

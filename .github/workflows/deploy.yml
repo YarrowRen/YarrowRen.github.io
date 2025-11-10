@@ -21,6 +21,9 @@ jobs:
         uses: withastro/action@v3
         with:
           package-manager: npm@latest
+        env:
+          PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+          PUBLIC_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
 
   deploy:
     needs: build

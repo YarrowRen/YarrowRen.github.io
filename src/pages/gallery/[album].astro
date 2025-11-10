@@ -38,6 +38,32 @@ if (meta.location && meta.location.includes(",")) {
   [latitude, longitude] = meta.location.split(",").map(Number);
 }
 
+// SEO数据
+const pageTitle = meta.title ? `${meta.title} - 相册` : `${album} - 相册`;
+const pageDescription = meta.description || `浏览${meta.title || album}相册，包含${imageSources.length}张精美照片。发现美好的旅行瞬间和珍贵回忆。`;
+const pageKeywords = [
+  "相册",
+  "摄影", 
+  "旅行",
+  meta.title,
+  album
+].filter(Boolean).join(", ");
+
+// 生成图片库结构化数据
+const galleryStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  "name": pageTitle,
+  "description": pageDescription,
+  ...(meta.date && { "dateCreated": meta.date }),
+  "associatedMedia": imageSources.slice(0, 10).map((src, index) => ({
+    "@type": "ImageObject",
+    "contentUrl": `https://yarrowren.github.io${src}`,
+    "name": `${meta.title || album} - 图片 ${index + 1}`,
+    "description": `来自${meta.title || album}相册的精美照片`
+  }))
+};
+
 // 动态路径生成
 export async function getStaticPaths() {
   const baseDir = path.resolve("public/assets/gallery");
