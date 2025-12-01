@@ -16,23 +16,17 @@ lang: "cn"
   <!-- 左侧文本内容 -->
   <div class="lg:w-4/5">
     <p>
-      我毕业于<strong>奥克兰大学（University of Auckland）</strong>人工智能硕士专业，研究方向主要包括
-      <strong>自然语言处理（NLP）</strong>、
-      <strong>RAG检索增强生成（Retrieval Augmented Generation）</strong>、
-      <strong>机器学习</strong>，并对 AI 架构和系统设计有浓厚兴趣。
+      我目前在 <strong>作业帮</strong> 担任 <strong>NLP 算法工程师</strong>，主要从事
+      <strong>自然语言处理</strong>、<strong>检索增强生成（RAG）</strong>、
+      <strong>大语言模型（LLM）</strong>、以及 <strong>多智能体系统</strong> 的研发。
+      关注方向包括 AI 系统设计、检索优化以及模型在真实业务场景中的落地。
     </p>
     <p class="mt-4">
-      我在学术研究和实际应用方面均有丰富经验，曾参与多个 AI 项目，包括
-      <strong>企业级Agentic AI平台</strong>、
-      <strong>多模态内容标签系统</strong>、
-      <strong>智能对话系统</strong>以及
-      <strong>全流程AI生成系统</strong>。技术栈涵盖
-      <strong>Python</strong>、
-      <strong>PyTorch</strong>、
-      <strong>TensorFlow</strong>、
-      <strong>大型语言模型（LLMs）</strong>、
-      <strong>图神经网络（GNNs）</strong> 以及
-      <strong>RAG / 多智能体系统（Multi-Agent Systems）</strong>。
+      我毕业于 <strong>奥克兰大学（University of Auckland）</strong> 
+      人工智能硕士专业（First Class Honours）。
+      我曾参与企业级 Agentic AI 平台、多模态自动标注、智能对话系统、以及生成式应用等项目。
+      技术栈包括 <strong>Python</strong>、<strong>PyTorch</strong>、<strong>TensorFlow</strong>、
+      <strong>LLM</strong>、<strong>GNN</strong> 和 <strong>RAG/多智能体架构</strong>。
     </p>
   </div>
 
