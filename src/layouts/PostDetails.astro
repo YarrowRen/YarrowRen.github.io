@@ -7,7 +7,6 @@ import Tag from "@/components/Tag.astro";
 import Datetime from "@/components/Datetime.astro";
 import EditPost from "@/components/EditPost.astro";
 import ShareLinks from "@/components/ShareLinks.astro";
-import BackButton from "@/components/BackButton.astro";
 import { getPath } from "@/utils/getPath";
 import { slugifyStr } from "@/utils/slugify";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
@@ -82,15 +81,20 @@ const nextPost =
 
 <Layout {...layoutProps}>
   <Header />
-  <BackButton />
+  
   <main
     id="main-content"
     class:list={[
-      "mx-auto w-full max-w-[960px] px-4 pb-12",
-      { "mt-8": !SITE.showBackButton },
+      "mx-auto w-full max-w-[960px] px-4 pb-12 mt-8",
     ]}
     data-pagefind-body
   >
+    <!-- TOC Sidebar -->
+    <div id="toc-sidebar" class="toc-sidebar hidden lg:block">
+      <div id="toc-content" class="toc-content">
+        <!-- TOC will be moved here by JavaScript -->
+      </div>
+    </div>
     <h1
       transition:name={slugifyStr(title)}
       class="inline-block text-2xl font-bold text-accent sm:text-3xl"
@@ -225,6 +229,16 @@ const nextPost =
       document.querySelectorAll("h2, h3, h4, h5, h6")
     );
     for (const heading of headings) {
+      // Generate ID from heading text if not exists
+      if (!heading.id) {
+        const text = heading.textContent || "";
+        heading.id = text
+          .toLowerCase()
+          .replace(/[^\w\u4e00-\u9fff\s-]/g, "") // Keep alphanumeric, Chinese, spaces, hyphens
+          .replace(/\s+/g, "-") // Replace spaces with hyphens
+          .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+      }
+      
       heading.classList.add("group");
       const link = document.createElement("a");
       link.className =
@@ -316,4 +330,145 @@ const nextPost =
     });
   }
   enableImageLightbox();
+
+  /** Generate TOC automatically from headings */
+  function generateTOC() {
+    console.log("Starting generateTOC function");
+    const tocSidebar = document.getElementById("toc-sidebar");
+    const tocContent = document.getElementById("toc-content");
+    
+    if (!tocSidebar || !tocContent) {
+      console.log("Missing TOC elements, returning");
+      return;
+    }
+
+    // Find all headings in the article (h1, h2, h3, h4, h5, h6) - excluding the page title
+    const headings = Array.from(document.querySelectorAll("article h1, article h2, article h3, article h4, article h5, article h6"))
+      .filter(heading => heading.id !== 'table-of-contents'); // Exclude the old TOC heading
+    console.log("Found headings:", headings.length);
+
+    if (headings.length === 0) {
+      console.log("No headings found, not showing TOC");
+      return;
+    }
+
+    // Remove any existing "Table of contents" heading and its content
+    const existingTocHeading = document.querySelector('article h1#table-of-contents');
+    if (existingTocHeading) {
+      existingTocHeading.remove();
+    }
+
+    // Generate TOC HTML
+    const tocList = generateTOCList(headings);
+    tocContent.appendChild(tocList);
+    
+    tocSidebar.classList.remove("hidden"); // Show sidebar
+    document.body.classList.add("has-toc"); // Add class to body for layout adjustment
+    console.log("TOC generated and moved to sidebar");
+    
+    // Initialize TOC scroll behavior
+    initializeTOCBehavior();
+  }
+  
+  /** Initialize TOC floating behavior */
+  function initializeTOCBehavior() {
+    const tocSidebar = document.getElementById("toc-sidebar");
+    const mainContent = document.getElementById("main-content");
+    const header = document.querySelector("header");
+    if (!tocSidebar || !mainContent) return;
+    
+    // Update TOC position and height based on scroll and header visibility
+    function updateTOCPosition() {
+      const scrollY = window.scrollY;
+      const mainContentRect = mainContent.getBoundingClientRect();
+      
+      // Calculate how much of header is still visible
+      const headerHeight = header ? header.offsetHeight : 0;
+      const headerVisible = Math.max(0, headerHeight - scrollY);
+      
+      // TOC should be positioned relative to viewport top, considering visible header
+      // When header is fully visible: headerVisible + 20px offset
+      // When header is hidden: 20px from top
+      const topOffset = headerVisible + 20;
+      
+      // Calculate dynamic height to fill remaining viewport
+      const bottomPadding = 20; // Bottom margin
+      const availableHeight = window.innerHeight - topOffset - bottomPadding;
+      
+      tocSidebar.style.top = `${topOffset}px`;
+      tocSidebar.style.maxHeight = `${availableHeight}px`;
+      
+      // Update toc-content height accordingly
+      const tocContent = tocSidebar.querySelector('.toc-content');
+      if (tocContent) {
+        const contentPadding = 32; // 16px padding top + 16px padding bottom
+        tocContent.style.maxHeight = `${availableHeight - contentPadding}px`;
+      }
+    }
+    
+    // Throttled scroll handler for better performance
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateTOCPosition();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('resize', updateTOCPosition);
+    updateTOCPosition(); // Initial call
+  }
+
+  function generateTOCList(headings) {
+    const ul = document.createElement("ul");
+    const stack = [{ level: 1, ul: ul }];
+
+    headings.forEach(heading => {
+      // Generate ID if not exists
+      if (!heading.id) {
+        const text = heading.textContent || "";
+        heading.id = text
+          .toLowerCase()
+          .replace(/[^\w\u4e00-\u9fff\s-]/g, "") // Keep alphanumeric, Chinese, spaces, hyphens
+          .replace(/\s+/g, "-") // Replace spaces with hyphens
+          .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+      }
+
+      const level = parseInt(heading.tagName.charAt(1)); // h2 -> 2, h3 -> 3, etc.
+      const text = (heading.textContent || "").replace(/#$/, "").trim(); // Remove trailing # and whitespace
+      
+      // Find the appropriate parent level
+      while (stack.length > 1 && stack[stack.length - 1].level >= level) {
+        stack.pop();
+      }
+
+      // Create new nested list if needed
+      if (stack[stack.length - 1].level < level) {
+        const nestedUl = document.createElement("ul");
+        const lastLi = stack[stack.length - 1].ul.lastElementChild;
+        if (lastLi) {
+          lastLi.appendChild(nestedUl);
+        } else {
+          stack[stack.length - 1].ul.appendChild(nestedUl);
+        }
+        stack.push({ level: level, ul: nestedUl });
+      }
+
+      // Create list item and link
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = "#" + heading.id;
+      a.textContent = text;
+      li.appendChild(a);
+      
+      stack[stack.length - 1].ul.appendChild(li);
+    });
+
+    return ul;
+  }
+  generateTOC();
 </script>
