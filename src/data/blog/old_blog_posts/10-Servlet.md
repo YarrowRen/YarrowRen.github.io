@@ -48,7 +48,7 @@ Servlet就是一个接口，定义了Java类被浏览器访问到（tomcat识别
 4. tomcat会将字节码文件加载进内存，并且创建其对象
 5. 调用其方法
 
-![servlet执行原理](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/servlet%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86.jpg)
+![servlet执行原理](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/servlet%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86.jpg)
 
 ## 声明周期
 

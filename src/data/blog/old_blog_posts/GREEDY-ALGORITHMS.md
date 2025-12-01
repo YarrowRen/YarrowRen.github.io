@@ -102,7 +102,7 @@ P表示Pennies（1分钱），N表示Nickels（5分钱），最优解的条件�
 
 找到相互兼容的工作的最大子集
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230806170648.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230806170648.png)
 
 
 
@@ -125,7 +125,7 @@ P表示Pennies（1分钱），N表示Nickels（5分钱），最优解的条件�
 
 最早开始，最短间隔和最少冲突都不是最优的，其反例如下：
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230806171545.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230806171545.png)
 
 
 ## 最早结束时间（EFT）算法实现
@@ -178,9 +178,9 @@ print("Selected activities:", selected_activities)
 4. **结论**：通过反证法和归纳基础，我们证明了选择最早结束的活动总是最优的选择，并且总是存在于最大兼容活动集合的最优解中。
 
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230806174729.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230806174729.png)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230806175223.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230806175223.png)
 
 
 # 间隔划分问题（Interval partitioning）
@@ -193,9 +193,9 @@ print("Selected activities:", selected_activities)
 > 例如，假设你有一系列会议，并且需要找到最少数量的会议室，以便所有会议都可以在没有时间冲突的情况下进行。这就是区间划分问题的一个典型实例。
 
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230806180232.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230806180232.png)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230806180313.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230806180313.png)
 
 ## Greedy template
 
@@ -214,7 +214,7 @@ print("Selected activities:", selected_activities)
 
 最早结束，最短间隔和最少冲突都不是最优的，相应的反例如下图所示：
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230806180512.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230806180512.png)
 
 
 ```py
@@ -286,7 +286,7 @@ if __name__ == "__main__":
 总之，最小化延迟问题是一个重要的调度问题，需要通过适当的算法来安排作业的执行顺序，以最小化整体延迟，从而提高任务执行的效率和及时性。
 
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230807112303.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230807112303.png)
 
 ## Greedy template
 
@@ -303,7 +303,7 @@ if __name__ == "__main__":
 按照紧迫性dj-tj升序安排作业顺序
 
 处理时间最短优先和紧迫性优先都不是最优的，以下是相应的一些反例
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230807113821.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230807113821.png)
 
 
 ## EDF实现
@@ -371,7 +371,7 @@ if __name__ == "__main__":
 
 **目标**：我们的目标是找到最佳的缓存替换策略，使得在数据请求序列中发生的缓存未命中次数最少，从而尽量减少替换带来的代价。
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230807165117.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230807165117.jpg)
 
 
 ## Greedy template
@@ -387,7 +387,7 @@ if __name__ == "__main__":
 
 当缓存已满时，选择最不常用的数据项进行替换。也就是说，当有新的数据项需要加入缓存时，LFU策略会将被访问次数最少的数据项淘汰，以腾出空间给新的数据项。
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230807170122.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230807170122.jpg)
 
 
 ## FIF算法

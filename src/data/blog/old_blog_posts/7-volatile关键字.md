@@ -80,7 +80,7 @@ JMM描述了Java程序中各种变量（**线程共享变量**）的**访问规�
 - 线程对变量的所有的操作（读，取）都必须在工作内存中完成，而不能直接读写主内存中的变量
 - 不同线程之间也不能直接访问对方的工作内存中的变量，线程间变量的值的传递需要通过主内存中转来完成
 
-![主内存与工作内存](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E4%B8%BB%E5%86%85%E5%AD%98%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98.jpg)
+![主内存与工作内存](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E4%B8%BB%E5%86%85%E5%AD%98%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98.jpg)
 
 
 上边的例子中，最后循环没有正常执行的原因也就可以解释了，子线程和主线程最开始时都直接从主内存中读取了flag的值并放入工作内存中，此时两个工作内存中的flag值都是false，随后子线程修改了工作内存中的flag的值，并将结果返回到主内存中，即修改了主内存的flag值，但主线程并没有重新读取主内存，也就导致了主线程中的工作内存中flag的值始终为false无法正常进行循环

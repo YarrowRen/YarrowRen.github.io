@@ -76,14 +76,14 @@ $$\mathbf {x}=[x_{1},\ldots,x_{M}]^{\top }$$
 
 $$\mathcal {X}=\left\{{\mathbf {x}\in \mathbb {R}^{M}_{+}\,\,:\,\,\sum _{i\in \mathcal {M}} x_{i}=1}\right\}$$
 
-<!-- ![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211208153315.png) -->
+<!-- ![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20211208153315.png) -->
 
 
 综上所述，矿池i赢得挖矿竞赛的概率为：
 
 $${\Pr }^{\textrm {mine}}_{i}(\mathbf {x},\pmb {\omega })=\frac {\omega _{i} x_{i}}{\sum _{j=1}^{M}\omega _{j} x_{j}}$$
 
-<!-- ![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211208153412.png) -->
+<!-- ![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20211208153412.png) -->
 
 矿池 i 向所有P2P网络中的对等方广播一个成功开采的区块，以将其传播到整个网络。区块传播时间由每条链路上的传输延迟和每个中继节点的交易验证时间决定。对于大小为s的块，传输延迟可以建模为
 
@@ -105,7 +105,7 @@ $${\Pr }^{\textrm {orphan}}(s)=1-e^{-\tau (s)/T}=1-e^{-\left({\frac {s}{\gamma c
 
 $${\Pr }^{\textrm {win}}_{i}(\mathbf {x}, \pmb {\omega }, s_{i})=(1-{\Pr }^{\textrm {orphan}}(s))*{\Pr }^{\textrm {mine}}_{i}(\mathbf {x},\pmb {\omega })=\frac {\omega _{i} x_{i}}{\sum _{j=1}^{M}\omega _{j} x_{j}} e^{-\left({\frac {s_{i}}{\gamma c}+\beta s_{i}}\right)/T}.$$
 
-<!-- ![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211208153637.png) -->
+<!-- ![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20211208153637.png) -->
 
 一个区块的收益由固定的代币发行奖励和打包在新区块中的所有交易的交易费用组成。考虑到区块链用户为每笔交易支付固定费用并且交易记录具有相同的大小。令 R 表示代币发行奖励，
 
@@ -115,7 +115,7 @@ $\rho$ 表示每单位数据大小的交易确认价格。然后，交易费用�
 
 $$y_{i}(\mathbf {x}, \pmb {\omega }, s_{i})=\frac {R+\rho s_{i}}{N x_{i}}\frac {\omega _{i} x_{i}}{\sum _{j=1}^{M}\omega _{j} x_{j}} e^{-\left({\frac {s_{i}}{\gamma c}+\beta s_{i}}\right)/T}-p\omega _{i}.\qquad $$
 
-<!-- ![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211208153743.png) -->
+<!-- ![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20211208153743.png) -->
 
 ### B.矿池选择过程中的演化博弈
 考虑到每个矿工都是有限理性的，并且旨在最大化其个体的收益。所以我们可以将矿池选择过程中的演化博弈定义为一个四元组：
@@ -155,7 +155,7 @@ end while
 
 $$\rho _{i,j}=x_{j}\max (y_{j}(\mathbf {x}, \pmb {\omega }, s_{j}) - y_{i}(\mathbf {x}, \pmb {\omega }, s_{i}), 0)$$
 
-<!-- ![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20211208153807.png) -->
+<!-- ![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20211208153807.png) -->
 
 ## 仿真过程
 

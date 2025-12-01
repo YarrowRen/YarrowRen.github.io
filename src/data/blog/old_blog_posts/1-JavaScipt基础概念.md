@@ -292,7 +292,7 @@ document.write(Math.round(4.9)+"<br/>");
 
 
 #### 简单的正则表达式
-![简单正则表达式](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E7%AE%80%E5%8D%95%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.jpg)
+![简单正则表达式](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E7%AE%80%E5%8D%95%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.jpg)
 
 
 ```js

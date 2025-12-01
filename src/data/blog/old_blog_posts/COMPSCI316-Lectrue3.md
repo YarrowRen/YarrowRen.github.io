@@ -23,7 +23,7 @@ description: '- Understand computer security'
 
 OSI 安全架构分为三大类，即安全攻击、安全机制和安全服务。
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230720025356.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230720025356.jpg)
 
 ## 安全攻击（Security attack）
 安全攻击是指个人或实体企图获得未经授权的访问以破坏或损害系统、网络或设备的安全性。
@@ -48,7 +48,7 @@ OSI 安全架构分为三大类，即安全攻击、安全机制和安全服务�
 - 不可否认性（Non-repudiation）：使用技术来创建消息来源和传输的可验证记录，防止发件人否认他们发送了消息。
 - 可行性（Availability）：保证系统可以按需使用和访问
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230720031629.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230720031629.jpg)
 
 
 ## 安全机制（Security mechanisms）
@@ -60,12 +60,12 @@ OSI 安全架构分为三大类，即安全攻击、安全机制和安全服务�
 - 公证（Notarisation）：使用可信任的一方来确保数据交换的安全
 - 密码（Password）：授权方已知的秘密短语或单词
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230720033351.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230720033351.jpg)
 
 
 # Network Security & Cyber Security
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/resize,w_670.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/resize,w_670.png)
 
 ## Network Security
 

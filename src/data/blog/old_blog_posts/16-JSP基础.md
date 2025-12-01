@@ -33,7 +33,7 @@ Java Server Pages:Java服务器端页面，在该页面中既可以定义Java代
 
 **JSP本质上还是Java中的Servlet，因为只有Servlet能够提供文件访问**
 
-![index_jsp](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/index_jsp.jpg)
+![index_jsp](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/index_jsp.jpg)
 
 ### JSP脚本
 JSP中共有三种定义Java代码的方法，每种定义方法均有不同作用，经过编译并形成最终的.class文件时自动生成的位置也不相同

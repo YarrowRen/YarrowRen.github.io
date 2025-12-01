@@ -51,7 +51,7 @@ description: '- 表单项中type值为file'
 - 注意，当form表单的enctype属性修改为multipart/form-data多部分表单时，原先的request.getParameter等方法均失效，因为原先返回的是url表单，属性值都被封装在url中，以键值对的形式存在，但现在返回的是多部分表单，url不被返回，同时数据的封装也不再是键值对，所以方法失效
 
 可以看到返回的报文中分割了表单的信息与数据
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/returnData.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/returnData.png)
 
 
 ## 单文件上传
@@ -104,7 +104,7 @@ description: '- 表单项中type值为file'
     }
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/uploadfile2.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/uploadfile2.png)
 
 ## 多文件上传
 
@@ -150,4 +150,4 @@ description: '- 表单项中type值为file'
     }
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/uploadfile3.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/uploadfile3.png)

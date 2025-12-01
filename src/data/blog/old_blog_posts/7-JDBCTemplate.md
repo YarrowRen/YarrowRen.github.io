@@ -22,7 +22,7 @@ description: 是Spring框架中的一个对象，是对原始繁琐JDBC API的�
 
 ### 数据库表和实体对象
 
-![databasesheet](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/databasesheet.jpg)
+![databasesheet](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/databasesheet.jpg)
 
 ```java
 public class User {

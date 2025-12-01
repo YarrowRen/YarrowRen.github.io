@@ -17,13 +17,13 @@ description: 以用户-订单模型为例，假定用户与订单之间是一一
 ## 一对一查询模型
 以用户-订单模型为例，假定用户与订单之间是一一对应的关系，建立如下数据库
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/userdatebase.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/userdatebase.png)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/orderdatabase.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/orderdatabase.png)
 
 订单表中的userId表示标识用户的ID信息，若直接通过sql语句进行一对一查询，则可写作`select * from orders o ,user u where o.userId=u.id` ,得到如下查询结果
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/databaseresultnj.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/databaseresultnj.png)
 
 可在mybatis中进行查询时，其并不知道各个数据段对应的参数，所以需要我们手动通过map进行对应
 
@@ -156,7 +156,7 @@ public interface OrderMapper {
 
 现在假设一个用户可能拥有多个订单的情况，此时通过数据库直接用sql语句查询的方式如下`select *,o.id oid from user u ,orders o where o.userId=u.id`，可以看到一个用户出现对应多个订单的情况，此时在用户的属性中加入`List<Order> orderList`用于存储订单集合
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9Chu.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9Chu.png)
 
 这种情况下MyBatis的查询方式如下,collection标签就是用于处理集合类型数据，ofType属性表示集合中存储的数据类型（这里用了别名）
 ```xml

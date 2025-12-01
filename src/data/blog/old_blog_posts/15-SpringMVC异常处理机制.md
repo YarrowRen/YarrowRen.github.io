@@ -18,7 +18,7 @@ description: 系统中异常主要包括两部分，[编译时异常与运行时
 
 在开发过程中，系统的DAO层，SERVICE层和CONTROLLER层都有可能出现异常情况，这种情况下我们应该尽量将异常向上层抛出，最后将所有异常交由SpringMVC的前端控制器处理，其会利用异常处理器来进行异常处理
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/SpringMVC%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/SpringMVC%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6.png)
 
 ## SpringMVC异常处理的两种方式
 - 直接使用SpringMVC提供的简单异常处理器：SimpleMappingExceptionResolver
@@ -97,7 +97,7 @@ public class ExceptionController {
 
 #### 实例结果
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E7%AE%80%E5%8D%95%E5%BC%82%E5%B8%B8%E6%98%A0%E5%B0%84.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E7%AE%80%E5%8D%95%E5%BC%82%E5%B8%B8%E6%98%A0%E5%B0%84.png)
 
 
 ### 2. 自定义异常处理器
@@ -154,4 +154,4 @@ public class MyExceptionResolver implements HandlerExceptionResolver {
 
 #### 测试页面跳转
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8.png)

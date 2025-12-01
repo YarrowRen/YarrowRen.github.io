@@ -22,14 +22,14 @@ description: 利用Springboot开发不可避免的要涉及到使用许多的依
 
 而我们实际开发中可以看到，许多的依赖在配置过程中并不需要指定其版本号，这是因为Springboot已经考虑到由于版本问题导致的依赖引用乱象。所以已经提前进行了依赖管理，而具体的方式就是利用父依赖进行依赖管理。
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210922092843.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210922092843.png)
 
 以上图为例，在Maven配置文件pom.xml中，Springboot一般都已经自动配置了父依赖：spring-boot-starter-parent，查看父依赖文件我们可以看到，其内部还依赖于另外一个父依赖：spring-boot-dependencies
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210922093032.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210922093032.png)
 
 而spring-boot-dependencies则详细的声明了我们日常可能使用到的各种依赖的版本号，即该文件为我们进行了依赖管理
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210922093316.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210922093316.png)
 
 这里需要注意另一个问题，我们使用父项目进行依赖管理的过程中不可避免的涉及到项目需要使用的依赖版本与父项目内部定义的版本号冲突，这种时候我们就可以利用maven的就近原则（版本仲裁机制），在maven的配置文件pom.xml中声明我们需要的版本号以替代父项目中的版本号，有两种配置方法：
 

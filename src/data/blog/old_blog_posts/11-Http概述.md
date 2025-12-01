@@ -44,16 +44,16 @@ description: 定义了客户端和服务器端通信时，发送数据的格式
 
 #### 解析前的请求头
 
-![解析前的请求头](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E8%A7%A3%E6%9E%90%E5%89%8D%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%B4.jpg)
+![解析前的请求头](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E8%A7%A3%E6%9E%90%E5%89%8D%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%B4.jpg)
 
 #### 解析后的请求头
 
-![解析后的请求头](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E8%A7%A3%E6%9E%90%E5%90%8E%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%B4.jpg)
+![解析后的请求头](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E8%A7%A3%E6%9E%90%E5%90%8E%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%B4.jpg)
 
 #### 捕获的本地HTTP报文
 
 
-![捕获的HTTP报文](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E6%8D%95%E8%8E%B7%E7%9A%84HTTP%E6%8A%A5%E6%96%87.jpg)
+![捕获的HTTP报文](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E6%8D%95%E8%8E%B7%E7%9A%84HTTP%E6%8A%A5%E6%96%87.jpg)
 
 ### 捕获本地报文的方式
 

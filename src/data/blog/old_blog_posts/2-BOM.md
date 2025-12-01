@@ -33,7 +33,7 @@ description: '------'
 
 #### BOM对象组成
 
-![BOM对象概述](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/BOM%E5%AF%B9%E8%B1%A1%E6%A6%82%E8%BF%B0.jpg)
+![BOM对象概述](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/BOM%E5%AF%B9%E8%B1%A1%E6%A6%82%E8%BF%B0.jpg)
 
 
 ## Window对象

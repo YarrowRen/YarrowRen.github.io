@@ -49,18 +49,18 @@ SpringBoot项目中的静态资源有两种访问方式
 
 三个路径的优先级：resources>static(默认资源路径)>public
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/resourceshuh.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/resourceshuh.png)
 
 ## 首页与图标定制
 
 
 首页设置只需要在三个resources下的静态资源路径中存档index.html即可
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/ggghjhjhj.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/ggghjhjhj.png)
 
 图标定制需要将favicon.ico文件存放在static资源路径下
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/dgaugsaug.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/dgaugsaug.png)
 
 
 ## Thymeleaf模板引擎
@@ -119,7 +119,7 @@ public class HelloController {
 
 4. 测试页面访问
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/dgiugiu.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/dgiugiu.png)
 
 可以看到页面成功展示并且传入的值被前端成功取出
 

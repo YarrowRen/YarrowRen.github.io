@@ -107,9 +107,9 @@ if __name__ == "__main__":
 
 由归纳法的原理，对于任意大小的集合S，都能够保持维持不变量：对于集合S中的每个节点u，d(u)是最短s到u的路径长度。这证明了Dijkstra's algorithm计算最短路径的正确性。
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230807211704.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230807211704.jpg)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230807211628.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230807211628.jpg)
 
 # 最小生成树（minimum spanning trees）
 
@@ -134,11 +134,11 @@ if __name__ == "__main__":
 
 下图就是切割{4,5,8}子集所形成的割集
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230808094123.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230808094123.jpg)
 
 > 命题：环和割集相交于偶数条边
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230808094357.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230808094357.jpg)
 
 ## 生成树属性
 
@@ -151,14 +151,14 @@ if __name__ == "__main__":
 - T 是最大非循环的：任何边的相加都会创建一个循环
 - T 在每对节点之间都有一条唯一的简单路径
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230808094653.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230808094653.jpg)
 
 ## 最小生成树属性
 
 最小生成树本质还是生成树，最重要的一条属性就是边权重之和最小，是最优情况下的生成树
 
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230808100439.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230808100439.jpg)
 
 ## 贪心算法（涂色）
 

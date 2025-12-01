@@ -21,7 +21,7 @@ description: 在SpringBoot中整合SSM项目的过程中，不可避免的涉及
 ## 使用过程
 
 ### 1. 在IDEA中安装Lombok插件
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/pluginsss.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/pluginsss.png)
 
 ### 2. 添加Lombok对应的依赖到项目pom.xml文件中
 ```xml

@@ -20,7 +20,7 @@ description: '> JVM是Java Virtual Machine（Java虚拟机）的缩写，JVM是�
 
 
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210727163437.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210727163437.png)
 
 
 通过上图的结构内容可以看到，JVM是运行在操作系统上的Java虚拟机，其本身并不具备直接执行Java程序的能力，通过在JVM中引入相应的基础类库形成JRE（Java Runtime Environment Java运行环境），JRE才是具备执行Java程序能力的运行环境。在JRE基础上结合相应的编译开发工具就构成了JDK（Java Development Kit Java 语言的软件开发工具包）。而我们实际日常的开发中，正式采用了JDK与相应IDE工具进行开发的模式
@@ -31,7 +31,7 @@ JVM的有点主要有以下几点：
 - 数组下标越界检查
 - 支持多态
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210727171521.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210727171521.png)
 
 # JVM内存结构
 
@@ -90,12 +90,12 @@ public class JVMTest {
 虚拟机栈是线程私有的，每创建一个线程，虚拟机就会为这个线程创建一个虚拟机栈，虚拟机栈表示Java方法执行的内存模型，每调用一个方法就会为每个方法生成一个栈帧（Stack Frame），用来存储局部变量表、操作数栈、动态链接、方法出口等信息。每个方法被调用和完成的过程，都对应一个栈帧从虚拟机栈上入栈和出栈的过程。虚拟机栈的生命周期和线程是相同的
 
 虚拟机栈是一个后入先出的栈。栈帧是保存在虚拟机栈中的，栈帧是用来存储数据和存储部分过程结果的数据结构，同时也被用来处理动态链接（Dynamic Linking）、方法返回值和异常分派（Dispatch Exception）。线程运行过程中，只有一个栈帧是处于活跃状态，称为“当前活跃栈帧”，当前活动栈帧始终是虚拟机栈的栈顶元素。
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/1217523-20170921103712696-66337560.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/1217523-20170921103712696-66337560.png)
 
 
 一个栈帧的结构大致如下图所示
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/1217523-20170921103713228-1287438455.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/1217523-20170921103713228-1287438455.png)
 
 简单来说虚拟机栈负责存储线程运行时所需要的内存空间，而虚拟机栈中的每个栈帧负责存储每个方法运行时所需要的内存空间
 
@@ -123,33 +123,33 @@ public class JVMTest {
 
 整个代码涉及到了三个方法，分别是主方法main，和两个测试方法test1，test2，在主方法处打上断点，通过debug运行查看虚拟机栈的情况
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210729010140.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210729010140.png)
 
 可以看到程序开始执行，作为主方法的main函数执行并被压入虚拟机栈中，其栈帧内部目前存储了传入变量args
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210729010350.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210729010350.png)
 
 接下来主方法调用了test1方法，所以test1方法作为栈帧传入虚拟机栈顶部，此时test1栈帧就是新的当前活跃栈帧，由于其没有传入参数等变量，所以其内部暂时没有存储内容
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210729010554.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210729010554.png)
 
 接下来，由于test1内部调用了test2方法，所以test2作为新的当前活跃栈帧被压入栈顶，其内部暂时还没有存储数据
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210729010713.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210729010713.png)
 
 随着test2方法内部执行，其内部的变量a,b被存入栈帧中
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210729010812.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210729010812.png)
 
 最后c作为返回值也被存储到栈帧中，此时test2方法已经执行完毕
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210729010945.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210729010945.png)
 
 随着test2方法的执行结束，test2栈帧出栈，此时当前活跃栈帧重新变回test1栈帧
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210729011106.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210729011106.png)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210729011246.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210729011246.png)
 最后，test1方法执行完毕后出栈，此时虚拟机栈中只剩下主方法main栈帧，随着main函数执行结束，虚拟机栈为空
 
 
@@ -224,7 +224,7 @@ public class JVMTest {
 
 Navtive 方法是 Java 通过 JNI 直接调用本地 C/C++ 库，可以认为是 Native 方法相当于 C/C++ 暴露给 Java 的一个接口，Java 通过调用这个接口从而调用到 C/C++ 方法。当线程调用 Java 方法时，虚拟机会创建一个栈帧并压入 Java 虚拟机栈。然而当它调用的是 native 方法时，虚拟机会保持 Java 虚拟机栈不变，也不会向 Java 虚拟机栈中压入新的栈帧，虚拟机只是简单地动态连接并直接调用指定的 native 方法。
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/14211474-fe4b43e1ff9a3386.webp)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/14211474-fe4b43e1ff9a3386.webp)
 
 
 ## 堆（Heap）

@@ -50,18 +50,18 @@ SpringMVC是目前最主流的MVC框架之一，它通过一套注解，让一�
 4. 接收返回结果
 5. 指派页面操作
 
-![SpringMVC1](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/SpringMVC1.jpg)
+![SpringMVC1](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/SpringMVC1.jpg)
 
 以上大量重复的操作可以称为共有行为，而每个Servlet特有的具体执行实现可以称为特有行为，SpringMVC可以抽取共有行为，将所有共有行为创建为一个新的Servlet从未降低代码的重复。同时，剩下的特有行为也不再需要封装为Servlet，而是按照POJO来实现逻辑功能即可
 
-![SpringMVC2](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/SpringMVC2.jpg)
+![SpringMVC2](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/SpringMVC2.jpg)
 
 不同框架所使用的前端控制器的格式是不相同的，以SpringMVC为例，其使用Servlet作为前端控制器，而以前的Struts2则采用Filter作为控制器
 
 #### SpringMVC架构
 为解决持久层中一直未处理好的数据库事务的编程，又为了迎合NoSQL崛起，SpringMVC给出了方案：将传统的模型层拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。 在 Service 下可以通过 Spring 的声明式事务操作数据访问层，而在业务层上还允许我们访问 NoSQL ，这样就能够满足NoSQL的使用了，它可以大大提高互联网系统的性能。
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/SpringMVC%E6%9E%B6%E6%9E%84.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/SpringMVC%E6%9E%B6%E6%9E%84.png)
 
 
 
@@ -166,13 +166,13 @@ public class UserController {
 
 ### SpringMVC开发流程图
 
-![SpringMVC开发流程](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/SpringMVC%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
+![SpringMVC开发流程](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/SpringMVC%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 
 # SpringMVC组件解析
 
 ## SpringMVC执行流程
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/SpringMVC%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/SpringMVC%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png)
 
 1. 用户发送请求至前端控制器DispatcherServlet。
 2. DispatcherServlet收到请求调用HandlerMapping处理器映射器。

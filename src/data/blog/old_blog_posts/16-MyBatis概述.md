@@ -46,7 +46,7 @@ mybatis通过xml或注解的方式将要执行的各种 statement配置起来，
 ```
 
 ### 创建User数据表
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/databasehjkh.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/databasehjkh.png)
 
 
 ### 创建User实体类

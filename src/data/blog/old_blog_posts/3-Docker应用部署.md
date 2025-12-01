@@ -24,7 +24,7 @@ description: 1. 搜索镜像
 
 前文说到，Docker容器本身不能直接与外部机器通信，其只能与宿主机直接通信，而宿主机又可以直接与外部机器通信，所以想要访问Docker容器，就可以将Docker容器的端口映射到宿主机的端口上（一般都对应到相同端口），这样就可以利用宿主机的端口间接访问Docker容器，即**端口映射**
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/dockerwaibutongxin.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/dockerwaibutongxin.png)
 
 
 ```bash
@@ -46,7 +46,7 @@ mysql:latest # 指定容器镜像
 
 创建完成后，Docker容器的3306端口已经映射到宿主机的3306端口，可以通过外网访问3306端口对mysql进行操作
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/tencentdockertestss.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/tencentdockertestss.png)
 
 
 ## 部署Tomcat
@@ -71,4 +71,4 @@ vim index.html  # 创建并编辑网页文件
 ```
 
 外网访问
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/gafsgiusg.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/gafsgiusg.png)

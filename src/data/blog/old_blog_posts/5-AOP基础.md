@@ -41,7 +41,7 @@ AOP底层的实现，是依赖于Spring提供的动态代理技术，Spring通�
 - JDK代理：基于接口的动态代理技术
 - cglib代理：基于父类的动态代理技术
 
-![spring_aop](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/spring_aop.jpg)
+![spring_aop](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/spring_aop.jpg)
 
 #### JDK代理实现增强的基本实现
 ```java

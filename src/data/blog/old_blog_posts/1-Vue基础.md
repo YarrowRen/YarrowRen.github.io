@@ -53,7 +53,7 @@ description: '> Vue.js是一套构建用户界面的渐进式框架。Vue只关�
 </html>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210711181227.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210711181227.png)
 
 ## el挂载点
 上边在定义Vue实例时，内部定义了el挂载点，挂载点的作用在于指明要应用到的标签，例如上面实例中利用ID选择器#app指定应用于id为app的标签，同时我们需要关注Vue实例的作用范围，Vue会管理el选项所命中的元素及其内部的后代元素，例如：
@@ -86,7 +86,7 @@ description: '> Vue.js是一套构建用户界面的渐进式框架。Vue只关�
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210711181406.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210711181406.png)
 
 从上面的实例可以看到，被成功选择的DIV标签及其内部的P标签成功获取message值，然而位于外部的Body标签并不能获取相关值
 
@@ -156,4 +156,4 @@ data数据对象不止能保存基本文本数据，同样可以保存复杂的�
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210711190239.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210711190239.png)

@@ -125,7 +125,7 @@ DriverManager提供registerDriver方法注册给定的驱动程序，而我们�
 
 不过，自5版本后，jar包会自动帮我们注册驱动，所以其实注册驱动步骤可以省略
 
-![自动注册驱动](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E9%A9%B1%E5%8A%A8.jpg)
+![自动注册驱动](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E9%A9%B1%E5%8A%A8.jpg)
 
     
 **获取数据库连接**

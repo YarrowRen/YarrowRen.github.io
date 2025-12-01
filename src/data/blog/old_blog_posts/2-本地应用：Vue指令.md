@@ -38,7 +38,7 @@ v-text指令用于设置标签的文本值，有两种设置标签文本值的�
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210711224316.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210711224316.png)
 
 ## v-html指令 
 v-html指令用于设置标签的innerHtml属性，如果传入的是普通值，则其结果与v-text指令没有区别，若其传入的是html结构，则会将相应html解析出来
@@ -66,7 +66,7 @@ v-html指令用于设置标签的innerHtml属性，如果传入的是普通值�
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712020905.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712020905.png)
 
 ## v-on指令
 v-on指令用于为元素绑定事件
@@ -100,11 +100,11 @@ v-on指令用于为元素绑定事件
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712022812.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712022812.png)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712022819.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712022819.png)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712022825.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712022825.png)
 
 可以直观看到我们在vue实例中定义方法，只需要将其写入methods属性中即可，同时我们可以在方法中获取到Vue实例中的相关数据，只需要利用this关键字即可
 ```html
@@ -200,11 +200,11 @@ v-on指令用于为元素绑定事件
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712171902.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712171902.png)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712171920.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712171920.png)
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712171931.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712171931.png)
 
 
 ## v-show指令
@@ -237,7 +237,7 @@ v-show指令用于根据给定值切换元素的显示状态（显示/隐藏）�
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712181356.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712181356.png)
 
 
 ## v-if指令
@@ -251,7 +251,7 @@ v-if指令根据表达式的真假切换元素的显示状态，与v-show有所�
     </div>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210712181823.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210712181823.png)
 
 通过浏览器可以看到，两个元素分别利用v-show与v-if指令禁止显示，v-show指令为元素添加了`style="display: none;"`保证元素不被显示，而v-if直接操作DOM消除了对应元素，这就是二者的区别
 
@@ -273,9 +273,9 @@ v-bind指令用于设置元素的属性（例如src,title,class），使用方�
             el:"#app",
             data:{
                 imgTitle:"测试图片1",
-                imgClass:"https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ截图20210712180853.png",
+                imgClass:"https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ截图20210712180853.png",
                 imgTitle2:"测试图片2",
-                imgClass2:"https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67052833_p0.jpg"
+                imgClass2:"https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/67052833_p0.jpg"
 
             }
         })
@@ -283,7 +283,7 @@ v-bind指令用于设置元素的属性（例如src,title,class），使用方�
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210713004003.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210713004003.png)
 
 ## v-for指令
 v-for指令可以根据数据生成列表结构
@@ -329,7 +329,7 @@ v-for指令可以根据数据生成列表结构
 </body>
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210713005625.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210713005625.png)
 
 通过上面的实例可以看出v-for指令可以接收普通数组以及对象数组等特殊数据结构进行遍历，同时在使用过程中有两个默认参数item和index，item本质就是遍历数组的对象，类似于for i in range结构中的i，通过item可以获取到数组对应的元素对象，同样的，item是可以随意命名的，index即为该对象在数组中的索引值
 
@@ -355,7 +355,7 @@ v-model指令用于设置和获取表单元素中的值(双向数据绑定)，�
     </script>
 </body>
 ```
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210713064904.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210713064904.png)
 
 
 可以看到将上面示例中将输入框元素与message数据绑定，因此初始状态下输入框显示message数据，当我们对输入框进行改变时，message中的数据也同步发生改变导致下方P标签内数据变化

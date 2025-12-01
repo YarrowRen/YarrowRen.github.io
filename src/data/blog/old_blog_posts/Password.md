@@ -108,7 +108,7 @@ description: 'Understand identification and authentication, Learn how passwords 
 
 为了缓解某些密码漏洞，可以使用盐，盐可以是随机数，盐会增加攻击者的工作量
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230725211849.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230725211849.jpg)
 
 注册时，服务器可以存储 
 - UserID 
@@ -119,7 +119,7 @@ description: 'Understand identification and authentication, Learn how passwords 
 
 用户提供用户 ID 和密码，查找相应的盐和哈希，根据检索到的盐和输入的密码重新计算哈希，如果结果匹配，则接受密码
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230725212215.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230725212215.jpg)
 
 # 随机盐的好处
 

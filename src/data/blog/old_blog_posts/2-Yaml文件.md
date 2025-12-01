@@ -156,10 +156,10 @@ JSR是Java Specification Requests的缩写，意思是Java 规范提案。是指
 JSR-303 是JAVA EE 6 中的一项子规范，叫做Bean Validation，Hibernate Validator 是 Bean Validation 的参考实现 . Hibernate Validator 提供了 JSR 303 规范中所有内置 constraint 的实现，除此之外还有一些附加的 constraint。
 
 #### 基本内容
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/20200525161753312.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/20200525161753312.png)
 
 扩展部分
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/20200525161900254.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/20200525161900254.png)
 
 #### 使用测试
 
@@ -220,7 +220,7 @@ class SpringBootTestApplicationTests {
 ### 多环境配置
 实际企业开发过程中，可能需要在项目的不同阶段使用不同配置文件，这时，就可以在配置中指定不同的配置文件，但所有配置文件都需要以application开头，通过分号-表示不同环境下的配置文件
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/springboottest5.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/springboottest5.png)
 
 默认情况下，依然执行application.yaml文件，只有当我们在application.yaml中指定要执行的配置文件时，才会切换环境配置
 

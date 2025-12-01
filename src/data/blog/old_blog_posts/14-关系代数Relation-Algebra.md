@@ -56,12 +56,12 @@ $$R\cup S=\lbrace t|t\in R\vee t\in S\rbrace$$
 
 两个关系
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/xxxtable1.png)
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/xxxtable2.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/xxxtable1.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/xxxtable2.png)
 
 进行并运算后
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/xxxtable3.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/xxxtable3.png)
 
 
 ### 交运算（Intersection）
@@ -92,7 +92,7 @@ R为n元关系，包含$k_1$个分组，S为m元关系，包含$k_2$个分组
 $$R\times S=\lbrace \overbrace{t_r\ \ t_s}|t_r\in R \wedge t_s\in S\rbrace$$
 
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/dikaerji.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/dikaerji.png)
 
 
 ## 专门的关系运算
@@ -102,7 +102,7 @@ $$R\times S=\lbrace \overbrace{t_r\ \ t_s}|t_r\in R \wedge t_s\in S\rbrace$$
 $$\sigma_{F}(R)=\lbrace t|t\in R\wedge F(t)=true\rbrace$$
 上面的F表示选择条件，是一个逻辑表达式，结果是布尔值
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/selection.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/selection.png)
 
 例如：Student(name,age,score,dept)是一个学生信息表，属性分别是姓名，年龄，分数和专业，现在通过选择运算获取所有专业为CS的元组
 
@@ -122,7 +122,7 @@ $$\pi_{dept}(Student)$$
 
 投影多个属性的情况下按照如下方式书写，或将多个属性定义为一个属性列
 $$\pi_{name,score,dept}(Student)$$
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/projection.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/projection.png)
 
 ### 连接运算（Join）
 
@@ -150,7 +150,7 @@ $$R \Join S=\lbrace \overbrace{t_r\ \ t_s}|t_r\in R \wedge t_s\in S\wedge t_r[A]
 
 与之相对的一种连接方式称为外连接，外连接会将某个关系中不满足条件的元组保留下来，并在他的其他属性上填控制NULL，如果把左边关系R中要舍弃的元组保留下来，则称为左外连接，如果将右边关系S中要舍弃的元组保留下来，称为右外连接
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/djasio.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/djasio.png)
 
 ### 除运算（Division）
 

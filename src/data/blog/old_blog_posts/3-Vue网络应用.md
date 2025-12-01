@@ -35,7 +35,7 @@ axios是一款易用、简洁且高效的http库，是一个可以用在浏览�
 
 在Vue实例的生命周期中，提供了一系列事件，可以让我们在事件触发时，注册相应的JS方法，利用我们注册的JS方法，更好的控制整个Vue实例（在这些事件响应方法中的this直接指向的是Vue实例），这些JS方法也被称为钩子，下面这幅图中展示了Vue的整个生命周期以及对应位置可以使用的钩子函数
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/lifecycle.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/lifecycle.png)
 
 
 ```html

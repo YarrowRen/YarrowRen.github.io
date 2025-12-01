@@ -19,7 +19,7 @@ description: '- request对象和response对象是由服务器创建的，供程�
 
 ### 浏览器&服务器请求响应过程
 
-![浏览器服务器请求响应过程](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94%E8%BF%87%E7%A8%8B.jpg)
+![浏览器服务器请求响应过程](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94%E8%BF%87%E7%A8%8B.jpg)
 
 ## Request功能
 

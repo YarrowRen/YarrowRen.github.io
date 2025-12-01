@@ -27,13 +27,13 @@ SpringBoot所具备的特征有：
 ## IDEA快速部署SpringBoot项目
 
 通过SpringInitializr创建SpringBoot项目,配置相关信息
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/springboottest1.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/springboottest1.png)
 
 自动配置SpringWeb
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/springboottest2.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/springboottest2.png)
 
 完成项目部署
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/springboottest3.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/springboottest3.png)
 
 编写Controller层，测试结果(Controller层，DAO层，Service层都需要与项目启动入口在同层下才能使用)
 ```java
@@ -49,7 +49,7 @@ public class HelloController {
 ```
 
 成功调用接口
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/springboottest4.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/springboottest4.png)
 
 ## SpringBoot自动装配原理
 

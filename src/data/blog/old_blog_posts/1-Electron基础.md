@@ -55,7 +55,7 @@ app.on('ready',()=>{
 })
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210715010329.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210715010329.png)
 
 ## Electron中的主进程与渲染进程
 
@@ -68,7 +68,7 @@ app.on('ready',()=>{
 ### 渲染进程
 一个Electron应用可以有多个渲染进程，没创建一个新页面就需要一个新的渲染进程。每个渲染进程都是独立的，任意一个渲染进程报错或崩溃都不会影响其他渲染进程运行
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/electronDemo08.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/electronDemo08.png)
 
 ### 主进程和渲染进程的区别
 - 主进程通过BrowserWindow创建页面
@@ -141,4 +141,4 @@ window.onload = function(){
 
 最终展示效果
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20210715191459.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20210715191459.png)

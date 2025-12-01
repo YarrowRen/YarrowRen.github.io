@@ -115,9 +115,9 @@ jsp页面实现
 
 访问控制器业务方法
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/testresult.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/testresult.png)
 
 控制台输出
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/testresult2.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/testresult2.png)
 

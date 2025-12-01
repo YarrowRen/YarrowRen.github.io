@@ -97,7 +97,7 @@ Cookie的发送是通过在客户端发送请求到服务器端的过程后，�
 2. 浏览器对于cookie的大小以及同域名下cookie的数量都有限制
 3. 一般用来存储不太敏感的信息（例如在不登录的情况下，完成服务器对客户端身份的识别）
 
-![cookie](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/cookie.jpg)
+![cookie](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/cookie.jpg)
 
 
 ### Cookie简单应用
@@ -167,5 +167,5 @@ public class CookieDemo1 extends HttpServlet {
     }
 }
 ```
-![cookie1](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/cookie1.jpg)
-![cookie2](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/cookie2.jpg)
+![cookie1](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/cookie1.jpg)
+![cookie2](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/cookie2.jpg)

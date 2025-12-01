@@ -55,7 +55,7 @@ description: '向系统实体授予权利或权限以提供对特定资源的访
 - 审计员（Auditor）
   - 检查整个授权系统的实体
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230730135723.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230730135723.jpg)
 
 ## 访问控制模型（AC MODELS）
 
@@ -71,7 +71,7 @@ description: '向系统实体授予权利或权限以提供对特定资源的访
 
 访问控制矩阵
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230730140543.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230730140543.jpg)
 
 ### 基于角色的访问控制 ROLE-BASED ACCESS CONTROL (RBAC)
 
@@ -104,6 +104,6 @@ RBAC模型构成
 - 约束Constraints
   - 会话、分配和角色
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230730142000.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230730142000.jpg)
 
 

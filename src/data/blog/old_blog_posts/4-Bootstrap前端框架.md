@@ -60,7 +60,7 @@ description: '> Bootstrap是美国Twitter公司的设计师Mark Otto和Jacob Tho
 
 #### 设备代号
 
-![设备代号](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E8%AE%BE%E5%A4%87%E4%BB%A3%E5%8F%B7.jpg)
+![设备代号](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/%E8%AE%BE%E5%A4%87%E4%BB%A3%E5%8F%B7.jpg)
 
 ### 注意
 - 一行中格子数目超出12个格子后多余部分自动换行

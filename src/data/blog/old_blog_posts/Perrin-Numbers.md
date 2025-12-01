@@ -143,7 +143,7 @@ T (k) = 1, for k < 3
 T (n) = T (n − 2) + T (n − 3) + c, for n > 2
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230801230310.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230801230310.jpg)
 
 # 动态规划（Dynamic Programming）
 
@@ -250,7 +250,7 @@ $$
 
 而在求幂的计算过程中，我们也可以进行简化，例如我们要求偶数次幂$M^{16}$，其本质上就是求$(((M^2)^2)^2)^2$，这样我们就把需要进行n次的计算过程简化为了logn，对于奇数次幂，其处理也非常简单，我们只需要利用递归的方式对其进行归纳
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/QQ%E6%88%AA%E5%9B%BE20230801234145.jpg)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/QQ%E6%88%AA%E5%9B%BE20230801234145.jpg)
 
 
 很容易证明 FastExp(a,n) 最多执行 $2\log_2 n$ 次递归调用。假设指数整数 n ≥ 0。因此需要 O(log n) 次乘法来计算

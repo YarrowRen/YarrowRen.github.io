@@ -17,7 +17,7 @@ description: Linux文件系统由bootfs与rootfs两部分构成
 ## Docker镜像原理
 Linux文件系统由bootfs与rootfs两部分构成
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/Linuxfilesystem.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/Linuxfilesystem.png)
 
 - bootfs：包含bootloader（引导加载程序）和kernel（内核）
 - rootfs：root文件系统，包含的就是典型的Linux系统中的/dev,/proc,/bin,/etc等标准文件与目录
@@ -31,7 +31,7 @@ Linux文件系统由bootfs与rootfs两部分构成
 - 一个镜像可以位于另一个镜像下层，位于下层的镜像被称为父镜像，最底部的镜像称为基础镜像
 - 当从一个镜像启动容器时，Docker会在最顶层加载一个读写文件系统作为容器，开发人员可以利用这个容器对镜像进行个性化修改，这些修改可以更适应生产环境，并且避免了对原镜像的影响，使得原镜像功能不受影响
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/docker%E9%95%9C%E5%83%8F%E5%8E%9F%E7%90%86.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/docker%E9%95%9C%E5%83%8F%E5%8E%9F%E7%90%86.png)
 
 ## 容器转换为镜像
 镜像的制作有两种方式，一种是直接利用容器转换为镜像，另一种是通过Dockerfile构建镜像，直接利用容器转换的步骤如下：
@@ -109,7 +109,7 @@ docker build -f ./centos_dockerfile -t ywrby_centos:1 .
 ```
 
 #### 3. 查看当前镜像文件并创建容器测试
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/thauihufiha.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/thauihufiha.png)
 
 # Docker Compose
 

@@ -165,11 +165,11 @@ public class UserController {
 
 测试用例：
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/ListTest.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/ListTest.png)
 
 执行结果：
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/ListResult.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/ListResult.png)
 
 
 
@@ -251,7 +251,7 @@ User{username='Jessica', age=37}
 
 如果不加入该代码，当我们访问对应的jsp文件路径时，会发现网页提示如下错误
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/error1.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/error1.png)
 
 这里的错误是由于我们在web.xml中配置SpringMVC的前端控制器DispatcherServlet时设置了缺省值`<url-pattern>/</url-pattern>`，这导致我们在访问所有资源时，如果没有对应Servlet，则其会交由前端控制器进行处理，而前端控制器寻找资源的依据是注解`@RequestMapping("/xxx")`中设置的资源路径，但很明显jQuery文件并没有配置该虚拟路径，所以导致前端控制器和网页无法访问到该资源
 
@@ -357,7 +357,7 @@ leslie
 */
 ```
 
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/restfultest1.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/restfultest1.png)
 
 
 
@@ -419,6 +419,6 @@ public class DateConverter implements Converter<String, Date> {
     Thu Dec 31 00:00:00 CST 2020
      */
 ```
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/datetest.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/datetest.png)
 
 

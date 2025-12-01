@@ -226,7 +226,7 @@ public class DateTypeHandler extends BaseTypeHandler<Date> {
      */
 ```
 数据库显示效果
-![](https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/databasehdisa.png)
+![](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/databasehdisa.png)
 
 可以看到首先成功将Date类型存入数据库的值变为毫秒值，而从数据读取到Java过程中又转换回了Date类型
 
