@@ -144,6 +144,19 @@ article details > ul li ul li a {
   overflow: visible;
 }
 
+/* TOC width adjustments for larger screens */
+@media (min-width: 1920px) {
+  .toc-sidebar {
+    width: 300px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .toc-sidebar {
+    width: 320px;
+  }
+}
+
 .toc-content {
   padding: 16px;
   max-height: calc(100vh - 164px);
@@ -250,39 +263,97 @@ article details > ul li ul li a {
   color: var(--color-accent);
 }
 
-/* Main content positioning for TOC */
-@media (min-width: 1024px) {
-  #main-content {
+/* Main content positioning for TOC - only for screens where TOC is shown */
+@media (min-width: 1280px) {
+  body #main-content {
     position: relative;
+  }
+}
+
+/* TOC and content layout - always centered */
+@media (min-width: 1280px) and (max-width: 1919px) {
+  /* Standard wide screens */
+  body.has-toc {
+    --toc-width: 280px;
+    --content-max-width: 960px;
+    --gap: 40px;
+    --total-width: calc(var(--toc-width) + var(--gap) + var(--content-max-width));
+    --left-offset: calc((100vw - var(--total-width)) / 2);
+  }
+  
+  .toc-sidebar {
+    left: var(--left-offset) !important;
   }
   
   body.has-toc #main-content {
-    margin-left: 320px !important;
-    max-width: calc(960px - 40px) !important;
+    margin-left: calc(var(--left-offset) + var(--toc-width) + var(--gap)) !important;
+    margin-right: auto !important;
+    max-width: var(--content-max-width) !important;
   }
 }
 
-/* Tablet and mobile responsiveness */
-@media (max-width: 1024px) {
+@media (min-width: 1920px) and (max-width: 2559px) {
+  /* Ultra-wide screens */
+  body.has-toc {
+    --toc-width: 300px;
+    --content-max-width: 1000px;
+    --gap: 40px;
+    --total-width: calc(var(--toc-width) + var(--gap) + var(--content-max-width));
+    --left-offset: calc((100vw - var(--total-width)) / 2);
+  }
+  
   .toc-sidebar {
-    display: none;
+    left: var(--left-offset) !important;
+  }
+  
+  body.has-toc #main-content {
+    margin-left: calc(var(--left-offset) + var(--toc-width) + var(--gap)) !important;
+    margin-right: auto !important;
+    max-width: var(--content-max-width) !important;
   }
 }
 
-/* Large screens - more space */
-@media (min-width: 1440px) {
+@media (min-width: 2560px) {
+  /* Extra ultra-wide screens */
+  body.has-toc {
+    --toc-width: 320px;
+    --content-max-width: 1200px;
+    --gap: 40px;
+    --total-width: calc(var(--toc-width) + var(--gap) + var(--content-max-width));
+    --left-offset: calc((100vw - var(--total-width)) / 2);
+  }
+  
   .toc-sidebar {
-    left: calc((100vw - 1440px) / 2 + 16px);
+    left: var(--left-offset) !important;
+  }
+  
+  body.has-toc #main-content {
+    margin-left: calc(var(--left-offset) + var(--toc-width) + var(--gap)) !important;
+    margin-right: auto !important;
+    max-width: var(--content-max-width) !important;
   }
 }
 
-/* Ultra-wide screens */
-@media (min-width: 1920px) {
-  .toc-sidebar {
-    left: calc((100vw - 1920px) / 2 + 32px);
+/* Medium and small screens: hide TOC, center content */
+@media (max-width: 1279px) {
+  .toc-sidebar,
+  .toc-sidebar.lg\:block,
+  #toc-sidebar {
+    display: none !important;
+  }
+  
+  #main-content,
+  body.has-toc #main-content {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 960px !important;
+    width: auto !important;
   }
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Add relative positioning for medium screens only */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  #main-content {
+    position: relative;
+  }
+}
