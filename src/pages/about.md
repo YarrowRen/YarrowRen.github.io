@@ -16,15 +16,15 @@ lang: "cn"
   <!-- 左侧文本内容 -->
   <div class="lg:w-4/5">
     <p>
-      我目前在 <strong>作业帮</strong> 担任 <strong>NLP 算法工程师</strong>，主要从事
+      目前在 <strong>作业帮</strong> 担任 <strong>NLP 算法工程师</strong>，主要从事
       <strong>自然语言处理</strong>、<strong>检索增强生成（RAG）</strong>、
       <strong>大语言模型（LLM）</strong>、以及 <strong>多智能体系统</strong> 的研发。
       关注方向包括 AI 系统设计、检索优化以及模型在真实业务场景中的落地。
     </p>
     <p class="mt-4">
-      我毕业于 <strong>奥克兰大学（University of Auckland）</strong> 
-      人工智能硕士专业（First Class Honours）。
-      我曾参与企业级 Agentic AI 平台、多模态自动标注、智能对话系统、以及生成式应用等项目。
+      硕士毕业于 <strong>奥克兰大学（University of Auckland）</strong> 
+      人工智能专业（First Class Honours）。
+      主要方向包括企业级 Agentic AI 平台、多模态自动标注、智能对话系统、以及生成式应用等领域。
       技术栈包括 <strong>Python</strong>、<strong>PyTorch</strong>、<strong>TensorFlow</strong>、
       <strong>LLM</strong>、<strong>GNN</strong> 和 <strong>RAG/多智能体架构</strong>。
     </p>
