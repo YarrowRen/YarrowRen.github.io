@@ -369,8 +369,22 @@ const nextPost =
     const tocList = generateTOCList(headings);
     tocContent.appendChild(tocList);
     
-    tocSidebar.classList.remove("hidden"); // Show sidebar
-    document.body.classList.add("has-toc"); // Add class to body for layout adjustment
+    // Function to handle TOC display based on screen size
+    const handleTOCDisplay = () => {
+      if (window.innerWidth >= 1280) {
+        tocSidebar.classList.remove("hidden");
+        document.body.classList.add("has-toc");
+      } else {
+        tocSidebar.classList.add("hidden");
+        document.body.classList.remove("has-toc");
+      }
+    };
+    
+    // Initial setup
+    handleTOCDisplay();
+    
+    // Listen for window resize
+    window.addEventListener('resize', handleTOCDisplay);
     console.log("TOC generated and moved to sidebar");
     
     // Initialize TOC scroll behavior

@@ -346,8 +346,25 @@ article details > ul li ul li a {
   body.has-toc #main-content {
     margin-left: auto !important;
     margin-right: auto !important;
-    max-width: 960px !important;
     width: auto !important;
+  }
+}
+
+/* Tablet screens */
+@media (min-width: 768px) and (max-width: 1279px) {
+  #main-content,
+  body.has-toc #main-content {
+    max-width: 960px !important;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 767px) {
+  #main-content,
+  body.has-toc #main-content {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 }
 
