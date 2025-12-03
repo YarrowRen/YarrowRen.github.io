@@ -12,6 +12,7 @@ import { slugifyStr } from "@/utils/slugify";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { SITE } from "@/config";
+import Comments from "@/components/Comments.tsx";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -164,6 +165,12 @@ const nextPost =
         )
       }
     </div>
+
+
+    <hr class="my-6 border-dashed" />
+
+    <!-- Comments Section -->
+    <Comments client:load slug={post.id} />
   </main>
   <Footer />
   <!-- Image Lightbox Overlay -->
