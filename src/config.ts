@@ -2,7 +2,7 @@ export const SITE = {
   website: "https://YarrowRen.github.io/", // replace this with your deployed domain
   author: "Boyu(Yarrow) Ren",
   profile: "https://satnaing.dev/",
-  desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
+  desc: "Boyu Ren - NLP Algorithm Engineer @ Zuoyebang - Focusing on Natural Language Processing, Retrieval-Augmented Generation (RAG), LLMs, and multi-agent systems. ",
   title: "Boyu Ren's Blog",
   ogImage: "logo.svg",
   lightAndDarkMode: true,
