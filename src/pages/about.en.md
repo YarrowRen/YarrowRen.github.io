@@ -12,15 +12,14 @@ lang: "en"
 <div class="flex flex-col lg:flex-row gap-6 mt-4">
   <div class="lg:w-4/5">
     <p>
-      I'm an <strong>NLP Algorithm Engineer</strong> at <strong>Zuoyebang</strong>, 
+      NLP Algorithm Engineer at Zuoyebang, 
       focusing on <strong>Natural Language Processing</strong>, 
       <strong>Retrieval-Augmented Generation (RAG)</strong>, 
       <strong>LLMs</strong>, and <strong>multi-agent systems</strong>.
       I work on AI system design, retrieval optimization, and production-level model applications.
     </p>
     <p class="mt-4">
-      I hold a Master's degree in <strong>Artificial Intelligence</strong> from the 
-      <strong>University of Auckland</strong>.  
+      Graduated with a Master’s in <strong>Artificial Intelligence</strong> from the <strong>University of Auckland</strong>.  
       My experience covers enterprise AI platforms, multimodal tagging, dialogue systems, 
       and generative applications. My technical stack includes 
       <strong>Python</strong>, <strong>PyTorch</strong>, 
@@ -51,7 +50,7 @@ lang: "en"
 ### 💼 Work Experience
 
 - **NLP Algorithm Engineer @ ZUOYEBANG 📚**   
-  Working as NLP Algorithm Engineer at Zuoyebang, focusing on applying NLP and machine learning techniques to improve product performance and exploring cutting-edge research in text generation, QA, and dialogue systems.
+  Working as an NLP Algorithm Engineer at Zuoyebang, specializing in optimizing AI-driven writing solutions for K-12 education. Focused on improving chatbot performance, I have contributed to the development of the PlannerAgent, which automates task planning, and the Auto-Generation models, both of which streamline writing tasks by reducing generation time. I’m involved in the deep optimization of agent frameworks, utilizing advanced strategies such as AutoGen, ADK, and LangGraph to enhance multi-agent orchestration. My work also includes implementing cutting-edge performance strategies, such as memory persistence, QPS optimization, and the integration of generative AI tools into existing systems to improve writing generation and task automation efficiency.
 
 - **Machine Learning Intern @ Tencent Lightspeed Studios 🐧**  
   Participated in the implementation of AI projects, assisted with model development and optimization, engaged in internal collaboration and technical exploration, and enhanced understanding of machine learning engineering practices.
