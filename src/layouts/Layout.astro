@@ -195,6 +195,57 @@ const structuredData = pubDatetime ? {
     <script is:inline src="/toggle-theme.js"></script>
     <!-- 不蒜子统计 -->
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- 处理页面切换时的不蒜子重新加载 -->
+    <script is:inline>
+      let busuanziLoading = false;
+      
+      function loadBusuanzi() {
+        if (busuanziLoading) {
+          return;
+        }
+        
+        busuanziLoading = true;
+        
+        // 移除现有的不蒜子脚本
+        const existingScript = document.querySelector('script[src*="busuanzi"]');
+        if (existingScript) {
+          existingScript.remove();
+        }
+        
+        // 清除全局busuanzi对象
+        if (typeof window.busuanzi !== 'undefined') {
+          delete window.busuanzi;
+        }
+        
+        // 重新创建脚本标签
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+        
+        script.onload = function() {
+          busuanziLoading = false;
+        };
+        
+        script.onerror = function() {
+          busuanziLoading = false;
+        };
+        
+        // 添加到head
+        document.head.appendChild(script);
+      }
+
+      // 防抖函数
+      let loadTimer;
+      function debouncedLoadBusuanzi() {
+        clearTimeout(loadTimer);
+        loadTimer = setTimeout(loadBusuanzi, 200);
+      }
+
+      // 监听页面切换事件 - 使用防抖
+      document.addEventListener('astro:page-load', debouncedLoadBusuanzi);
+      document.addEventListener('astro:after-swap', debouncedLoadBusuanzi);
+    </script>
   </head>
   <body>
     <slot />

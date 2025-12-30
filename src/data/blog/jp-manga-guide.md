@@ -11,6 +11,7 @@ tags:
 draft: false
 featured: false
 ---
+
 # 连锁同人志/单行本贩售店铺推荐
 
 同人志/单行本下文统一简称漫画/本，除非需要明确区分二者时
@@ -155,49 +156,15 @@ Mandarake 较大的门店通常按品类分层，使不同类型的商品相对�
 
 
 
-<!-- <div style="text-align:center; padding:20px;">
-  <span style="font-weight:bold;
-               font-style:italic;
-               font-size:3em;
-               padding:10px 20px;
-               animation:flicker 2s linear infinite;">
-    持续更新中...
-  </span>
-</div>
 
-<style>
-@keyframes flicker {
-  0%, 100% { opacity: 1; color: #ff4d4f; }
-  50%      { opacity: 0.2; color: #ffd666; }
-}
-</style> -->
-
-
-
-
-
-
-## 指南针 lashinbang
-
-<img src="https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/Lashinbang_Logo.png" alt="Lashinbang_Logo" width="50%" />
-
-
-## Animate
-
-
-## BOOKOFF
 
 
 ## ラムタラ
 
 
-## Trader
 
 
-## K-BOOKS
 
-
-## AmiAmi
 
 
 
@@ -236,6 +203,22 @@ Mandarake 较大的门店通常按品类分层，使不同类型的商品相对�
 
 ### Alibaba
 
+
+### Trader
+
+
+### BOOKOFF
+
+
+
+### Animate
+
+
+### AmiAmi
+
+## 指南针 lashinbang
+
+<img src="https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/Lashinbang_Logo.png" alt="Lashinbang_Logo" width="50%" />
 
 ## 东京中野百老汇
 

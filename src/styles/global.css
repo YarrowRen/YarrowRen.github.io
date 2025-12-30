@@ -437,3 +437,22 @@ article details > ul li ul li a {
     position: relative;
   }
 }
+
+/* Social icons theme adaptation */
+.social-icon {
+  transition: opacity 0.2s ease;
+}
+
+.social-icon:hover {
+  opacity: 0.7;
+}
+
+.social-icon img {
+  filter: brightness(0) saturate(100%) invert(17%) sepia(8%) saturate(1037%) hue-rotate(314deg) brightness(95%) contrast(86%);
+  transition: filter 0.2s ease;
+}
+
+/* Dark theme filter for social icons */
+html[data-theme="dark"] .social-icon img {
+  filter: brightness(0) saturate(100%) invert(93%) sepia(8%) saturate(1037%) hue-rotate(314deg) brightness(110%) contrast(86%);
+}
