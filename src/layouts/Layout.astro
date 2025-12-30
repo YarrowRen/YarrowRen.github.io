@@ -183,7 +183,18 @@ const structuredData = pubDatetime ? {
 
     <ClientRouter />
 
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YZZS8PX2DQ"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YZZS8PX2DQ');
+    </script>
+
     <script is:inline src="/toggle-theme.js"></script>
+    <!-- 不蒜子统计 -->
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   </head>
   <body>
     <slot />

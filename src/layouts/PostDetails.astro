@@ -427,12 +427,48 @@ const nextPost =
       }
     }
     
+    // Function to update active TOC links based on scroll position
+    function updateActiveTOCLink() {
+      const headings = document.querySelectorAll('article h1[id], article h2[id], article h3[id], article h4[id], article h5[id], article h6[id]');
+      const tocLinks = document.querySelectorAll('.toc-content a[href^="#"]');
+      
+      if (!headings.length || !tocLinks.length) return;
+      
+      // Find the current heading in viewport
+      let current = null;
+      const scrollY = window.scrollY;
+      const offset = 100; // Offset from top of viewport
+      
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const heading = headings[i];
+        const rect = heading.getBoundingClientRect();
+        const headingTop = scrollY + rect.top;
+        
+        if (headingTop <= scrollY + offset) {
+          current = heading.id;
+          break;
+        }
+      }
+      
+      // Remove all active classes
+      tocLinks.forEach(link => link.classList.remove('toc-active'));
+      
+      // Add active class to current heading's TOC link
+      if (current) {
+        const activeLink = document.querySelector(`.toc-content a[href="#${current}"]`);
+        if (activeLink) {
+          activeLink.classList.add('toc-active');
+        }
+      }
+    }
+
     // Throttled scroll handler for better performance
     let ticking = false;
     function onScroll() {
       if (!ticking) {
         requestAnimationFrame(() => {
           updateTOCPosition();
+          updateActiveTOCLink();
           ticking = false;
         });
         ticking = true;
@@ -442,11 +478,17 @@ const nextPost =
     window.addEventListener('scroll', onScroll);
     window.addEventListener('resize', updateTOCPosition);
     updateTOCPosition(); // Initial call
+    updateActiveTOCLink(); // Initial active link detection
   }
 
   function generateTOCList(headings) {
+    if (headings.length === 0) return document.createElement("ul");
+    
+    // Find the minimum heading level in the document
+    const minLevel = Math.min(...headings.map(h => parseInt(h.tagName.charAt(1))));
+    
     const ul = document.createElement("ul");
-    const stack = [{ level: 1, ul: ul }];
+    const stack = [{ level: minLevel - 1, ul: ul }];
 
     headings.forEach(heading => {
       // Generate ID if not exists
@@ -481,6 +523,10 @@ const nextPost =
 
       // Create list item and link
       const li = document.createElement("li");
+      
+      // Add data attribute to indicate the actual heading level
+      li.setAttribute('data-heading-level', level);
+      
       const a = document.createElement("a");
       a.href = "#" + heading.id;
       a.textContent = text;

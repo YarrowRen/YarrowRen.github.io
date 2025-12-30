@@ -37,7 +37,7 @@ lang: "en"
 
 
 
-### 🧠 Education
+### Education
 
 - **University of Auckland (2023–2025)**  
   MSc in Artificial Intelligence with First Class Honours  
@@ -47,7 +47,7 @@ lang: "en"
   BSc in Computer Science  
   Awarded *Excellent Thesis*, *Volunteering Award*, and *New Student Honor*
 
-### 💼 Work Experience
+### Work Experience
 
 - **NLP Algorithm Engineer @ ZUOYEBANG 📚**   
   Working as an NLP Algorithm Engineer at Zuoyebang, specializing in optimizing AI-driven writing solutions for K-12 education. Focused on improving chatbot performance, I have contributed to the development of the PlannerAgent, which automates task planning, and the Auto-Generation models, both of which streamline writing tasks by reducing generation time. I’m involved in the deep optimization of agent frameworks, utilizing advanced strategies such as AutoGen, ADK, and LangGraph to enhance multi-agent orchestration. My work also includes implementing cutting-edge performance strategies, such as memory persistence, QPS optimization, and the integration of generative AI tools into existing systems to improve writing generation and task automation efficiency.
@@ -58,7 +58,7 @@ lang: "en"
 - **AI Developer Intern @ HOUGARDEN.COM 🏠**  
   Assisted in developing and testing machine learning models, participated in research to improve algorithm efficiency and performance, collaborated with cross-functional teams to integrate AI technologies into products, analyzed and interpreted data to optimize model performance, and documented and presented research outcomes and progress.
 
-### 🔍 Research & Projects
+### Research & Projects
 
 - **RAG System Research (LIU AI Lab)**  
   Exploring multi-view retrieval and hierarchical abstraction using structural entropy and GNNs.
@@ -76,11 +76,11 @@ lang: "en"
   Developed a multi-agent system with multilingual TTS capabilities, supporting diverse narrative voices and styles.
 
 
-### 🛠️ Skills
+### Skills
 
 - **Languages:** Python, Java  
 - **Tech:** LLM, GNN, RAG, Agent Frameworks, Agentic AI, TTS  
-- **Tools:** TensorFlow, PyTorch, HuggingFace  
+- **Tools:** AutoGen、ADK(Google)、LangChain/LangGraph、Dify、TensorFlow
 - **Languages:** Chinese, English (DEP 8)
 
 ---

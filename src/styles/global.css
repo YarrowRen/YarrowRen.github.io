@@ -183,12 +183,15 @@ article details > ul li ul li a {
   position: relative;
 }
 
-/* First level (h1) - # */
-.toc-content > ul > li {
-  margin: 0.5rem 0;
+/* Dynamic heading level styling based on data attribute */
+.toc-content li {
+  margin: 0.25rem 0;
+  padding: 0;
+  position: relative;
 }
 
-.toc-content > ul > li::before {
+/* H1 level */
+.toc-content li[data-heading-level="1"]::before {
   content: "#";
   color: var(--color-accent);
   font-weight: 600;
@@ -196,71 +199,131 @@ article details > ul li ul li a {
   font-size: 1rem;
 }
 
-.toc-content > ul > li > a {
-  color: var(--color-foreground);
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.4;
-  display: inline;
-  transition: color 0.2s ease;
-}
-
-/* Second level (h2) - ## */
-.toc-content ul ul li {
-  margin: 0.2rem 0;
-  margin-left: 1rem;
-}
-
-.toc-content ul ul li::before {
-  content: "##";
+/* 统一的::before样式 */
+.toc-content li::before {
   color: var(--color-accent);
-  font-weight: 500;
   margin-right: 0.4rem;
+  vertical-align: baseline;
+}
+
+/* H1 level */
+.toc-content li[data-heading-level="1"]::before {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* H2 level */
+.toc-content li[data-heading-level="2"]::before {
+  content: "##";
+  font-weight: 500;
   font-size: 0.9rem;
   opacity: 0.8;
 }
 
-.toc-content ul ul li > a {
-  color: var(--color-foreground);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.3;
-  display: inline;
-  transition: color 0.2s ease;
-  opacity: 0.9;
-}
-
-/* Third level (h3) - ### */
-.toc-content ul ul ul li {
-  margin: 0.15rem 0;
-  margin-left: 1rem;
-}
-
-.toc-content ul ul ul li::before {
+/* H3 level */
+.toc-content li[data-heading-level="3"]::before {
   content: "###";
-  color: var(--color-accent);
   font-weight: 400;
-  margin-right: 0.3rem;
   font-size: 0.8rem;
   opacity: 0.6;
 }
 
-.toc-content ul ul ul li > a {
+/* H4 level */
+.toc-content li[data-heading-level="4"]::before {
+  content: "####";
+  font-weight: 400;
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+/* H5 level */
+.toc-content li[data-heading-level="5"]::before {
+  content: "#####";
+  font-weight: 400;
+  font-size: 0.7rem;
+  opacity: 0.4;
+}
+
+/* H6 level */
+.toc-content li[data-heading-level="6"]::before {
+  content: "######";
+  font-weight: 400;
+  font-size: 0.65rem;
+  opacity: 0.3;
+}
+
+/* 统一的TOC链接样式，支持换行 */
+.toc-content li > a {
   color: var(--color-foreground);
   text-decoration: none;
+  display: inline;
+  transition: color 0.2s ease;
+  vertical-align: baseline;
+}
+
+.toc-content li[data-heading-level="1"] > a {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.toc-content li[data-heading-level="2"] > a {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+  opacity: 0.9;
+}
+
+.toc-content li[data-heading-level="3"] > a {
   font-size: 0.85rem;
   font-weight: 500;
   line-height: 1.2;
-  display: inline;
-  transition: color 0.2s ease;
   opacity: 0.8;
+}
+
+.toc-content li[data-heading-level="4"] > a {
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.2;
+  opacity: 0.7;
+}
+
+.toc-content li[data-heading-level="5"] > a {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  opacity: 0.6;
+}
+
+.toc-content li[data-heading-level="6"] > a {
+  font-size: 0.7rem;
+  font-weight: 400;
+  line-height: 1.2;
+  opacity: 0.5;
+}
+
+/* Indentation based on nesting level */
+.toc-content ul ul li {
+  margin-left: 1rem;
+}
+
+.toc-content ul ul ul li {
+  margin-left: 1rem;
+}
+
+.toc-content ul ul ul ul li {
+  margin-left: 1rem;
 }
 
 /* Hover states */
 .toc-content li a:hover {
   color: var(--color-accent);
+}
+
+/* Active/current heading styles for scroll highlighting */
+.toc-content a.toc-active {
+  color: var(--color-accent) !important;
+  font-weight: 700 !important;
 }
 
 /* Main content positioning for TOC - only for screens where TOC is shown */

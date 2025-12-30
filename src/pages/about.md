@@ -37,18 +37,18 @@ lang: "cn"
 </div>
 
 
-### 🧠 教育背景
+### 教育背景
 
 - **奥克兰大学（2023–2025）**  
-  人工智能硕士 (一等荣誉成绩)  <br />
+  一等荣誉硕士（人工智能）  <br />
   相关课程：Natural Language Processing（A），Research Methods for Engineers（A+），AI Agency - Ethics and Society（A），AI Architecture and Design（A+），Cyber Security（A+），Statistics（A+）
 
 - **西南大学（2019–2023）**  
-  计算机科学学士  <br />
+  学士（计算机科学与技术）  <br />
   获得 “2023优秀毕业论文”、"2019-2020学年度志愿服务奖"、“2019新生启航奖二等奖”等荣誉
   相关课程：数据科学导论（96），高级语言程序设计（82），C语言综合课程设计（A等：90-100），数据结构综合课程设计（96），数据库原理及应用（84），Java语言（82）
 
-### 💼 工作经历
+### 工作经历
 
 - **作业帮自然语言技术组 NLP算法工程师  📚**  
   专注于优化K-12领域的AI驱动写作解决方案。主要工作是提升多端ChatBot性能，参与了PlannerAgent、Auto-Generation等系统设计，这些模型通过缩短生成时间来简化自然语言写作任务。深入优化智能体框架，采用AutoGen、ADK以及LangGraph等策略，增强多智能体的协同工作。此外主要工作方向还包括记忆持久化、QPS优化，生成式AI工具整合等，以提高自然语言写作生成和任务自动化的效率。
@@ -59,7 +59,7 @@ lang: "cn"
 - **HOUGARDEN.COM AI开发工程师（实习） 🏠**  
   协助开发和测试机器学习模型，参与研究以提升算法效率和性能，与跨职能团队合作，将AI技术集成到产品中，分析和解读数据，优化模型表现，记录并展示研究成果和进展。
 
-### 🔍 科研与项目
+### 科研与项目
 
 - **RAG系统研究（LIU AI Lab）**  
   研究多视角检索与层次抽象方法，结合结构熵与图神经网络进行探索。
@@ -76,11 +76,11 @@ lang: "cn"
 - **AI故事书生成系统**  
   开发具备多语种TTS（语音合成）能力的多智能体系统，支持多种叙事风格与语音角色。
 
-### 🛠️ 技能清单
+### 技能清单
 
 - **编程语言：** Python、Java  
 - **技术方向：** LLM、GNN、RAG、Agentic AI、TTS  
-- **工具与库：** TensorFlow、PyTorch、HuggingFace  
+- **常用框架：** AutoGen、ADK(Google)、LangChain/LangGraph、Dify、TensorFlow
 - **语言能力：** 中文、英文（DEP 8）
 
 ---
