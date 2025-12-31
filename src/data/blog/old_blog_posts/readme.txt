@@ -1,0 +1,1 @@
+old_blog_posts为历史博客文件，均使用老的个人仓库FileBackup作为图床，后续新博客文件，图床已经切换PicX。
