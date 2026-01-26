@@ -5,7 +5,7 @@ lang: "cn"
 ---
 
 <!-- ## Hi，这里是Yarrow 👋 [English Version](/about.en) -->
-<h2>Hi, This is Yarrow 👋 <a href="/about.en">English Version</a></h2>
+<h2>Hi, This is Yarrow 👋</h2>
 
 
 <!-- 我毕业于**奥克兰大学（University of Auckland）**人工智能硕士专业，研究方向主要包括**自然语言处理（NLP）**、**RAG检索增强生成（Retrieval Augmented Generation）**、**机器学习**，并对 AI 架构和系统设计有浓厚兴趣。
@@ -54,5 +54,4 @@ lang: "cn"
 
 ---
 
-欢迎联系我进行合作、研究或技术交流：[YarrowRen@gmail.com](mailto:YarrowRen@gmail.com)  
-我的博客： [Yarrow.Ren](https://Yarrow.Ren)
+For collaboration, research, or just to connect, feel free to reach out: [YarrowRen@gmail.com](mailto:YarrowRen@gmail.com) or explore my blog at [Yarrow.Ren](https://Yarrow.Ren).
