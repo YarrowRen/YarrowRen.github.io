@@ -19,7 +19,7 @@ lang: "cn"
       NLP Algorithm Engineer<br> 
       Focusing on <strong>Natural Language Processing</strong>, 
       <strong>Retrieval-Augmented Generation (RAG)</strong>, 
-      <strong>LLMs</strong>, and <strong>multi-agent systems</strong>
+      <strong>LLMs</strong>, and <strong>Multi Agent System</strong>
     </p>
     <p class="mt-4">
       Experience in Enterprise AI Platforms, Multimodal LLM, Chatbot System, and Multi Agent System.
@@ -39,9 +39,9 @@ lang: "cn"
 ### Education
 
 - July 2023 - Sep 2025
-  - MSc in Artificial Intelligence with First Class Honours @ **University of Auckland**  
+  - MSc in AI (First Class Honours) @ **University of Auckland 🇳🇿**  
 - Sep 2019 - July 2023
-  - BSc in Computer Science @ **Southwest University**  
+  - BSc in Computer Science @ **Southwest University 🎓**  
 
 ### Work Experience
 
