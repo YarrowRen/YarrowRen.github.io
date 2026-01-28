@@ -8,98 +8,244 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: 运行在服务器端的小程序
+description: Servlet 是运行在服务器端的 Java 程序，是 Java Web 技术体系中处理请求与响应的核心组件。
 ---
 
 # Servlet
 
-### 概念
-运行在服务器端的小程序
+## 一、Servlet 概述
 
-Servlet就是一个接口，定义了Java类被浏览器访问到（tomcat识别）的规则
+### 1. 什么是 Servlet
 
-### 基本步骤
-1. 创建JavaEE项目
-2. 定义一个类，实现Servlet接口
-3. 实现接口的抽象方法
-4. 配置Servlet（在web.xml下配置）
+**Servlet** 是运行在服务器端的 Java 程序，用于接收客户端（通常是浏览器）发送的请求，并返回响应结果。
 
-#### 配置代码：
+从本质上讲：
+
+- Servlet 是一个 **Java 接口**
+- 定义了 Java 类 **如何被 Web 服务器（如 Tomcat）调用**
+- 是 Java Web 中处理 HTTP 请求的核心组件
+
+---
+
+### 2. Servlet 的作用
+
+- 接收并处理浏览器请求
+- 生成动态响应内容
+- 作为 Web 层与业务层之间的桥梁
+
+---
+
+## 二、Servlet 的基本开发步骤
+
+### 1. 开发流程
+
+1. 创建 Java Web（JavaEE）项目
+2. 定义一个类，实现 `Servlet` 接口
+3. 实现接口中的抽象方法
+4. 配置 Servlet 的访问路径（`web.xml` 或注解）
+
+---
+
+### 2. 基于 `web.xml` 的配置方式
 
 ```xml
-    <!--配置Servlet-->
-    <servlet>
-        <servlet-name>demo1</servlet-name>
-        <servlet-class>cn.ywrby.web.servlet.ServletDemo1</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>demo1</servlet-name>
-        <url-pattern>/demo1</url-pattern>
-    </servlet-mapping>
+<!-- 配置 Servlet -->
+<servlet>
+    <servlet-name>demo1</servlet-name>
+    <servlet-class>cn.ywrby.web.servlet.ServletDemo1</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>demo1</servlet-name>
+    <url-pattern>/demo1</url-pattern>
+</servlet-mapping>
+````
+
+说明：
+
+* `<servlet-class>`：Servlet 的全类名
+* `<url-pattern>`：浏览器访问路径
+
+---
+
+## 三、Servlet 执行原理
+
+当浏览器访问某个 Servlet 时，Tomcat 的处理流程如下：
+
+1. 服务器接收到客户端 HTTP 请求
+2. 解析请求 URL，获取 Servlet 访问路径
+3. 查找 `web.xml` 或注解中是否存在对应的映射
+4. 若存在：
+
+   * 加载 Servlet 的 `.class` 文件
+   * 创建 Servlet 实例（如尚未创建）
+5. 调用 Servlet 的相关方法处理请求
+
+![Servlet 执行原理](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/servlet%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86.jpg)
+
+---
+
+## 四、Servlet 的生命周期
+
+Servlet 的生命周期由 **Web 容器（Tomcat）统一管理**，主要分为三个阶段。
+
+---
+
+### 1. 创建阶段（init）
+
+* 容器调用 `init()` 方法
+* **只执行一次**
+* 通常用于：
+
+  * 加载配置文件
+  * 初始化资源（数据库连接、缓存等）
+
+#### Servlet 创建时机
+
+* **默认情况**：第一次访问 Servlet 时创建
+* **可配置为服务器启动时创建**
+
+```xml
+<load-on-startup>1</load-on-startup>
 ```
 
+* 正整数：服务器启动时创建
+* 负数或不配置：第一次访问时创建（默认 `-1`）
 
-## 执行原理
+---
 
+#### 单例特性与线程安全问题
 
-1. 当服务器接受到客户端浏览器的请求后，会解析请求URL路径,获取访问的Servlet的资源路径
-2. 查找web.xml文件,是否有对应的<url-pattern>标签体内容。
-3. 如果有，则再找到对应的<servlet-class>全类名
-4. tomcat会将字节码文件加载进内存，并且创建其对象
-5. 调用其方法
+* Servlet 在容器中 **默认是单例的**
+* 多个请求会并发访问同一个 Servlet 实例
 
-![servlet执行原理](https://raw.githubusercontent.com/YarrowRen/FileBackup/refs/heads/master/blog_img/servlet%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86.jpg)
+⚠️ 注意：
 
-## 声明周期
+* 不要在 Servlet 中定义可变的成员变量
+* 若必须定义成员变量，避免在方法中修改其值
+* 推荐将变量定义为 **方法内局部变量**
 
-### 1. 被创建时
-执行init方法，且只执行一次，一般用于加载资源
+---
 
-#### Servlet被创建的时机
-- 默认情况下，在第一次访问时被创建
-- 可以通过配置Servlet修改创建时机
-    - 配置<Servlet>标签下的<load-on-startup>标签（值为正数则在启动服务器时就被创建，值为负数，则在第一次访问时创建，默认值为-1）
+### 2. 提供服务阶段（service）
 
+* 容器每接收到一次请求，都会调用 `service()` 方法
+* 该方法 **可能被多次调用**
+* 是处理业务逻辑的核心阶段
 
-Servlet的init方法只执行一次，说明一个Servlet在内存中只存在一个对象，即Servlet是单例的。
-- 多个用户同时访问该对象时，就可能存在安全问题
-- 解决方式：尽量不再Servlet中定义成员变量，不得已定义成员变量也不要在方法中修改成员变量的值（尽量把变量定义在方法中）
+---
 
+### 3. 销毁阶段（destroy）
 
-### 2. 提供服务
+* 容器在正常关闭或卸载 Servlet 时调用 `destroy()`
+* **只执行一次**
+* 常用于：
 
-执行service方法，service方法可能被调用多次
+  * 释放资源
+  * 关闭连接
 
+⚠️ 强制关闭服务器时，`destroy()` 可能不会执行。
 
-### 3. 被销毁时
+---
 
-调用destroy方法，只在被销毁时执行一次，且必须是正常销毁，强制销毁时同样不执行。一般用于释放资源
+## 五、基于注解的 Servlet 配置（推荐）
 
+自 **Servlet 3.0** 规范起，可以使用注解方式代替 `web.xml` 配置，显著简化开发。
 
+---
 
-## 注解配置
+### 1. 注解配置步骤
 
-自Servlet3.0后，在配置时可以不必配置web.xml文件，而是采用注解配置的方式，大大降低配置注解的繁琐
+1. 创建 Servlet 3.0 以上版本的 Java Web 项目
+2. 定义类，实现 `Servlet` 接口或继承 `HttpServlet`
+3. 重写相关方法
+4. 添加 `@WebServlet` 注解
 
-### 步骤
-1. 创建JavaEE项目，选择Servlet版本在3.0以上，可以不创建web.xml
-2. 定义一个类，实现Servlet接口
-3. 复写方法
-4. 为该类添加注解，并进行配置`@WebServlet(url-pattern="资源路径")`或者省略url-pattern直接写作`@WebServlet("资源路径")`
+---
 
-一个url-pattern可以配置多个路径，例如`@WebServlet({"/demo2","/demo3"})`
-
-#### 例如
+### 2. 注解示例
 
 ```java
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.Servlet;
+
 @WebServlet("/demo1")
-public class ServletDemo1 implements Servlet {}
+public class ServletDemo1 implements Servlet {
+    // 方法实现
+}
 ```
 
-## Servlet体系结构
+---
 
-- GenericServlet：一个抽象类，实现了Servlet接口，并对除service以外的方法都做了默认的空实现，支队service方法进行了抽象。所以在定义Servlet类时，可以继承GenericServlet，只需要实现service方法即可
-- HttpServlet：继承自GenericServlet。是对Http协议的一种封装，简化操作，其内部实现了service方法的判断逻辑，在继承时只需要复写doGet和doPost方法即可
+### 3. 多路径映射
 
+```java
+@WebServlet({"/demo2", "/demo3"})
+```
 
-一般情况下我们采用继承HttpServlet并复写doGet和doPost方法的方式实现Servlet类
+---
+
+## 六、Servlet 体系结构
+
+Servlet 相关核心类结构如下：
+
+### 1. Servlet 接口
+
+* 定义 Servlet 的基本规范
+* 包含生命周期相关方法
+
+---
+
+### 2. GenericServlet（抽象类）
+
+* 实现了 `Servlet` 接口
+* 对除 `service()` 外的方法提供了默认空实现
+* 只保留 `service()` 为抽象方法
+
+> 继承该类只需实现 `service()` 方法
+
+---
+
+### 3. HttpServlet（最常用）
+
+* 继承自 `GenericServlet`
+* 封装了 HTTP 协议处理逻辑
+* 内部实现了 `service()` 方法
+* 根据请求方式分发到：
+
+  * `doGet()`
+  * `doPost()`
+
+---
+
+### 4. 推荐使用方式
+
+```java
+public class MyServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        // 处理 GET 请求
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        // 处理 POST 请求
+    }
+}
+```
+
+---
+
+## 七、小结
+
+* Servlet 是 Java Web 的核心组件
+* 负责请求接收与响应处理
+* 生命周期由容器统一管理
+* 默认单例，需注意线程安全
+* 推荐：
+
+  * 继承 `HttpServlet`
+  * 使用注解方式配置
+
+<!-- 2026.01.28由GPT5.2优化全文 -->

@@ -8,60 +8,139 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: 服务器端会话技术，再一次对话的多次请求间共享数据，数据存储在服务器端的对象中（HttpSession）
+description: Session 是一种服务器端会话技术，用于在同一次会话的多次请求之间共享数据，数据存储在服务器端的 HttpSession 对象中
 ---
 
 # Session
 
-### 概念
-服务器端会话技术，再一次对话的多次请求间共享数据，数据存储在服务器端的对象中（HttpSession）
+## Session 概念
 
-### 基本用法
+Session 是一种**服务器端会话技术**，用于在**同一次会话（一次对话）中的多次请求之间共享数据**。  
+数据存储在服务器端的 `HttpSession` 对象中，与具体客户端会话一一对应。
 
-1. 获取HttpSession对象 
+---
+
+## Session 的基本使用
+
+### 1. 获取 HttpSession 对象
+
 ```java
-HttpSession session=request.getSession();
-```
-2. 使用HttpSession对象
+HttpSession session = request.getSession();
+````
+
+* 若当前请求已有对应 Session，则返回原有 Session
+* 若不存在，则创建新的 Session 并返回
+
+---
+
+### 2. 使用 HttpSession 存取数据
+
 ```java
-//存储数据
-session.setAttribute("msg","hello_world");
-//获取数据
-Object msg=session.getAttribute("msg");
-//移除数据
+// 存储数据
+session.setAttribute("msg", "hello_world");
+
+// 获取数据
+Object msg = session.getAttribute("msg");
+
+// 移除数据
 session.removeAttribute("msg");
 ```
-### 原理
-**Session的实现依赖于Cookie**，在一次会话中，第一次请求Session的过程中，服务器端会创建一个Cookie对象，用来存储该Session的ID，并写入响应头返回到客户端，在客户端下次访问时，服务器端检测到该Cookie并读取Session的ID，就能够在浏览器端找到该Session并返回客户端
 
-### 注意
+Session 中存储的数据以 **键值对** 的形式存在，作用域为一次会话。
 
-1. 客户端关闭后，服务器端不关闭的情况下，两次获取的Session默认情况下不是同一个，也就不能共享数据（这是因为客户端关闭，代表一次会话结束，同时携带JSESSIONID的cookie也被销毁，所以Session失效）
-2. 通过创建一个同名Cookie并设置Cookie的持久化处理，可以解决上面的问题
+---
+
+## Session 工作原理
+
+Session 的实现**依赖于 Cookie**。
+
+基本流程如下：
+
+1. 客户端第一次请求服务器时：
+
+   * 服务器创建一个 `HttpSession` 对象
+   * 同时生成一个唯一的 Session ID
+2. 服务器将该 Session ID 写入名为 `JSESSIONID` 的 Cookie 中，并通过响应返回给客户端
+3. 客户端后续请求时：
+
+   * 浏览器自动携带 `JSESSIONID` Cookie
+4. 服务器根据 Cookie 中的 Session ID：
+
+   * 找到对应的 Session 对象
+   * 从中读取或写入会话数据
+
+---
+
+## Session 使用注意事项
+
+### 1. 客户端关闭的影响
+
+在**服务器未关闭**的情况下：
+
+* 浏览器关闭 → 会话结束
+* `JSESSIONID` 为会话级 Cookie，会被销毁
+* 再次访问服务器时，会创建新的 Session
+* 默认情况下无法共享原 Session 中的数据
+
+---
+
+### 2. 通过 Cookie 持久化延长 Session
+
+可以通过手动创建同名 Cookie，使 Session ID 持久化：
+
 ```java
-//获取Session
-HttpSession session=request.getSession();
-//创建JSESSIONID的Cookie 设置最大存活时间
-Cookie cookie=new Cookie("JSESSIONID",session.getId());
-cookie.setMaxAge(60*60);
+HttpSession session = request.getSession();
+
+Cookie cookie = new Cookie("JSESSIONID", session.getId());
+cookie.setMaxAge(60 * 60); // 1 小时
 response.addCookie(cookie);
-//存储数据
-session.setAttribute("msg","hello_world");
+
+session.setAttribute("msg", "hello_world");
 ```
-3. 服务器端关闭的情况下，两次获取的Session对象不是同一个，但要保证数据不丢失，所以服务器端会进行Session的钝化与活化
-    - Session的钝化：在服务器正常关闭之前，将服务器上的Session对象序列化到硬盘中
-    - Session的活化：在服务器启动后，将硬盘中的Session文件转化为内存中的Session对象
-4. Session被销毁的情况
-    - 服务器关闭
-    - session对象调用invalidate方法
-    - session默认失效时间30min
 
+这样即使关闭浏览器，只要 Cookie 未失效，仍可继续访问原 Session。
 
-### 特点
-1. session用于存储一次会话的多次请求的数据，存储在服务器端
-2. session可以存储任意类型，任意大小的数据
+---
 
-### Session与Cookie的区别
-1. Session存储数据在服务器端，Cookie在客户端
-2. Session对存储数据的类型和大小没有限制，Cookie有限制
-3. Session更安全，Cookie相对而言不安全
+### 3. 服务器重启与 Session 钝化 / 活化
+
+在服务器正常关闭的情况下：
+
+* **Session 钝化**：
+  服务器关闭前，将内存中的 Session 对象序列化保存到磁盘
+
+* **Session 活化**：
+  服务器启动后，将磁盘中的 Session 数据反序列化恢复到内存
+
+该机制用于减少服务器重启导致的会话数据丢失。
+
+---
+
+### 4. Session 被销毁的常见情况
+
+* 服务器关闭
+* 调用 `session.invalidate()`
+* Session 超过默认失效时间（一般为 30 分钟）
+
+---
+
+## Session 的特点
+
+1. 用于一次会话中多次请求之间的数据共享
+2. 数据存储在服务器端
+3. 可以存储任意 Java 对象
+4. 理论上存储大小不受严格限制（受服务器内存约束）
+
+---
+
+## Session 与 Cookie 的对比
+
+| 对比项    | Session   | Cookie |
+| ------ | --------- | ------ |
+| 数据存储位置 | 服务器端      | 客户端    |
+| 数据类型限制 | 无         | 仅字符串   |
+| 数据大小限制 | 较大（受内存限制） | 较小     |
+| 安全性    | 较高        | 相对较低   |
+| 生命周期控制 | 服务器控制     | 客户端控制  |
+
+<!-- 2026.01.28由GPT5.2优化全文 -->

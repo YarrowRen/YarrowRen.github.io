@@ -2,467 +2,352 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-27 23:10:45
 modDatetime: *id001
-title: 2-DQL数据查询语言
+title: 2-DQL 数据查询语言
 slug: 2-DQL数据查询语言
 featured: false
 draft: false
 tags:
 - MySQL
-description: '```sql'
+description: MySQL 中 DQL（数据查询语言）的核心语法，包括基础查询、条件查询与排序查询。
 ---
 
-# DQL查询语言
+# DQL（Data Query Language）数据查询语言
 
-## DQL基础查询语句--SELECT
+DQL 是 SQL 中最常用的一类语言，主要用于 **从数据库中查询数据**。其核心关键字是 `SELECT`。
+
+---
+
+## 一、DQL 基础查询（SELECT）
+
+### 1. 基本语法
 
 ```sql
-# DQL基础查询语句
+SELECT 查询列表
+FROM 表名;
+````
 
-/*
-语法：
-SELECT 查询列表 FROM 表名;
-FROM可省
+> `FROM` 子句在某些数据库中不可省略，但查询常量或表达式时可不依赖表。
 
-特点：
-1. 查询列表可以是：表中的字段，常量，表达式，函数
-2. 查询的结果是一个虚拟表格
-*/
+---
 
-# 选中指定库
+### 2. 基本特点
+
+1. 查询列表可以是：
+
+   * 表中的字段
+   * 常量
+   * 表达式
+   * 函数
+2. 查询结果是一个 **虚拟表**（结果集），不会影响原表数据
+
+---
+
+### 3. 基础示例
+
+```sql
+-- 选中指定数据库
 USE myemployees;
 
-# 查询表中的单个字段
-
+-- 查询单个字段
 SELECT last_name FROM employees;
 
-# 查询表中的多个字段，中间用逗号隔开，对顺序无要求
+-- 查询多个字段（顺序任意）
+SELECT last_name, first_name, email FROM employees;
 
-SELECT last_name,first_name,email FROM employees;
-
-# 查询所有字段
-
+-- 查询所有字段
 SELECT * FROM employees;
+```
 
-# `列名`,注意可以用反单引号标注列名（不是单引号！），主要是避免列名和关键字相同的情况
+---
 
-SELECT 
-	`salary`
-FROM
-	employees;
+### 4. 列名与反引号
 
-# 查询常量值
+当字段名与关键字冲突或包含特殊字符时，可以使用 **反引号（`）**：
 
+```sql
+SELECT `salary` FROM employees;
+```
+
+> 注意：反引号 ≠ 单引号
+
+---
+
+### 5. 查询常量、表达式和函数
+
+```sql
+-- 常量
 SELECT 100;
 SELECT 'Steven';
 
-# 查询表达式
+-- 表达式
+SELECT 98 * 10;
 
-SELECT 98*10;
-
-# 查询函数
-
+-- 函数
 SELECT VERSION();
+```
 
-# 起别名，类似定义变量名
-/*
- * 1. 便于理解
- * 2. 如果查询字段有重复情况，使用别名可以便于区分
- */
- 
- # 方式1 使用AS关键字
-SELECT 100*5 AS result;
-SELECT last_name AS 姓,first_name AS 名 FROM employees;
+---
 
-# 方式2 使用空格，别名中有特殊空格就加上双引号避免歧义
-SELECT last_name 姓,first_name 名 FROM employees;
+### 6. 起别名（AS）
 
-# 去重 利用DISTINCT关键字
+**作用：**
 
+* 提高可读性
+* 解决字段名重复问题
+
+```sql
+-- 使用 AS
+SELECT 100 * 5 AS result;
+SELECT last_name AS 姓, first_name AS 名 FROM employees;
+
+-- 省略 AS（别名包含特殊字符需加引号）
+SELECT last_name 姓, first_name 名 FROM employees;
+```
+
+---
+
+### 7. 去重（DISTINCT）
+
+```sql
 SELECT DISTINCT department_id FROM employees;
-
-# +号的作用
-
-/*
- * 在sql语言中+号只有一个功能就是作为运算符，不具备连接两个字段的能力
- * 两个操作数都为数值型可以用来作运算
- * 其中一方为字符型，首先会试图将字符型转换为数值型，转换成功继续运算，转换失败，则将字符型转换为0
- * 如果一方为null，则结果必为null
- */
- 
- 
-# 加入想要拼接两个字段，需要采用concat()方法
-SELECT CONCAT(last_name,' ',first_name) AS 姓名 FROM employees;
 ```
 
+---
 
-### DQL条件查询语句
+### 8. `+` 号的注意事项（MySQL）
+
+在 SQL 中，`+` **仅表示数值运算**，不能用于字符串拼接：
 
 ```sql
-# DQL条件查询语句
-
-/*
-语法：
-
-	SELECT
-			查询列表
-	FROM
-			表名
-	WHERE
-			筛选条件
-
-注意：
-这里语句的执行顺序与我们直观上的书写顺序并不一致
-在上面的语句中首先执行FROM语句获取读取的表
-然后执行WHERE语句，确定筛选的条件，最后才执行SELECT语句进行查询
-
-分类：
-1. 利用条件表达式筛选：基本的条件运算符有>,<,=,!=,<>,>=,<=  (!=和<>是等价的，但推荐采用<>表示不等)
-2. 按逻辑表达式查询：逻辑运算符有： &&,||,!,AND,OR,NOT  (推荐采用后三种)
-3. 模糊查询：关键词有：LIKE,BETWEEN AND,IN,IS NULL
-*/
-
-
-# 按条件表达式进行筛选
-
-# 筛选工资大于12000的人
-SELECT
-	* 
-FROM
-	employees
-WHERE
-	salary>12000;
-	
-# 查询部门编号不等于90号的员工姓名和部门编号
-SELECT
-	CONCAT(first_name,' ',last_name) 姓名,department_id 部门编号
-FROM
-	employees
-WHERE
-	department_id<>90;
-	
-
-
-# 按逻辑表达式筛选
-
-# 查询工资再10000-20000之间的员工部分信息
-SELECT
-	first_name,
-	last_name,
-	salary,
-	commission_pct 
-FROM
-	employees 
-WHERE
-	salary > 10000 AND salary < 20000;
-	
-# 查询工资高于15000，或者部门编号不为90的员工
-SELECT
-	last_name,
-	salary,
-	department_id
-FROM 
-	employees
-WHERE
-	salary>15000 OR department_id<>90;
-	
-	
-
-
-# 模糊查询
-
-/*
- like:和通配符搭配使用
- 通配符包括：
- %：任意多个字符，包含0个字符
- _：任意单个字符
- */
- 
- 
- SELECT
-	last_name,
-	salary
-FROM
-	employees
-WHERE
-	last_name LIKE '_o__h%';
-	
-#假设要查询的内容中包含通配符，可以用转义字符解释内容,或用转义关键字
-SELECT
-	last_name,
-	job_id,
-	salary
-FROM
-	employees
-WHERE
-	job_id LIKE '__\_%';
-	
-SELECT
-	last_name,
-	job_id,
-	salary
-FROM
-	employees
-WHERE
-	job_id LIKE '__$_%' ESCAPE '$';
-	
-	
-	
-/*
-BETWEEN AND
-在。。。之间
-使用BETWEEN AND可以提高语句简介程度
-搜索结果包含两个端点值
-两个临界值顺序不可以颠倒
-
-BETWEEN AND实际等价于a<=X<=b,所以顺序不可颠倒
-*/
-
-#查询员工号在100-120之间
-SELECT
-	*
-FROM
-	employees
-WHERE
-	employee_id BETWEEN 100 AND 120;
-
-
-/*
-IN 关键字
-判断某字段的值是否属于in列表中的某一项
-
-使用in提高语句整洁度
-in列表中的值必须是同一类型或相互兼容
-in列表中不支持通配符
-
-IN实际等价于X=a OR X=b or X=c,但是通配符在like关键字下使用
-所以IN列表中不允许出现通配符
-*/
-
-SELECT
-	last_name,
-	job_id
-FROM
-	employees
-WHERE
-	job_id IN('IT_PROG','AD_VP','AD_PRES');
-	
-	
-	
-/*
-IS NULL关键字  (IS NOT NULL)
-判断是否为NULL值
-
-(在SQL语言中＝号或者<>不能判断是否为NULL值)
-*/
-
-SELECT
-	last_name,
-	commission_pct
-FROM
-	employees
-WHERE
-	commission_pct IS NULL;
-	
-
-
-/*
-安全等与 <=>
-安全等于可以用来判断NULL值，也可以用来判断普通类型的值
-缺点是可读性较低
-*/
-
-
-SELECT
-	last_name,
-	commission_pct,
-	job_id
-FROM
-	employees
-WHERE
-	job_id <=> 'SA_REP' OR commission_pct <=> NULL;
-	
+-- 字符串拼接应使用 CONCAT
+SELECT CONCAT(last_name, ' ', first_name) AS 姓名 FROM employees;
 ```
 
+`+` 的规则：
 
-### DQL排序查询语句
+* 两边都是数字：数值运算
+* 字符串可转数字：转为数字再运算
+* 转换失败：按 0 处理
+* 任一为 `NULL`：结果为 `NULL`
+
+---
+
+## 二、DQL 条件查询（WHERE）
+
+### 1. 基本语法
 
 ```sql
-# DQL排序查询语句
+SELECT 查询列表
+FROM 表名
+WHERE 筛选条件;
+```
 
+**执行顺序：**
 
-/*
-语法：(【】表示可省)
-SELECT
-	查询列表
-FROM
-	表名
-【WHERE 筛选条件】
-ORDER BY
-	排序列表 【asc|desc】
+1. `FROM`
+2. `WHERE`
+3. `SELECT`
 
+---
+
+### 2. 条件分类
+
+#### （1）条件表达式
+
+运算符：
+`> < = != <> >= <=`
+（推荐使用 `<>` 表示不等）
+
+```sql
+-- 工资大于 12000
+SELECT * FROM employees WHERE salary > 12000;
+
+-- 部门编号不等于 90
+SELECT CONCAT(first_name,' ',last_name) 姓名, department_id
+FROM employees
+WHERE department_id <> 90;
+```
+
+---
+
+#### （2）逻辑运算符
+
+* `AND`（与）
+* `OR`（或）
+* `NOT`（非）
+
+```sql
+-- 工资在 10000 到 20000 之间
+SELECT first_name, last_name, salary
+FROM employees
+WHERE salary > 10000 AND salary < 20000;
+
+-- 工资高于 15000 或部门不为 90
+SELECT last_name, salary, department_id
+FROM employees
+WHERE salary > 15000 OR department_id <> 90;
+```
+
+---
+
+#### （3）模糊查询
+
+##### LIKE + 通配符
+
+* `%`：任意多个字符（含 0 个）
+* `_`：任意单个字符
+
+```sql
+SELECT last_name, salary
+FROM employees
+WHERE last_name LIKE '_o__h%';
+```
+
+**转义通配符：**
+
+```sql
+-- 使用反斜杠
+SELECT * FROM employees
+WHERE job_id LIKE '__\_%';
+
+-- 使用 ESCAPE
+SELECT * FROM employees
+WHERE job_id LIKE '__$_%' ESCAPE '$';
+```
+
+---
+
+##### BETWEEN AND
+
+* 包含边界值
+* 顺序不可颠倒
+
+```sql
+SELECT *
+FROM employees
+WHERE employee_id BETWEEN 100 AND 120;
+```
+
+---
+
+##### IN
+
+```sql
+SELECT last_name, job_id
+FROM employees
+WHERE job_id IN ('IT_PROG', 'AD_VP', 'AD_PRES');
+```
 
 特点：
-ASC代表升序，DESC代表降序。不写的情况下默认升序
-ORDER BY字句一般放在整个查询语句的最后（LIMIT字句除外）
-*/
 
-# 工资由高到低排序
-SELECT
-	*
-FROM
-	employees
-ORDER BY
-	salary DESC;
-	
-# 由低到高
-SELECT * FROM employees ORDER BY salary ASC;
+* 等价于多个 `OR`
+* 列表元素类型需兼容
+* 不支持通配符
 
+---
 
-# 排序+筛选  查询部门编号>=90的员工信息，按入职时间的先后进行排序
-SELECT
-	last_name,
-	department_id,
-	hiredate 
-FROM
-	employees 
-WHERE
-	department_id >= 90 
-ORDER BY
-	hiredate;
-	
-
-# 按表达式排序  年薪降序
-
-SELECT 
-	last_name,
-	salary*12*(1+IFNULL(commission_pct,0)) 年薪
-FROM
-	employees
-ORDER BY
-	salary*12*(1+IFNULL(commission_pct,0)) DESC ;
-
-# 用别名排序
-SELECT 
-	last_name,
-	salary*12*(1+IFNULL(commission_pct,0)) 年薪
-FROM
-	employees
-ORDER BY
-	年薪 DESC ;
-
-# 用函数排序
-SELECT 
-	last_name,
-	salary,
-	LENGTH(last_name) AS 长度
-FROM
-	employees
-ORDER BY
-	LENGTH(last_name) ;
-
-
-# 按多个字段排序
-# 先按工资升序，再按员工编号降序
-
-SELECT
-	last_name,
-	salary,
-	employee_id
-FROM
-	employees
-ORDER BY
-	salary ASC,
-	employee_id DESC;
-```
-
-
-### 排序查询
+##### IS NULL / IS NOT NULL
 
 ```sql
-# DQL排序查询语句
-
-
-/*
-语法：(【】表示可省)
-SELECT
-	查询列表
-FROM
-	表名
-【WHERE 筛选条件】
-ORDER BY
-	排序列表 【asc|desc】
-
-
-特点：
-ASC代表升序，DESC代表降序。不写的情况下默认升序
-ORDER BY字句一般放在整个查询语句的最后（LIMIT字句除外）
-*/
-
-# 工资由高到低排序
-SELECT
-	*
-FROM
-	employees
-ORDER BY
-	salary DESC;
-	
-# 由低到高
-SELECT * FROM employees ORDER BY salary ASC;
-
-
-# 排序+筛选  查询部门编号>=90的员工信息，按入职时间的先后进行排序
-SELECT
-	last_name,
-	department_id,
-	hiredate 
-FROM
-	employees 
-WHERE
-	department_id >= 90 
-ORDER BY
-	hiredate;
-	
-
-# 按表达式排序  年薪降序
-
-SELECT 
-	last_name,
-	salary*12*(1+IFNULL(commission_pct,0)) 年薪
-FROM
-	employees
-ORDER BY
-	salary*12*(1+IFNULL(commission_pct,0)) DESC ;
-
-# 用别名排序
-SELECT 
-	last_name,
-	salary*12*(1+IFNULL(commission_pct,0)) 年薪
-FROM
-	employees
-ORDER BY
-	年薪 DESC ;
-
-# 用函数排序
-SELECT 
-	last_name,
-	salary,
-	LENGTH(last_name) AS 长度
-FROM
-	employees
-ORDER BY
-	LENGTH(last_name) ;
-
-
-# 按多个字段排序
-# 先按工资升序，再按员工编号降序
-
-SELECT
-	last_name,
-	salary,
-	employee_id
-FROM
-	employees
-ORDER BY
-	salary ASC,
-	employee_id DESC;
+SELECT last_name, commission_pct
+FROM employees
+WHERE commission_pct IS NULL;
 ```
+
+> `=` 和 `<>` **不能用于判断 NULL**
+
+---
+
+##### 安全等于 `<=>`
+
+```sql
+SELECT last_name, commission_pct, job_id
+FROM employees
+WHERE job_id <=> 'SA_REP'
+   OR commission_pct <=> NULL;
+```
+
+> 可判断 `NULL`，但可读性较差，不推荐频繁使用
+
+---
+
+## 三、DQL 排序查询（ORDER BY）
+
+### 1. 基本语法
+
+```sql
+SELECT 查询列表
+FROM 表名
+[WHERE 筛选条件]
+ORDER BY 排序字段 [ASC | DESC];
+```
+
+说明：
+
+* `ASC`：升序（默认）
+* `DESC`：降序
+* `ORDER BY` 通常位于语句末尾（`LIMIT` 除外）
+
+---
+
+### 2. 排序示例
+
+```sql
+-- 工资降序
+SELECT * FROM employees ORDER BY salary DESC;
+
+-- 工资升序
+SELECT * FROM employees ORDER BY salary ASC;
+```
+
+---
+
+### 3. 排序 + 条件
+
+```sql
+SELECT last_name, department_id, hiredate
+FROM employees
+WHERE department_id >= 90
+ORDER BY hiredate;
+```
+
+---
+
+### 4. 按表达式、别名和函数排序
+
+```sql
+-- 按年薪排序
+SELECT last_name,
+       salary * 12 * (1 + IFNULL(commission_pct, 0)) AS 年薪
+FROM employees
+ORDER BY 年薪 DESC;
+
+-- 按函数排序
+SELECT last_name, salary, LENGTH(last_name) AS 长度
+FROM employees
+ORDER BY LENGTH(last_name);
+```
+
+---
+
+### 5. 多字段排序
+
+```sql
+-- 先按工资升序，再按员工编号降序
+SELECT last_name, salary, employee_id
+FROM employees
+ORDER BY salary ASC, employee_id DESC;
+```
+
+---
+
+## 四、小结
+
+* DQL 是 SQL 中最核心、使用最频繁的部分
+* 核心关键字：`SELECT`
+* 常见子句：
+
+  * `WHERE`：条件筛选
+  * `ORDER BY`：排序
+
+<!-- 2026.01.28由GPT5.2优化全文 -->
