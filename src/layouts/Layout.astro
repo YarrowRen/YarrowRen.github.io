@@ -24,13 +24,13 @@ const {
   profile = SITE.profile,
   description = SITE.desc,
   ogImage = SITE.ogImage ? `/${SITE.ogImage}` : "/og.png",
-  canonicalURL = new URL(Astro.url.pathname, Astro.url),
+  canonicalURL = new URL(Astro.url.pathname, SITE.website),
   pubDatetime,
   modDatetime,
   scrollSmooth = false,
 } = Astro.props;
 
-const socialImageURL = new URL(ogImage, Astro.url);
+const socialImageURL = new URL(ogImage, SITE.website);
 
 const structuredData = pubDatetime ? {
   "@context": "https://schema.org",
@@ -55,7 +55,7 @@ const structuredData = pubDatetime ? {
     name: `${author}`,
     logo: {
       "@type": "ImageObject",
-      url: `${new URL("/favicon.svg", Astro.url)}`
+      url: `${new URL("/favicon.svg", SITE.website)}`
     }
   },
   mainEntityOfPage: {
