@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - SpringMVC
-description: 直接返回字符串，此种方法会将返回的字符串与视图解析器的前后缀拼接后进行页面跳转
+description: 介绍SpringMVC中页面跳转与数据响应的实现方式，包括通过字符串和ModelAndView对象进行页面跳转，以及使用@ResponseBody注解和HttpServletResponse对象进行数据回写。
 ---
 
 # SpringMVC的数据响应

@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Java
-description: 指多个线程访问共享变量，会出现一个线程修改变量的值后，其他线程看不到最新值的情况
+description: 多线程编程中，线程间共享变量可能出现不可见性问题。本文解释了Java内存模型（JMM）如何导致此现象，并提供加锁和使用volatile关键字作为解决方案。
 ---
 
 ### 并发编程下，多线程访问变量的不可见性问题

@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: 代表整个web应用，可以和程序的容器进行通信
+description: ServletContext对象用于代表整个Web应用，可通过request或HttpServlet获取。支持获取MIME类型、共享数据及获取文件在服务器上的真实路径，适用于所有用户请求的数据管理。
 ---
 
 # ServletContext对象

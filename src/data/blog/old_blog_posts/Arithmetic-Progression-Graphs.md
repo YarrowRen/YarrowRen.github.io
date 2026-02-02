@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - 算法
-description: 算术级数图（Arithmetic Progression Graphs, APG）是一类顶点权重满足等差数列约束、边权满足特定加和关系的加权图模型
+description: 算术级数图(APG)结合等差数列与图论，通过顶点权重与边权和的匹配，研究边权分配的可行性及其算法判定问题。
 ---
 
 # Arithmetic Progression Graphs

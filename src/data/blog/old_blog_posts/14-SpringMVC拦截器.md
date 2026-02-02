@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - SpringMVC
-description: SpringMVC中的拦截器作用类似Servlet中的[Filter]([djsis.com](http://localhost:4000/2021/03/03/19-Filter%E8%BF%87%E6%BB%A4%E5%99%A8/))，用于对处理器进行预处理与后处理
+description: SpringMVC拦截器用于对控制器方法进行预处理与后处理，与Servlet过滤器不同，拦截器仅针对SpringMVC框架内的方法。本文介绍了拦截器的创建、配置及测试。
 ---
 
 # SpringMVC拦截器(Interceptor)

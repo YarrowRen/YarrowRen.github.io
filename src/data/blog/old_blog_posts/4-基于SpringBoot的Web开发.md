@@ -11,7 +11,7 @@ tags:
 - SpringBoot
 - SpringMVC
 - MyBatis
-description: SpringBoot项目中的静态资源有两种访问方式
+description: SpringBoot Web开发流程详解，涵盖静态资源访问、首页与图标定制、Thymeleaf模板引擎使用及基本语法，以及SpringMVC拦截器的整合。
 ---
 
 # 基于SpringBoot的Web开发流程

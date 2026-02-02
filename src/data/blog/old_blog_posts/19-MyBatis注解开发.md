@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - MyBatis
-description: MyBatis同时支持注解开发模式，在面对简单的配置时，注解开发可以明显的减轻开发难度
+description: MyBatis注解开发简化了简单配置，通过@Insert、@Update等注解实现增删改查操作，并支持一对一、一对多模型的结果集封装。
 ---
 
 # MyBatis注解开发

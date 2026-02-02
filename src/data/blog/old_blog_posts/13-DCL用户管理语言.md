@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - MySQL
-description: MySQL 中的 DCL（Data Control Language）主要用于用户管理与权限控制，包括用户的创建、删除、密码修改以及权限的授予与回收。
+description: DCL 在 MySQL 中用于管理用户与权限，涉及创建、修改、删除用户和权限授予与撤销，确保数据库安全。
 ---
 
 # DCL —— 用户管理语言（MySQL）

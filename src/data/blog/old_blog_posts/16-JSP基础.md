@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Java Server Pages（JSP）基础：概念、运行原理、脚本元素、指令与内置对象
+description: JSP是一种服务器端技术，简化了Servlet中的HTML代码书写，支持动态Web内容生成。本文介绍JSP运行原理、脚本元素、内置对象及指令配置，帮助开发者高效构建Web应用。
 ---
 
 # JSP 基础

@@ -1,6 +1,6 @@
 ---
 title: "Dify-API(V1)具体实现方式"
-description: "解析 Dify 在接入外部大语言模型（LLM）时 /v1/chat-messages API 的整体执行流程，包括请求生命周期、Token 鉴权机制、任务执行线程模型、流程图调度、流式响应设计以及多线程并发控制策略"
+description: 探讨接入层Token解密与Workflow执行的进程模型、并发机制及负载均衡策略，解析Dify在API层的运行细节与性能特性。
 pubDatetime: 2025-05-25T23:38:21.383Z
 modDatetime: 2025-05-25T23:38:21.383Z
 author: "Boyu Ren"

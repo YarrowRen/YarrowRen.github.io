@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Listener 是 Java Web 中基于事件驱动模型的一种组件，用于监听对象生命周期或属性变化
+description: Listener是一种基于事件驱动模型的Java Web组件，用于监听事件源的状态变化，实现解耦设计。文章详细介绍了ServletContextListener的用法、配置方式及应用场景，包括Web应用启动与关闭、资源管理、生命周期监听等。
 ---
 
 # Listener 监听器

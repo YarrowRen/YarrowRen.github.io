@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Docker
-description: Linux文件系统由bootfs与rootfs两部分构成
+description: 深入解析Docker镜像的构成与原理，介绍如何通过容器转换与Dockerfile构建镜像，并提供自定义CentOS7镜像的实用案例。
 ---
 
 # Dockerfile

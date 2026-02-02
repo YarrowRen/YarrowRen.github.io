@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Java
-description: 没有名字的局部内部类，匿名内部类的目的是为了简化代码。
+description: 探讨匿名内部类和Lambda表达式在Java中的使用，简化代码写法，展示通过实例说明如何重写抽象方法并优化匿名内部类的使用。
 ---
 
 # 匿名内部类

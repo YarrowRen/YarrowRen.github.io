@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: 定义了客户端和服务器端通信时，发送数据的格式
+description: 解析HTTP协议，包括请求和响应的格式、状态码分类及其特点，探讨如何捕获本地HTTP报文并使用Wireshark进行分析。
 ---
 
 # Http协议，超文本传输协议

@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - MyBatis
-description: 可以看到，在之前的映射文件中，所有sql语句都是写死的，并不会根据我传入参数的不同进行区分，但在实际开发过程中，可能需要执行sql语句查询前先进行逻辑判断或其他操作，对参数进行简单的判断
+description: 探讨MyBatis映射文件中的动态SQL实现，包括if标签和foreach标签的使用，以便根据输入参数动态构建查询语句。
 ---
 
 # MyBatis映射文件深入

@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: Spring是轻代码而重配置的框架，一般情况下，配置比较繁重，影响开发效率，所以注解开发是一种必然趋势，注解代替XML配置文件可以简化配置，提高开发效率
+description: Spring注解开发通过使用注解替代XML配置文件，简化配置过程，提高开发效率。文章详细介绍了常用Spring注解及其用途，并比较了注解与传统XML配置的应用方式。
 ---
 
 # Spring注解开发

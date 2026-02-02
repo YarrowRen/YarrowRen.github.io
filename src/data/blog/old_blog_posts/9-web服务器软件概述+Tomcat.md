@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Web 服务器软件的基本概念、常见 Java Web 服务器对比，以及 Tomcat 的安装、使用与项目部署方式。
+description: 概述Web服务器软件及其功能，重点介绍Tomcat的特点、安装、使用及项目部署方式，提供Java Web项目开发的关键指导。
 ---
 
 # Web 服务器软件概述与 Tomcat

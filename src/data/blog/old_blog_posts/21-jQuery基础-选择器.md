@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: jQuery 是一个轻量级的 JavaScript 框架，提供了简洁统一的 API，用于 DOM 操作、事件处理、动画效果和 Ajax 开发
+description: jQuery 是一个开源 JavaScript 框架，旨在简化 DOM 操作、事件处理、CSS 控制及 Ajax 请求，通过统一选择器机制实现高效开发。
 ---
 
 # jQuery 基础

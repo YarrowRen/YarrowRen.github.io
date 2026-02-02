@@ -9,7 +9,7 @@ draft: false
 tags:
 - 网络安全
 - 计算机安全
-description: '- Understand computer security'
+description: 解析OSI安全架构中的攻击、服务和机制，探讨计算机与网络安全的核心概念及其在人类因素中的应用。
 ---
 
 # Lectrue 3

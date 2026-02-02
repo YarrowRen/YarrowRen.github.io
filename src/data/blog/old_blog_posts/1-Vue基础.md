@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Vue
-description: '> Vue.js是一套构建用户界面的渐进式框架。Vue只关注视图层，采用自底向上增量开发的设计。Vue的目标是通过尽可能简单的API实现响应的数据绑定和组合的视图组件。'
+description: 介绍Vue.js基础知识，包括Vue实例的创建、el挂载点的使用，以及data数据对象的定义和渲染方法。
 ---
 
 # Vue基础

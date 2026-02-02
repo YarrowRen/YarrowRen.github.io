@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: AOP是Aspect Oriented Programing(面向切面编程)的缩写，是通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。
+description: 面向切面编程（AOP）通过动态代理技术增强程序功能，降低耦合度，提高代码复用性和开发效率，是Spring框架的重要组成部分。
 ---
 
 # AOP-面向切面编程

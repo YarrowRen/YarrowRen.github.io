@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: 是Spring框架中的一个对象，是对原始繁琐JDBC API的封装
+description: Spring框架中的JDBCTemplate简化JDBC操作，通过配置Spring环境和数据源，快速实现数据库访问和操作。
 ---
 
 # JDBCTemplate

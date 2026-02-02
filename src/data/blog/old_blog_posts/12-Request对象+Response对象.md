@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: '- request对象和response对象是由服务器创建的，供程序员使用的对象'
+description: 服务器创建的Request对象用于获取请求信息，涵盖请求行、请求头和请求体的数据获取方法及代码示例，帮助程序员理解浏览器与服务器的交互细节。
 ---
 
 # Request对象

@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: jQuery 在 DOM 操作、动画、遍历与事件处理方面提供了更加丰富且一致的 API
+description: 详细介绍了jQuery的DOM操作、动画效果、遍历及事件绑定方法，包括常用函数如`html()`、`append()`、`show()`等，帮助开发者有效操作网页元素。
 ---
 
 # jQuery 中的 DOM 操作

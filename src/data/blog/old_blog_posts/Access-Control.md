@@ -9,7 +9,7 @@ draft: false
 tags:
 - 网络安全
 - 计算机安全
-description: '向系统实体授予权利或权限以提供对特定资源的访问的过程，也称访问控制（Access Control）'
+description: 介绍访问控制的核心要求、组件和系统，探讨自主访问控制和基于角色的访问控制模型的应用和特点。
 ---
 
 # FOCUS OF THIS LECTURE

@@ -9,7 +9,7 @@ draft: false
 tags:
 - 网络安全
 - 计算机安全
-description: 'GDPR (General Data Protection Regulation) 是欧盟关于数据保护的法规，它协调了整个欧盟的数据隐私法，保护并增强了欧盟公民的数据隐私，重塑了欧盟处理数据隐私的方式。'
+description: 欧盟的GDPR法规取代了DPD，全面保护欧盟公民个人数据隐私，扩展数据定义，强调合法性、透明性和数据最小化，适用范围广泛，包含严格的处罚和数据主体权利。
 ---
 
 # DPD

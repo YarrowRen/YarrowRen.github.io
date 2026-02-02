@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - MySQL
-description: 将一组逻辑语句封装在方法体内，对外暴露方法名
+description: SQL函数是将逻辑语句封装为方法，提供字符、数学、日期等多种函数类型，简化代码并提高重用性。本文介绍了单行函数、分组函数及流程控制函数的应用及调用语法。
 ---
 
 # SQL语言--函数

@@ -9,7 +9,7 @@ draft: false
 tags:
 - SpringBoot
 - Spring
-description: '> SpringBoot是由Pivotal团队在2013年开始研发、2014年4月发布第一个版本的全新开源的轻量级框架。它基于Spring4.0设计，不仅继承了Spring框架原有的优秀特性，而且还通过简化配置来进一步简化了Spring应用的整个搭建和开发过程。另外SpringBoot通过集成大量的框架使得依赖包的版本冲突，以及引用的不稳定性等问题得到了很好的解决。'
+description: SpringBoot概述：轻量级框架，简化配置和开发过程，支持自动配置和独立应用创建，内嵌Servlet容器，提供多种开发工具集成。
 ---
 
 # SpringBoot基础

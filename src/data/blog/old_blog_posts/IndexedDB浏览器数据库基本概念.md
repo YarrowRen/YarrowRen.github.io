@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - IndexedDB
-description: IndexedDB 是浏览器提供的一种低层次、基于事务的本地数据库，用于在客户端持久化存储结构化数据
+description: IndexedDB 是浏览器内置的本地数据库，适合复杂数据场景。文章介绍其基本概念、数据库创建与升级流程，并通过 Vue 示例演示 CRUD 操作。
 ---
 
 参考文档：  

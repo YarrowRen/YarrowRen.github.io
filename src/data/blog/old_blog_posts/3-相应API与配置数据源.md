@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: '- ClassPathXmlApplicationContext:从类的根路径下加载配置文件（即resources文件夹中）一般情况下都使用这种'
+description: 介绍Spring框架的API使用，包括ApplicationContext的实现类和getBean方法，以及如何通过Spring配置数据源以提高程序性能和简化数据源创建流程。
 ---
 
 # Spring相应API 

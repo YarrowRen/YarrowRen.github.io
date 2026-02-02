@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - MySQL
-description: '> 关系代数是一种抽象的查询语言，用对关系的运算来表达查询，作为研究关系数据语言的数学工具。关系代数的运算对象是关系（集合），运算结果亦为关系（集合）。'
+description: 关系代数通过集合运算与专门关系运算表达查询，涵盖并、交、差、笛卡尔积、选择和投影等操作，优化数据查询与处理。
 ---
 
 # 关系代数Relation Algebra

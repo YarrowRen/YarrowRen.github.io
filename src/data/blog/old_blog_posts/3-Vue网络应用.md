@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Vue
-description: axios是一款易用、简洁且高效的http库，是一个可以用在浏览器和Node.js中的
+description: 介绍了Vue网络应用中使用axios实现Ajax异步通信的基本方法与功能特点，并详述Vue实例生命周期及其钩子函数的应用。
 ---
 
 # Vue网络应用

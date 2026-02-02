@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: 用于配置对象交由Spring来创建，默认情况下调用的是类中的无参构造函数，没有无参构造的情况下不能创建成功
+description: 介绍Spring配置文件中Bean标签的基本配置、范围配置及生命周期设置，详述singleton和prototype的区别，并探讨依赖注入的概念及其实现方式，包括set方法注入和构造函数注入，强调依赖注入在降低代码耦合度方面的重要性。
 ---
 
 # Spring配置文件

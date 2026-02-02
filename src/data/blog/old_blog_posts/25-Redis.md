@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Redis是一款高性能的NoSQL系列的非关系型的数据库
+description: Redis是一种高性能的NoSQL数据库，以键值对形式存储数据于内存。文章介绍了Redis的数据结构、命令操作及持久化机制，涵盖RDB和AOF两种方案。
 ---
 
 # Redis

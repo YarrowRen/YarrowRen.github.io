@@ -10,7 +10,7 @@ tags:
 - tio
 - P2P
 - 区块链
-description: ''
+description: 基于tio网络框架实现P2P网络结构，涵盖依赖导入、数据包设计及服务器处理逻辑的详细实现步骤。
 ---
 
 # 基于tio实现P2P网络结构

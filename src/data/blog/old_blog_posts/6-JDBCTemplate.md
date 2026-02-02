@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Spring JDBC是Spring框架对JDBC的简单封装，其中提供了JDBCTemplate对象简化JDBC开发
+description: Spring JDBC通过JDBCTemplate简化数据库操作，支持CRUD功能和数据封装。介绍其使用步骤及方法实现，包括update、query、queryForMap、queryForList等。
 ---
 
 # JDBCTemplate

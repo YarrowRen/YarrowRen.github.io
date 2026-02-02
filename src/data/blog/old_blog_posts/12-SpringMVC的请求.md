@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - SpringMVC
-description: 客户端请求参数的格式：name=value&name=value...
+description: SpringMVC通过自动映射请求参数，支持基本类型、POJO、数组及集合参数的获取，实现简便的参数处理与封装。
 ---
 
 # SpringMVC的请求

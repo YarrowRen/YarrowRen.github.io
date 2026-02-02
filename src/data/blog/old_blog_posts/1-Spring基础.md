@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: Spring 是一个以 IoC 和 AOP 为核心的轻量级 Java 企业级开发框架，覆盖表现层、业务层和持久层。
+description: Spring 是一个分层的 Java 应用开发框架，支持 IoC 和 AOP，简化开发过程，提升代码质量，并易于整合第三方框架，降低 Java EE API 的使用复杂度。
 ---
 
 # Spring 基础

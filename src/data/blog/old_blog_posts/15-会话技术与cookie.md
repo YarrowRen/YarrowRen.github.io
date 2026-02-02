@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: 一次会话中包含多次请求和相应，浏览器第一次给服务器资源发送请求，会话建立，直到有一方断开为止，会话结束
+description: 介绍会话技术中的Cookie概念与实现，涵盖Cookie创建、发送、接收过程及其应用和注意事项，适用于客户端数据存储与身份识别。
 ---
 
 # 会话技术

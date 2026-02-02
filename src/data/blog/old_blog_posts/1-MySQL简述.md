@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - MySQL
-description: '> 数据库是“按照数据结构来组织、存储和管理数据的仓库”。是一个长期存储在计算机内的、有组织的、可共享的、统一管理的大量数据的集合。'
+description: 概述MySQL数据库的基本概念和优点，介绍数据库及管理系统的特点，并提供基本操作语法和常见命令使用指南。
 ---
 
 # MySQL简述

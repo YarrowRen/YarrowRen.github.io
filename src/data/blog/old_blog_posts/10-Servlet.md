@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Servlet 是运行在服务器端的 Java 程序，是 Java Web 技术体系中处理请求与响应的核心组件。
+description: Servlet 是服务器端 Java 程序，用于处理客户端请求并生成动态响应内容，本文介绍其开发步骤、执行原理、生命周期及注解配置方法。
 ---
 
 # Servlet

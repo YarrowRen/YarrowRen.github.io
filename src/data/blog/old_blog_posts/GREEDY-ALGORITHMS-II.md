@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - 算法
-description: '贪心算法（Greedy Algorithm）是一种常见的优化算法，用于解决一类最优化问题。在每一步选择中，贪心算法总是选择当前看起来最优的选择，而不考虑该选择会不会影响未来的选择。这种贪心选择的策略通常是局部最优的，但不一定是全局最优的。'
+description: Dijkstra算法是一种用于计算单源最短路径的经典方法，适用于无负权边的带权图。通过不断扩展最短路径，更新距离数组，确保最优解的正确性。
 ---
 
 # Dijkstra's algorithm

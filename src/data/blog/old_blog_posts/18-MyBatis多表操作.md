@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - MyBatis
-description: 以用户-订单模型为例，假定用户与订单之间是一一对应的关系，建立如下数据库
+description: MyBatis多表操作指南，涵盖一对一查询模型的实现，包括数据库设计、Java类定义、Mapper接口及XML映射配置，重点在于resultMap配置与对象关系映射。
 ---
 
 # MyBatis多表操作

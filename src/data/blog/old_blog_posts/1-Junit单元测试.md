@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: JUnit 单元测试基础，涵盖测试分类、JUnit 白盒测试流程以及常用注解与断言示例。
+description: 介绍JUnit在Java语言中作为单元测试框架的应用，重点说明白盒测试的步骤、方法定义及断言结果判定，并提供计算器类的测试示例。
 ---
 
 # JUnit 单元测试

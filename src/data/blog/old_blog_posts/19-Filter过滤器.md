@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: 当访问服务器资源时，过滤器可以将请求提前拦截下来，完成一些特殊的操作。一般用于完成通用操作（检查是否登录，统一编码处理，敏感词汇处理等...）
+description: 介绍Java Web过滤器的功能及实现步骤，包括如何通过注解和web.xml配置拦截路径。详细说明过滤器执行流程、拦截路径的写法及拦截方式配置。
 ---
 
 # Filter

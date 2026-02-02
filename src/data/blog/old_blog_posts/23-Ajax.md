@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: '异步和同步: 客户端和服务器端相互通信的基础上'
+description: 介绍AJAX技术如何通过异步请求更新网页内容，提升用户体验。涵盖原生JS及jQuery实现异步操作的具体示例。
 ---
 
 # AJAX

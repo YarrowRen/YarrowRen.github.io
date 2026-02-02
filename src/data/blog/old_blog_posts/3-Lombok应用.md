@@ -10,7 +10,7 @@ tags:
 - Spring
 - SpringBoot
 - Lombok
-description: 在SpringBoot中整合SSM项目的过程中，不可避免的涉及对数据库的操作，既然有对数据库的操作就必然包括依据数据库结构创建POJO，而POJO创建过程重复度高，并且使得代码看起来冗杂，这种情况下可以通过使用Lombok插件，通过注解的方式，简化POJO的创建过程
+description: 简化SpringBoot SSM项目的POJO创建，通过Lombok插件及注解，降低重复性，提升代码可读性和效率。
 ---
 
 # Lombok应用

@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - MySQL
-description: '**Transaction Control Language 事务控制语言**'
+description: TCL事务控制语言通过ACID特性确保数据库事务的原子性、一致性、隔离性和持久性，详细介绍了事务的创建、存储引擎及四种隔离级别应对并发问题。
 ---
 
 # TCL语言 事务控制语言

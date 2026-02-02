@@ -9,7 +9,7 @@ draft: false
 tags:
 - 网络安全
 - 计算机安全
-description: 'Understand identification and authentication, Learn how passwords are protected'
+description: 探讨身份识别与认证机制，分析密码漏洞与防护策略，介绍加盐技术及多重身份验证的应用，强调用户教育与安全措施的重要性。
 ---
 
 # FOCUS OF THIS LECTURE

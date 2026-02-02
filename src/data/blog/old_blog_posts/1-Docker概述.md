@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Docker
-description: '> Docker 是一个开放源代码软件，是一个开放平台，用于开发应用、交付（shipping）应用、运行应用。 Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度。'
+description: Docker 是一个开源平台，用于高效开发、交付和运行应用。通过容器技术实现操作系统层虚拟化，提升软件交付速度和便携性。文章详细介绍了 Docker 的安装步骤、架构、基本概念及常用命令。
 ---
 
 # Docker概述

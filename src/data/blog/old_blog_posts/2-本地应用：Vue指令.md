@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Vue
-description: v-text指令用于设置标签的文本值，有两种设置标签文本值的方式，方式一就是通过v-text指令向标签传入值，但这种传入方式会整个替换掉标签内的全部文本信息，如果我们需要特殊化的修改某一部分文本值，就需要用到第二个方式，使用插值表达式传入值
+description: 介绍Vue指令v-text、v-html和v-on的用法，分别用于设置文本内容、解析HTML结构和绑定事件，并展示其在Vue实例中的应用。
 ---
 
 # Vue指令

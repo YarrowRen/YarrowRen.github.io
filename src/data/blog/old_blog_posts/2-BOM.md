@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaScript
-description: 浏览器对象模型（BOM）的基本概念、组成结构以及 Window 和 Location 对象的常用属性与方法。
+description: BOM（浏览器对象模型）提供一套 API 供 JavaScript 访问浏览器组件，核心对象为 Window，其他包括 Navigator、Screen、History 和 Location
 ---
 
 # BOM（Browser Object Model： 浏览器对象模型）

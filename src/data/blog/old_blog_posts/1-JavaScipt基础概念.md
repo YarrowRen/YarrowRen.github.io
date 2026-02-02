@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaScript
-description: JavaScript 的核心基础知识，包括语言定位、基本语法、数据类型、变量机制以及常用内置对象。
+description: 探讨JavaScript的基础概念，包括其作为弱类型、基于原型的脚本语言的特性，基本语法及与HTML结合方式，数据类型，变量定义，运算符与类型转换规则，并详细介绍函数对象的创建方式及其特点。
 ---
 
 # JavaScript 基础概念

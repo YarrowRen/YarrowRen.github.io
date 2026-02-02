@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - SpringMVC
-description: 系统中异常主要包括两部分，[编译时异常与运行时异常] [Spring,SpringMVC](https://ywrby.cn/2021/03/03/1-%E5%BC%82%E5%B8%B8/),前者可以通过捕获异常从而获取异常信息，后者主要通过规范代码格式，测试等手段减少异常出现
+description: 探讨SpringMVC异常处理机制，介绍SimpleMappingExceptionResolver和HandlerExceptionResolver两种方式，以示例演示异常处理配置和自定义异常处理器实现。
 ---
 
 # SpringMVC异常处理

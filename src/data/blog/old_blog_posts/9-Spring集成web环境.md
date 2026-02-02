@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: 下面是之前一直采用的应用上下问的获取方法
+description: 介绍如何在Web项目中通过ServletContextListener优化Spring应用上下文的加载，避免重复加载配置文件，提高服务获取效率。
 ---
 
 ## ApplicationContext应用上下问的获取方式

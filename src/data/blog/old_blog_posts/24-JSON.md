@@ -8,8 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: JavaScript 对象表示法（JavaScript Object Notation）。如今主要用于做存储和交换文本信息的语法。类似 XML。JSON
-  比 XML 更小、更快，更易解析。
+description: 介绍JSON作为数据交换格式的基本语法和特性，详细说明JSON与Java对象之间的转换步骤及常用解析器，包括具体代码示例与应用场景。
 ---
 
 # JSON

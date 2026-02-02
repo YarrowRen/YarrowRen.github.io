@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - MySQL
-description: '1. 库的管理: 创建，修改，删除'
+description: 数据定义语言（DDL）用于管理数据库和表的结构，包括创建、修改和删除。通过CREATE、ALTER、DROP等命令执行库和表的操作，实现灵活的数据组织和管理。
 ---
 
 # 数据定义语言DDL

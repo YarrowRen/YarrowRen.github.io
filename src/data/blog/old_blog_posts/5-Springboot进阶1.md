@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - SpringBoot
-description: 利用Springboot开发不可避免的要涉及到使用许多的依赖，而涉及到的依赖一多就可能由于依赖之间的版本问题导致错误的产生。这种时候对于依赖的管理就显得十分重要。
+description: Springboot通过父项目进行依赖管理，简化版本控制，并使用自动配置特性和场景启动器提升开发效率。介绍如何处理版本冲突及配置自动加载。
 ---
 
 # Springboot进阶1

@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - SpringMVC
-description: 经典MVC（Model View Controller）模式中，M是指业务模型，V是指用户界面，C则是控制器，使用MVC的目的是将M和V的实现代码分离，从而使同一个程序可以使用不同的表现形式。其中，View的定义比较清晰，就是用户界面。
+description: SpringMVC是基于Java的轻量级Web框架，简化MVC模式下的开发流程，通过注解将普通Java类转换为请求处理控制器，支持Restful风格，提升代码重用性和维护性。
 ---
 
 # SpringMVC简介

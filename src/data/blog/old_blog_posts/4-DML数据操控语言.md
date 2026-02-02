@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - MySQL
-description: MySQL 中 DML（数据操控语言）的核心内容，包括 INSERT、UPDATE 和 DELETE 语句的使用与注意事项。
+description: DML用于对数据库表中的数据进行插入、更新和删除操作，核心语句包括INSERT、UPDATE和DELETE/TRUNCATE，影响数据而不改变表结构。
 ---
 
 # DML（Data Manipulation Language）数据操控语言

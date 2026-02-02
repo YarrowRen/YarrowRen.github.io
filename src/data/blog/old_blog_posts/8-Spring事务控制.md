@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: '> 概括来讲，事务是一个由有限操作集合组成的逻辑单元。事务操作包含两个目的，数据一致以及操作隔离。数据一致是指事务提交时保证事务内的所有操作都成功完成，并且更改永久生效；事务回滚时，保证能够恢复到事务执行之前的状态。操作隔离则是指多个同时执行的事务之间应该相互独立，互不影响。'
+description: 介绍Spring事务控制的基本概念、ACID属性及编程式和声明式事务控制方法，详细说明PlatformTransactionManager接口及事务的隔离级别和传播行为。
 ---
 
 # Spring事务控制

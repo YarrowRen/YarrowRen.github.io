@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Electron
-description: 1. NodeJS官网安装node js环境：http://nodejs.org/，安装后可以通过npm -v或node -v检查是否正常安装
+description: 介绍如何通过Node.js安装和配置Electron环境，创建简单的HelloWorld页面，并详细讲解Electron中主进程与渲染进程的区别及其通信方式。
 ---
 
 # Electron基础

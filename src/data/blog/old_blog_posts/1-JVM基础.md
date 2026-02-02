@@ -9,7 +9,7 @@ draft: false
 tags:
 - Java
 - JVM
-description: '> JVM是Java Virtual Machine（Java虚拟机）的缩写，JVM是一种用于计算设备的规范，它是一个虚构出来的计算机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。'
+description: JVM作为Java虚拟机，通过仿真模拟实现跨平台运行，具备自动内存管理等优势。文章深入探讨JVM的内存结构，包括程序计数器和虚拟机栈的特点及工作机制。
 ---
 
 # JVM基础

@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Extensible Markup Language可扩展标记语言（可扩展指XML中的所有标签都是自定义的）
+description: 介绍XML的定义、功能、语法规则及其与HTML的区别，并详细说明XML文档的组成部分、约束类型和解析方法。
 ---
 
 # XML概述

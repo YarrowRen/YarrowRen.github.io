@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Jedis 是 Redis 官方推荐的 Java 客户端，用于通过 Java 程序操作 Redis
+description: Jedis 是 Redis 官方推荐的 Java 客户端，提供面向对象的操作方式。文章涵盖 Jedis 的基本用法、连接池管理以及注意事项，适合开发者快速上手和优化性能。
 ---
 
 # Jedis

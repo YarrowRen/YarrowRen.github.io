@@ -10,7 +10,7 @@ tags:
 - Spring
 - SpringBoot
 - Yaml
-description: SpringBoot使用一个全局配置文件，配置文件的名称是固定的，但文件类型有两种
+description: 介绍SpringBoot中使用YAML配置文件的基本语法及其优于properties文件的优点，包括如何通过YAML为实体类赋值和实现批量属性注入。
 ---
 
 # Yaml文件

@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - MySQL
-description: MySQL 中 DQL（数据查询语言）的核心语法，包括基础查询、条件查询与排序查询。
+description: DQL数据查询语言用于从数据库中查询数据，核心是SELECT关键字。本文介绍DQL的基本语法、查询常量和表达式、字段别名使用、去重、条件查询及排序方法，涵盖SQL常用操作和注意事项。
 ---
 
 # DQL（Data Query Language）数据查询语言

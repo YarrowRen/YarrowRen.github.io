@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - MyBatis
-description: '- 数据库的连接创建，释放频繁造成系统资源浪费从而影响系统性能'
+description: MyBatis框架简化了JDBC操作，通过XML或注解实现SQL映射和自动对象关系映射，提高了数据库持久化开发效率。
 ---
 
 # MyBatis概述

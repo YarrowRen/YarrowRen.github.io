@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: Session 是一种服务器端会话技术，用于在同一次会话的多次请求之间共享数据，数据存储在服务器端的 HttpSession 对象中
+description: Session是服务器端会话技术，通过HttpSession对象实现跨请求数据共享，依赖Cookie传递Session ID。本文详细介绍了Session的获取、数据存取及其工作原理，并探讨Session的使用注意事项及与Cookie的对比。
 ---
 
 # Session

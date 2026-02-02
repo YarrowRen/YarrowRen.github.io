@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Docker
-description: 实际开发中，数据的持久化以及数据交互都是十分重要的功能，所以Docker需要处理以下问题
+description: Docker数据卷实现容器数据持久化和文件交换，支持容器与宿主机及容器间文件交互，通过-v参数配置挂载关系，并可使用数据卷容器简化多容器文件共享。
 ---
 
 # Docker容器数据卷

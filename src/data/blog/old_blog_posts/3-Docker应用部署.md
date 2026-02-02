@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Docker
-description: 1. 搜索镜像
+description: 介绍Docker中MySQL和Tomcat应用的部署过程，包括镜像搜索、拉取、容器创建及端口映射的具体操作方法。1. 搜索镜像
 ---
 
 # Docker应用部署

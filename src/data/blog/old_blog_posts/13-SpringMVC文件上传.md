@@ -9,7 +9,7 @@ draft: false
 tags:
 - Spring
 - SpringMVC
-description: '- 表单项中type值为file'
+description: SpringMVC文件上传指南，介绍文件上传客户端的关键设置与原理，涵盖单文件与多文件上传的实现步骤，包括表单配置、解析器设置和上传代码示例。
 ---
 
 # SpringMVC文件上传

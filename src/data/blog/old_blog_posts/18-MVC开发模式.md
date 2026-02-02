@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: MVC（Model-View-Controller）是一种经典的软件架构模式，用于将业务逻辑、数据处理与界面展示进行分离
+description: MVC 是一种经典的软件架构模式，通过分离业务逻辑、数据处理与界面展示，提升系统维护性与扩展性。
 ---
 
 # MVC 开发模式

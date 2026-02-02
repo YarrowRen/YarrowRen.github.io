@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Spring
-description: 1. 导入AOP相关坐标（Spring中AOP主要通过aspectj实现，所以要导入aspectjweaver）
+description: 基于XML配置实现Spring AOP，通过aspectj进行切面编程，详细介绍目标接口、切面类的创建及Spring容器的配置，测试AOP功能的实现。
 ---
 
 # XML方式实现AOP

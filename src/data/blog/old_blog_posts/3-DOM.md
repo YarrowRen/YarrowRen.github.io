@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaScript
-description: '------'
+description: 介绍DOM的概念及其在HTML和XML中的应用，详细解释Document、Element、Node等对象的创建和操作方法，包含增删改查功能的实例演示。
 ---
 
 # DOM(Document Object Model)

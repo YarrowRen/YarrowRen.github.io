@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - 算法
-description: 佩林数（Perrin numbers）是一个整数数列，以P(n)表示，其中 n 为非负整数。佩林数列的定义如下：
+description: 佩林数是由递推公式定义的整数序列，具有与素数相关的独特性质。本文探讨佩林数能否整除n的情况，提出并验证佩林伪素数的概念，并通过R语言实现暴力破解法与动态规划法的计算性能对比。
 ---
 
 # Perrin numbers

@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - Java
-description: 得益于Lambda所带来的函数式编程，用于解决已有集合/数组类库有的弊端
+description: 介绍Stream流在Java中的应用，通过简化集合和数组操作提高编程效率，涵盖流的获取方式和运作思想，结合实例代码展示如何利用Stream流处理数据。
 ---
 
 # Stream流的概述

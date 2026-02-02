@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
 - JavaWeb
-description: 本质是sun公司制作的一套操作所有关系型数据库的规则，即接口。各个数据库厂商负责实现这些接口，提供响应的数据库驱动jar包，我们可以使用这套接口（JDBC）编程，最终真正执行的是数据库驱动jar包中的实现类
+description: JDBC连接通过标准接口实现数据库操作，文章详细介绍连接流程，包括注册驱动、获取连接、执行SQL以及资源管理，并提供示例代码和对象功能解析。
 ---
 
 # JDBC Java数据库连接
