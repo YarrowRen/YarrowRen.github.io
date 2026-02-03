@@ -146,8 +146,8 @@ data数据对象不止能保存基本文本数据，同样可以保存复杂的�
             data:{
                 message:"Hello Vue!",
                 user:{
-                    username:"Ywrby",
-                    wechat:"1873319XXXX"
+                    username:"Test",
+                    wechat:"XXXX"
                 },
                 books:["时间简史","计算机网络组成原理","比特币白皮书"]
             }

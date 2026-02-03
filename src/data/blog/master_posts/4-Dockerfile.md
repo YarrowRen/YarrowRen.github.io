@@ -45,9 +45,9 @@ docker load -i 压缩文件名称
 
 
 # 示例：
-docker commit bcd554d24cc5 ywrby_tomcat:1.0
-docker save -o ywrby_tomcat.tar ywrby_tomcat:1.0
-docker load -i ywrby_tomcat.tar
+docker commit bcd554d24cc5 boyuren_tomcat:1.0
+docker save -o boyuren_tomcat.tar boyuren_tomcat:1.0
+docker load -i boyuren_tomcat.tar
 ```
 
 需要注意的是，这种形式的镜像制作只能保存容器根目录下的内容，通过数据卷挂载到容器的数据不能被保存到镜像中
@@ -91,7 +91,7 @@ SHELL	|指定执行脚本的shell	|指定RUN CMD ENTRYPOINT 执行命令的时�
 # 定义父镜像
 FROM centos:7 
 # 定义镜像作者信息
-MAINTAINER ywrby<ywrby0214@gmail.com>
+MAINTAINER boyuren<boyuren0214@gmail.com>
 # 执行安装vim命令
 RUN yum install -y vim 
 # 定义默认的工作目录
@@ -104,7 +104,7 @@ CMD /bin/bash
 
 ```bash
 # -f参数表示dockerfile文件路径，-t参数表示镜像文件名称与版本，最后的.表示默认安装路径
-docker build -f ./centos_dockerfile -t ywrby_centos:1 .
+docker build -f ./centos_dockerfile -t boyuren_centos:1 .
 # 运行后docker会逐行执行相关命令
 ```
 

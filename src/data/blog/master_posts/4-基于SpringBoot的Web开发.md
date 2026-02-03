@@ -111,7 +111,7 @@ public class HelloController {
     
     @RequestMapping("/test")
     public String test(Model model){
-        model.addAttribute("msg","Ywrby");
+        model.addAttribute("msg","Test");
         return "test";
     }
 }
@@ -171,7 +171,7 @@ public class TestInterceptor implements HandlerInterceptor {
 # 配置日志记录级别
 logging:
   level:
-    cn.ywrby: debug
+    com.boyuren: debug
     org.springframework: info
 ```
 
@@ -228,7 +228,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://cdb-cd3ybvc6.cd.tencentcdb.com:10056/test
     data-username: root
-    data-password: renboyu010214
+    data-password: test
 ```
 
 ### 编写数据库操作
@@ -287,9 +287,9 @@ SpringBoot官方并没有提供MyBatis的启动器，但是MyBatis自己实现�
 ```yml
 mybatis:
   # 配置实体类别名 包路径
-  type-aliases-package: cn.ywrby.domain
+  type-aliases-package: com.boyuren.domain
   # 配置映射文件路径
-  mapper-locations: classpath:cn.ywrby.mapper/*.xml
+  mapper-locations: classpath:com.boyuren.mapper/*.xml
   # 配置日志文件
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -307,7 +307,7 @@ public interface UserMapper {
 ### 在启动器前利用注解扫描mapper层路径
 ```java
 // 扫描该包下所有mybatis业务mapper接口，传入参数是接口所在包路径
-@MapperScan("cn.ywrby.mapper")
+@MapperScan("com.boyuren.mapper")
 // @SpringBootApplication注解表明该类是一个SpringBoot应用
 @SpringBootApplication
 public class SpringBootTestApplication {

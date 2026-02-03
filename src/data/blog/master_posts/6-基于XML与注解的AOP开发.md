@@ -72,17 +72,17 @@ public class MyAspect {
                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--配置目标对象-->
-    <bean id="targetObject" class="cn.ywrby.aop.TargetObjectImpl"></bean>
+    <bean id="targetObject" class="com.boyuren.aop.TargetObjectImpl"></bean>
     <!--配置切面类-->
-    <bean id="myAspect" class="cn.ywrby.aop.MyAspect"></bean>
+    <bean id="myAspect" class="com.boyuren.aop.MyAspect"></bean>
     <!--配置织入-->
     <aop:config>
         <!--声明切面：表明myAspect是一个切面-->
         <aop:aspect ref="myAspect">
             <!--before表示前置增强，after表示后置增强......-->
             <!--配置通知和切入点：method为通知（增强方法），pointcut为切入点,通过切点表达式进行配置-->
-            <aop:before method="preEnhence" pointcut="execution(public String cn.ywrby.aop.TargetObjectImpl.save())"></aop:before>
-            <aop:after method="postEnhence" pointcut="execution(public String cn.ywrby.aop.TargetObjectImpl.save())"></aop:after>
+            <aop:before method="preEnhence" pointcut="execution(public String com.boyuren.aop.TargetObjectImpl.save())"></aop:before>
+            <aop:after method="postEnhence" pointcut="execution(public String com.boyuren.aop.TargetObjectImpl.save())"></aop:after>
         </aop:aspect>
     </aop:config>
 </beans>
@@ -125,11 +125,11 @@ execution([修饰符] 返回值类型 包名.类名.方法名(参数列表))
 **示例**
 
 ```xml
-execution(public String cn.ywrby.aop.TargetObjectImpl.save())
-execution(String cn.ywrby.aop.TargetObjectImpl.save())
-execution(* cn.ywrby.aop.TargetObjectImpl.save())
-execution(* cn.ywrby.aop.*.*(..))
-execution(* cn.ywrby.aop..TargetObjectImpl.*(..))
+execution(public String com.boyuren.aop.TargetObjectImpl.save())
+execution(String com.boyuren.aop.TargetObjectImpl.save())
+execution(* com.boyuren.aop.TargetObjectImpl.save())
+execution(* com.boyuren.aop.*.*(..))
+execution(* com.boyuren.aop..TargetObjectImpl.*(..))
 ```
 
 #### 切点表达式的抽取
@@ -141,7 +141,7 @@ execution(* cn.ywrby.aop..TargetObjectImpl.*(..))
         <!--声明切面：表明myAspect是一个切面-->
         <aop:aspect ref="myAspect">
             <!--抽取切点表达式-->
-            <aop:pointcut id="maPointcut" expression="execution(public * cn.ywrby.*.*.save(..))"/>
+            <aop:pointcut id="maPointcut" expression="execution(public * com.boyuren.*.*.save(..))"/>
             <!--直接使用抽取的切点表达式ID即可-->
             <aop:before method="preEnhence" pointcut-ref="maPointcut"></aop:before>
             <aop:after method="postEnhence" pointcut-ref="maPointcut"></aop:after>
@@ -203,13 +203,13 @@ public class TargetObjectImpl implements TargetObject{
 public class MyAspect {
     //前置增强方法
     //配置前置增强
-    @Before("execution(* cn.ywrby.aop.*.*(..))")
+    @Before("execution(* com.boyuren.aop.*.*(..))")
     public void preEnhence(){
         System.out.println("前置增强方法...");
     }
     //后置增强方法
     //配置后置增强
-    @After("execution(* cn.ywrby.aop.*.*(..))")
+    @After("execution(* com.boyuren.aop.*.*(..))")
     public void postEnhence(){
         System.out.println("后置增强方法...");
     }
@@ -229,7 +229,7 @@ public class MyAspect {
                            http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--开启组件扫描-->
-    <context:component-scan base-package="cn.ywrby"/>
+    <context:component-scan base-package="com.boyuren"/>
 
     <!--开启AOP自动代理-->
     <aop:aspectj-autoproxy/>
@@ -247,7 +247,7 @@ public class MyAspect {
 @Aspect
 public class MyAspect {
     //利用一个空方法进行切点表达式的抽取
-    @Pointcut("execution(* cn.ywrby.aop.*.*(..))")
+    @Pointcut("execution(* com.boyuren.aop.*.*(..))")
     public void pointcut(){}
     //使用抽取的切点表达式
     @Before("MyAspect.pointcut()")

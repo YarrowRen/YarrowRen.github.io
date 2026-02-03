@@ -67,7 +67,7 @@ public class User {
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--配置注解扫描-->
-    <context:component-scan base-package="cn.ywrby"/>
+    <context:component-scan base-package="com.boyuren"/>
 
     <!--加载properties配置文件(classpath表示的就是资源目录resources下)-->
     <context:property-placeholder location="classpath:jdbc.properties"/>

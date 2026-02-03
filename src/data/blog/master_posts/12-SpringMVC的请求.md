@@ -127,7 +127,7 @@ public class VO {
 ```jsp
 <%--
   Created by IntelliJ IDEA.
-  User: renboyu010214
+  User: test
   Date: 2021/3/8
   Time: 16:06
   To change this template use File | Settings | File Templates.
@@ -184,7 +184,7 @@ public class UserController {
 ```jsp
 <%--
   Created by IntelliJ IDEA.
-  User: renboyu010214
+  User: test
   Date: 2021/3/8
   Time: 16:06
   To change this template use File | Settings | File Templates.
@@ -403,7 +403,7 @@ public class DateConverter implements Converter<String, Date> {
     <!--声明转换器，外层是转换器声明池-->
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
-            <bean class="cn.ywrby.converter.DateConverter"/>
+            <bean class="com.boyuren.converter.DateConverter"/>
         </property>
     </bean>
 ```

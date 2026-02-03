@@ -37,9 +37,9 @@ global session|web项目中，应用在Portlet环境，如果没有Portlet环境
 
 ```xml
 <!--单例的-->
-<bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl" scope="singleton"></bean>
+<bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl" scope="singleton"></bean>
 <!--多例的-->
-<bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl" scope="prototype"></bean>
+<bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl" scope="prototype"></bean>
 ```
 
 **测试**
@@ -72,7 +72,7 @@ global session|web项目中，应用在Portlet环境，如果没有Portlet环境
 - destroy-method:指定销毁方法，在对象被销毁时调用
 
 ```xml
-<bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl" init-method="init" destroy-method="destroy"></bean>
+<bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl" init-method="init" destroy-method="destroy"></bean>
 ```
 
 ```java
@@ -150,8 +150,8 @@ public class UserServiceImpl implements UserService {
 然后修改配置文件，指定在创建UserService时调用指定的set方法注入相关参数(利用property标签进行指定 其中name是set方法后面的后缀并首字母小写，例如setDao方法，这里就传入dao，setUserService方法就传入userService ，ref是要传入的Spring容器中对象的ID)
 
 ```xml
-    <bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl" ></bean>
-    <bean id="userService" class="cn.ywrby.service.impl.UserServiceImpl" >
+    <bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl" ></bean>
+    <bean id="userService" class="com.boyuren.service.impl.UserServiceImpl" >
         <property name="dao" ref="userDao"></property>
     </bean>
 ```
@@ -186,7 +186,7 @@ public class UserServiceImpl implements UserService {
 
 利用P命名空间的属性直接定义注入方法
 ```xml
-    <bean id="userService" class="cn.ywrby.service.impl.UserServiceImpl" p:dao-ref="userDao"></bean>
+    <bean id="userService" class="com.boyuren.service.impl.UserServiceImpl" p:dao-ref="userDao"></bean>
 ```
 
 #### 构造函数注入
@@ -219,8 +219,8 @@ public class UserServiceImpl implements UserService {
 
 
 ```xml
-    <bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl" ></bean>
-    <bean id="userService" class="cn.ywrby.service.impl.UserServiceImpl" >
+    <bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl" ></bean>
+    <bean id="userService" class="com.boyuren.service.impl.UserServiceImpl" >
         <constructor-arg name="dao" ref="userDao"></constructor-arg>
     </bean>
 ```
@@ -254,7 +254,7 @@ public class UserDaoImpl implements UserDao {
 修改配置文件
 
 ```xml
-    <bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl" >
+    <bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl" >
         <property name="name" value="Leslie"/>
         <property name="num" value="18"/>
     </bean>
@@ -308,11 +308,11 @@ properties类型注入时和Map类似，也需要传入键和值，但是键是�
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     
-    <bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl" >
+    <bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl" >
         <property name="nameList">
             <list>
                 <value>Leslie</value>
-                <value>Ywrby</value>
+                <value>Test</value>
             </list>
         </property>
         <property name="userMap">
@@ -329,17 +329,17 @@ properties类型注入时和Map类似，也需要传入键和值，但是键是�
         </property>
     </bean>
     
-    <bean id="user1" class="cn.ywrby.domain.User">
+    <bean id="user1" class="com.boyuren.domain.User">
         <property name="name" value="Jessica"></property>
         <property name="addr" value="Peking"></property>
     </bean>
     
-    <bean id="user2" class="cn.ywrby.domain.User">
+    <bean id="user2" class="com.boyuren.domain.User">
         <property name="name" value="Lere"></property>
         <property name="addr" value="SJZ"></property>
     </bean>
     
-    <bean id="userService" class="cn.ywrby.service.impl.UserServiceImpl" >
+    <bean id="userService" class="com.boyuren.service.impl.UserServiceImpl" >
         <constructor-arg name="dao" ref="userDao"></constructor-arg>
     </bean>
 </beans>
@@ -359,7 +359,7 @@ properties类型注入时和Map类似，也需要传入键和值，但是键是�
     }
     /*
     运行结果：
-    [Leslie, Ywrby]
+    [Leslie, Test]
     {1=User{name='Jessica', addr='Peking'}, 2=User{name='Lere', addr='SJZ'}}
     {p1=value1, p2=value2}
      */

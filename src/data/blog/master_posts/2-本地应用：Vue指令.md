@@ -58,8 +58,8 @@ v-html指令用于设置标签的innerHtml属性，如果传入的是普通值�
         var app=new Vue({
             el:"#app",
             data:{
-                content1:"Ywrby",
-                content2:"<a href='#'>Ywrby-blog</a>"
+                content1:"Test",
+                content2:"<a href='#'>Test-blog</a>"
             }
         })
     </script>
@@ -119,7 +119,7 @@ v-on指令用于为元素绑定事件
         var app=new Vue({
             el:"#app",
             data:{
-                username:"Ywrby"
+                username:"Test"
             },
             methods:{
                 changeName:function(){
@@ -144,7 +144,7 @@ v-on指令用于为元素绑定事件
         var app=new Vue({
             el:"#app",
             data:{
-                username:"Ywrby"
+                username:"Test"
             },
             methods:{
                 changeName:function(name){
@@ -315,11 +315,11 @@ v-for指令可以根据数据生成列表结构
                         pwd:"123456"
                     },
                     {
-                        usr:"Ywrby",
+                        usr:"Test",
                         pwd:"67890"
                     },
                     {
-                        usr:"Ywryn",
+                        usr:"Test2",
                         pwd:"123456"
                     }
                 ]

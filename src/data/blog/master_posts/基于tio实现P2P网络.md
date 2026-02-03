@@ -317,9 +317,9 @@ public class MyTioClient {
             TioClient tioClient=new TioClient(clientTioConfig);
             System.out.println("tio连接开始...");
             MyPacket clientPacket=new MyPacket();
-            clientPacket.setBody("hello,tio-ywrby".getBytes(StandardCharsets.UTF_8));
+            clientPacket.setBody("hello,tio-boyuren".getBytes(StandardCharsets.UTF_8));
             ClientChannelContext clientChannelContext=tioClient.connect(new Node("127.0.0.1",8999));
-            //clientPacket.setBody("hello,tio-ywrby".getBytes(StandardCharsets.UTF_8));
+            //clientPacket.setBody("hello,tio-boyuren".getBytes(StandardCharsets.UTF_8));
             //System.out.println("tio连接关闭...");
             Tio.send(clientChannelContext,clientPacket);
         } catch (Exception e) {

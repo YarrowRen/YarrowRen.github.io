@@ -100,7 +100,7 @@ public class User {
 <mapper namespace="userMapper">
     <!--标签类型有select update delete等 -->
     <!--resultType表示将返回的查询结果封装到的结果集，即查询结果对应的实体类型-->
-    <select id="findAll" resultType="cn.ywrby.domain.User">
+    <select id="findAll" resultType="com.boyuren.domain.User">
         select * from user
     </select>
 </mapper>
@@ -129,7 +129,7 @@ public class User {
 
     <!--加载映射文件-->
     <mappers>
-        <mapper resource="cn\ywrby\mapper\UserMapper.xml"/>
+        <mapper resource="com\boyuren\mapper\UserMapper.xml"/>
     </mappers>
 </configuration>
 ```
@@ -159,11 +159,11 @@ public class User {
     <!--配置插入操作 parameterType表示参数对象，
     即执行插入操作时，传入该参数，并将该类属性值传入数据库
     mybatis映射文件中的占位符是#{} 其内部传入的是类的属性值而不是数据库的列名-->
-    <insert id="save" parameterType="cn.ywrby.domain.User">
+    <insert id="save" parameterType="com.boyuren.domain.User">
         insert into user values (#{id},#{username},#{password})
     </insert>
 
-    <update id="update" parameterType="cn.ywrby.domain.User">
+    <update id="update" parameterType="com.boyuren.domain.User">
         update user set username=#{username},password=#{password} where id=#{id}
     </update>
 
@@ -222,14 +222,14 @@ public class User {
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://cdb-cd3ybvc6.cd.tencentcdb.com:10056/jdbcTest"/>
                 <property name="username" value="root"/>
-                <property name="password" value="renboyu010214"/>
+                <property name="password" value="test"/>
             </dataSource>
         </environment>
     </environments>
 
     <!--加载映射文件-->
     <mappers>
-        <mapper resource="cn\ywrby\mapper\UserMapper.xml"/>
+        <mapper resource="com\boyuren\mapper\UserMapper.xml"/>
     </mappers>
 </configuration>
 ```
@@ -246,10 +246,10 @@ public class User {
 
 ### mapper标签
 mapper标签的作用是加载映射文件，其加载文件的方式有多种：
-- 使用相对于类的路径的资源引用的方式（一般情况下均使用该方式）：`<mapper resource="cn\ywrby\mapper\UserMapper.xml"/>`
+- 使用相对于类的路径的资源引用的方式（一般情况下均使用该方式）：`<mapper resource="com\boyuren\mapper\UserMapper.xml"/>`
 - 使用完全限定资源定位符URL：`<mapper url="file:///var/mappers/xxx.xml"/>`
-- 使用映射器接口实现类的完全限定名(结合注解方式使用)：`<mapper class="cn.ywrby.builder.AuthorMapper"/>`
-- 将包内的映射器接口实现全部注册为映射器(类似于对该包进行扫描，将所有映射器接口实现类注册为映射器)：`<package name="cn.ywrby.mapper"/>`
+- 使用映射器接口实现类的完全限定名(结合注解方式使用)：`<mapper class="com.boyuren.builder.AuthorMapper"/>`
+- 将包内的映射器接口实现全部注册为映射器(类似于对该包进行扫描，将所有映射器接口实现类注册为映射器)：`<package name="com.boyuren.mapper"/>`
 
 
 
@@ -263,7 +263,7 @@ typeAliases标签用于自定义别名，定义别名可以简化我们代码输
 ```xml
     <!--配置别名-->
     <typeAliases>
-        <typeAlias type="cn.ywrby.domain.User" alias="user"/>
+        <typeAlias type="com.boyuren.domain.User" alias="user"/>
     </typeAliases>
 ```
 
@@ -310,7 +310,7 @@ Mapper接口的开发需要遵循以下的规范
 修改后的UserMapper.xml配置文件
 ```xml
 <!--命名空间的值和接口类全限定名一致-->
-<mapper namespace="cn.ywrby.mapper.UserMapper">
+<mapper namespace="com.boyuren.mapper.UserMapper">
     <!--id值和方法名一致，resultType和返回值类型一致（这里了别名）-->
     <select id="findAll" resultType="user">
         select * from user

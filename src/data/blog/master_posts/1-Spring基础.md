@@ -175,7 +175,7 @@ Spring 采用模块化设计，各模块之间低耦合、可按需引入。
 #### Dao 接口
 
 ```java
-package cn.ywrby.dao;
+package com.boyuren.dao;
 
 public interface UserDao {
     void save();
@@ -185,9 +185,9 @@ public interface UserDao {
 #### Dao 实现类
 
 ```java
-package cn.ywrby.dao.impl;
+package com.boyuren.dao.impl;
 
-import cn.ywrby.dao.UserDao;
+import com.boyuren.dao.UserDao;
 
 public class UserDaoImpl implements UserDao {
     @Override
@@ -218,7 +218,7 @@ public class UserDaoImpl implements UserDao {
 ### 4. 在配置文件中配置 Bean
 
 ```xml
-<bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl" />
+<bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl" />
 ```
 
 ---

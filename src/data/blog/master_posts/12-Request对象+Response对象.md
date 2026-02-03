@@ -81,7 +81,7 @@ public class RequestDemo1 extends HttpServlet {
 请求方式：GET
 虚拟目录：/JavaWebTest2
 Servlet路径：/requestDemo1
-get方式的请求参数：username=renboyu010214
+get方式的请求参数：username=test
 请求URI：/JavaWebTest2/requestDemo1
 请求URL：http://localhost:8080/JavaWebTest2/requestDemo1
 协议及版本：HTTP/1.1
@@ -148,7 +148,7 @@ public class RequestDemo3 extends HttpServlet {
     }
 }
 //运行结果：
-//username=renboyu010214&password=123456
+//username=test&password=123456
 ```
 
 

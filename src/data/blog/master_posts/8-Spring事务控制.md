@@ -194,7 +194,7 @@ public class AccountServiceImpl implements AccountService {
                            http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--配置注解扫描-->
-    <context:component-scan base-package="cn.ywrby"/>
+    <context:component-scan base-package="com.boyuren"/>
 
     <!--加载properties配置文件(classpath表示的就是资源目录resources下)-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -232,7 +232,7 @@ public class AccountServiceImpl implements AccountService {
 
     <!--配置AOP事务的织入：将事务织入到业务逻辑对象的方法中-->
     <aop:config>
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.ywrby.service.impl.*.*(..))"></aop:advisor>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.boyuren.service.impl.*.*(..))"></aop:advisor>
     </aop:config>
 </beans>
 ```
@@ -280,7 +280,7 @@ public class AccountServiceImpl implements AccountService {
                            http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--配置注解扫描-->
-    <context:component-scan base-package="cn.ywrby"/>
+    <context:component-scan base-package="com.boyuren"/>
 
     <!--加载properties配置文件(classpath表示的就是资源目录resources下)-->
     <context:property-placeholder location="classpath:jdbc.properties"/>

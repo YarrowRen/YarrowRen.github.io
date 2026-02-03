@@ -105,7 +105,7 @@ Cookie的发送是通过在客户端发送请求到服务器端的过程后，�
 判断用户是否为初次访问当前页面，如果是则告知用户初次访问，如果不是，则显示用户上一次访问页面的时间
 
 ```java
-package cn.ywrby.Cookie;
+package com.boyuren.Cookie;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

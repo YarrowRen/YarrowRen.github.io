@@ -14,7 +14,7 @@ description: 探讨SpringMVC异常处理机制，介绍SimpleMappingExceptionRes
 
 # SpringMVC异常处理
 
-系统中异常主要包括两部分，[编译时异常与运行时异常] [Spring,SpringMVC](https://ywrby.cn/2021/03/03/1-%E5%BC%82%E5%B8%B8/),前者可以通过捕获异常从而获取异常信息，后者主要通过规范代码格式，测试等手段减少异常出现
+系统中异常主要包括两部分，[编译时异常与运行时异常] [Spring,SpringMVC](https://boyuren.cn/2021/03/03/1-%E5%BC%82%E5%B8%B8/),前者可以通过捕获异常从而获取异常信息，后者主要通过规范代码格式，测试等手段减少异常出现
 
 在开发过程中，系统的DAO层，SERVICE层和CONTROLLER层都有可能出现异常情况，这种情况下我们应该尽量将异常向上层抛出，最后将所有异常交由SpringMVC的前端控制器处理，其会利用异常处理器来进行异常处理
 
@@ -37,7 +37,7 @@ description: 探讨SpringMVC异常处理机制，介绍SimpleMappingExceptionRes
         <property name="exceptionMappings">
             <map>
                 <!--键为错误类，值为跳转视图-->
-                <entry key="cn.ywrby.exception.MyException" value="error"/>
+                <entry key="com.boyuren.exception.MyException" value="error"/>
                 <entry key="java.lang.ClassCastException" value="error"/>
             </map>
         </property>
@@ -129,14 +129,14 @@ public class MyExceptionResolver implements HandlerExceptionResolver {
 #### 配置异常处理器
 ```xml
     <!--配置自定义异常处理器-->
-    <bean class="cn.ywrby.resolver.MyExceptionResolver"/>
+    <bean class="com.boyuren.resolver.MyExceptionResolver"/>
 ```
 #### 编写异常页面
 
 ```jsp
 <%--
   Created by IntelliJ IDEA.
-  User: renboyu010214
+  User: test
   Date: 2021/3/17
   Time: 1:04
   To change this template use File | Settings | File Templates.

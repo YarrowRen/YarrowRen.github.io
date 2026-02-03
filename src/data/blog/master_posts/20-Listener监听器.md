@@ -97,7 +97,7 @@ public class ListenerDemo1 implements ServletContextListener { }
 
 ```xml
 <listener>
-    <listener-class>cn.ywrby.listener.ListenerDemo1</listener-class>
+    <listener-class>com.boyuren.listener.ListenerDemo1</listener-class>
 </listener>
 ```
 

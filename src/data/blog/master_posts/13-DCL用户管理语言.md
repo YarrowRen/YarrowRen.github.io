@@ -59,7 +59,7 @@ CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
 ### 3. 示例：创建用户
 
 ```sql
-CREATE USER 'renboyu'@'%' IDENTIFIED BY 'renboyu01';
+CREATE USER 'test'@'%' IDENTIFIED BY 'test01';
 ```
 
 ---
@@ -71,7 +71,7 @@ CREATE USER 'renboyu'@'%' IDENTIFIED BY 'renboyu01';
 ```sql
 UPDATE user
 SET authentication_string = PASSWORD('010214')
-WHERE User = 'renboyu';
+WHERE User = 'test';
 ```
 
 > `PASSWORD()` 为 MySQL 的加密函数，用于对明文密码进行加密。
@@ -99,7 +99,7 @@ DROP USER '用户名'@'主机名';
 ### 2. 示例
 
 ```sql
-DROP USER 'renboyu'@'%';
+DROP USER 'test'@'%';
 ```
 
 ---
@@ -122,7 +122,7 @@ DROP USER 'renboyu'@'%';
 ### 1. 查询用户权限
 
 ```sql
-SHOW GRANTS FOR 'renboyu'@'%';
+SHOW GRANTS FOR 'test'@'%';
 ```
 
 ---
@@ -144,7 +144,7 @@ TO '用户名'@'主机名';
 ```sql
 GRANT SELECT, DELETE, UPDATE
 ON jdbcTest.bank
-TO 'renboyu'@'%';
+TO 'test'@'%';
 ```
 
 ---
@@ -152,7 +152,7 @@ TO 'renboyu'@'%';
 #### 示例 2：授予所有权限（不推荐用于生产环境）
 
 ```sql
-GRANT ALL ON *.* TO 'renboyu'@'%';
+GRANT ALL ON *.* TO 'test'@'%';
 ```
 
 说明：
@@ -179,7 +179,7 @@ FROM '用户名'@'主机名';
 ```sql
 REVOKE SELECT, DELETE, UPDATE
 ON jdbcTest.bank
-FROM 'renboyu'@'%';
+FROM 'test'@'%';
 ```
 
 ---

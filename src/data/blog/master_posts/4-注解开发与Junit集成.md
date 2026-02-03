@@ -64,8 +64,8 @@ public class UserServiceImpl implements UserService {
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     
-    <bean id="userDao" class="cn.ywrby.dao.impl.UserDaoImpl"></bean>
-    <bean id="userService" class="cn.ywrby.service.impl.UserServiceImpl">
+    <bean id="userDao" class="com.boyuren.dao.impl.UserDaoImpl"></bean>
+    <bean id="userService" class="com.boyuren.service.impl.UserServiceImpl">
         <property name="dao" ref="userDao"/>
     </bean>
 </beans>
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--配置注解扫描-->
-    <context:component-scan base-package="cn.ywrby"/>
+    <context:component-scan base-package="com.boyuren"/>
 </beans>
 ```
 
@@ -251,7 +251,7 @@ public class UserServiceImpl implements UserService {
 注解|说明
 ---|---
 @Configuration|用于指定当前类是一个Spring的配置类，当创建容器时会从该类上加载注解
-@ComponentScan|用于指定Spring在初始化容器时要扫描的包，作用与XML配置文件中的<context:component-scan base-package="cn.ywrby"/>一样
+@ComponentScan|用于指定Spring在初始化容器时要扫描的包，作用与XML配置文件中的<context:component-scan base-package="com.boyuren"/>一样
 @Bean|使用在方法上，标注将该方法返回值存储到Spring容器中
 @PropertySource|用于加载.properties文件中的配置
 @Import|用于导入其他配置类
@@ -263,8 +263,8 @@ public class UserServiceImpl implements UserService {
 //@Configuration注解表示该类是Spring的核心配置类
 @Configuration
 //配置注解扫描
-//<context:component-scan base-package="cn.ywrby"/>
-@ComponentScan("cn.ywrby")
+//<context:component-scan base-package="com.boyuren"/>
+@ComponentScan("com.boyuren")
 //加载properties配置文件(classpath表示的就是资源目录resources下)
 //<context:property-placeholder location="classpath:jdbc.properties"/>
 @PropertySource("classpath:jdbc.properties")

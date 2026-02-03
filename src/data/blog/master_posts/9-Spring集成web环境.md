@@ -48,13 +48,13 @@ public class UserServlet extends HttpServlet {
 
     <!--配置监听器-->
     <listener>
-        <listener-class>cn.ywrby.listener.ContextLoaderListener</listener-class>
+        <listener-class>com.boyuren.listener.ContextLoaderListener</listener-class>
     </listener>
 
     <!--配置Servlet-->
     <servlet>
         <servlet-name>UserServlet</servlet-name>
-        <servlet-class>cn.ywrby.web.UserServlet</servlet-class>
+        <servlet-class>com.boyuren.web.UserServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>

@@ -70,7 +70,7 @@ public class HelloController {
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>cn.ywrby</groupId>
+    <groupId>com.boyuren</groupId>
     <artifactId>SpringBootTest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SpringBootTest</name>

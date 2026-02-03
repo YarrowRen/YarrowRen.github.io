@@ -69,7 +69,7 @@ public class MyInterceptor implements HandlerInterceptor {
         <mvc:interceptor>
             <!--path指定对哪些资源进行拦截（只能拦截控制器中的业务方法）-->
             <mvc:mapping path="/**"/>
-            <bean class="cn.ywrby.interceptor.MyInterceptor"/>
+            <bean class="com.boyuren.interceptor.MyInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 ```
@@ -96,7 +96,7 @@ jsp页面实现
 ```jsp
 <%--
   Created by IntelliJ IDEA.
-  User: renboyu010214
+  User: test
   Date: 2021/3/14
   Time: 12:54
   To change this template use File | Settings | File Templates.

@@ -65,7 +65,7 @@ public class FilterDemo1 implements Filter {
 ```xml
     <filter>
         <filter-name>FilterDemo1</filter-name>
-        <filter-class>cn.ywrby.Filter.FilterDemo1</filter-class>
+        <filter-class>com.boyuren.Filter.FilterDemo1</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>FilterDemo1</filter-name>

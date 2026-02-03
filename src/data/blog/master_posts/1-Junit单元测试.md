@@ -66,7 +66,7 @@ JUnit 是 Java 语言中最常用的 **单元测试框架**，主要用于：
 - 被测试类：`Calculator`
 - 测试类：`CalculatorTest`
 
-> 测试类通常放在独立的测试包中，例如：`cn.ywrby.test`
+> 测试类通常放在独立的测试包中，例如：`com.boyuren.test`
 
 ---
 
@@ -108,7 +108,7 @@ JUnit 通常使用 **断言（Assert）** 来判断实际结果是否符合预�
 ### 1. 被测试类：Calculator
 
 ```java
-package cn.ywrby.calculate;
+package com.boyuren.calculate;
 
 /**
  * 计算器类

@@ -156,7 +156,7 @@ Tomcat 为 **绿色软件**：
 示例：
 
 ```xml
-<Context docBase="D:\CodingProgram\Web_YWRBY\webProject1" path="/webPro1"/>
+<Context docBase="D:\CodingProgram\Web_Test\webProject1" path="/webPro1"/>
 ```
 
 ⚠️ 修改 `server.xml` 后 **必须重启 Tomcat**，配置错误可能导致 Tomcat 无法启动。
@@ -180,7 +180,7 @@ webPro1.xml
 内容：
 
 ```xml
-<Context docBase="D:\CodingProgram\Web_YWRBY\webProject1"/>
+<Context docBase="D:\CodingProgram\Web_Test\webProject1"/>
 ```
 
 说明：

@@ -38,7 +38,7 @@ public class JDBCDemo1 {
         //注册驱动
         Class.forName("com.mysql.cj.jdbc.Driver");
         //获取数据库连接对象
-        Connection connection= DriverManager.getConnection("jdbc:mysql://cdb-cd3ybvc6.cd.tencentcdb.com:10056/weixinNews","root","renboyu");
+        Connection connection= DriverManager.getConnection("jdbc:mysql://cdb-cd3ybvc6.cd.tencentcdb.com:10056/weixinNews","root","test");
         //定义sql语句
         String sql="SELECT * FROM WEIBO WHERE TITLE LIKE '%韩国%';";
         //获取执行sql的对象Statement
@@ -71,7 +71,7 @@ public class JDBCDemo2 {
             //定义sql语句
             String sql="insert into stuMess VALUES(null,'Leslie','CS','95');";
             //获取数据库连接对象
-            connection= DriverManager.getConnection("jdbc:mysql://cdb-cd3ybvc6.cd.tencentcdb.com:10056/jdbcTest","root","renboyu010214");
+            connection= DriverManager.getConnection("jdbc:mysql://cdb-cd3ybvc6.cd.tencentcdb.com:10056/jdbcTest","root","test");
             //获取执行sql的对象Statement
             statement=connection.createStatement();
             //执行sql语句

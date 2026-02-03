@@ -194,7 +194,7 @@ public class DateTypeHandler extends BaseTypeHandler<Date> {
 ```xml
     <!--自定义类型转换器-->
     <typeHandlers>
-        <typeHandler handler="cn.ywrby.handler.DateTypeHandler"/>
+        <typeHandler handler="com.boyuren.handler.DateTypeHandler"/>
     </typeHandlers>
 ```
 

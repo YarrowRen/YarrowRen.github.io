@@ -160,7 +160,7 @@ public class UserController {
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--配置Controller的组件扫描-->
-    <context:component-scan base-package="cn.ywrby.controller"/>
+    <context:component-scan base-package="com.boyuren.controller"/>
 </beans>
 ```
 

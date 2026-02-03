@@ -106,8 +106,8 @@ Extensible Markup Language可扩展标记语言（可扩展指XML中的所有标
 ### Schema约束
 1. 填写xml文档的根元素
 2. 引入xsi前缀。`xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"`
-3. 引入xsd文件命名空间，`xsi:schemaLocation="http://www.ywrby.cn/xml student.xsd"`
-4. 为每一个xsd约束声明一个前缀,作为标识`xmlns="http://www.ywrby.cn/xml"`
+3. 引入xsd文件命名空间，`xsi:schemaLocation="http://www.boyuren.cn/xml student.xsd"`
+4. 为每一个xsd约束声明一个前缀,作为标识`xmlns="http://www.boyuren.cn/xml"`
 
 [深入](https://www.bilibili.com/video/BV1uJ411k7wy?p=666)
 
@@ -153,7 +153,7 @@ public class JsoupDemo1 {
     public static void main(String[] args) throws IOException {
         //获取Document对象
         //获取要解析的xml文件路径
-        String path =JsoupDemo1.class.getClassLoader().getResource("cn/ywrby/xml/stu.xml").getPath();
+        String path =JsoupDemo1.class.getClassLoader().getResource("cn/boyuren/xml/stu.xml").getPath();
         //解析XML文档，加载文档进内存，获取DOM树-->Document（注意这里的Doccument对象是org.jsoup.nodes.Document，不是其他类）
         Document doc=Jsoup.parse(new File(path),"utf-8");
         //获取元素对象 -->Element

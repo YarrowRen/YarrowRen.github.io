@@ -52,7 +52,7 @@ description: Servlet 是服务器端 Java 程序，用于处理客户端请求�
 <!-- 配置 Servlet -->
 <servlet>
     <servlet-name>demo1</servlet-name>
-    <servlet-class>cn.ywrby.web.servlet.ServletDemo1</servlet-class>
+    <servlet-class>com.boyuren.web.servlet.ServletDemo1</servlet-class>
 </servlet>
 
 <servlet-mapping>

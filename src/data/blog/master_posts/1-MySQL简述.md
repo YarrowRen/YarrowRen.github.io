@@ -76,7 +76,7 @@ mysql -h localhost -P 3306 -u root -p
 mysql -u root -p
 
 //密码可以直接显示在该语句中，而不是换行输入
-mysql -u root -prenboyu010214
+mysql -u root -ptest
 
 //注意，-p和密码之间不允许有空格存在
 ```

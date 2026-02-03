@@ -91,7 +91,7 @@ public interface OrderMapper {
 这里的column代表的数据段不单纯是user或order任一表的数据段，而是经过查询后得到的新表的数据段
 ```xml
 <!--命名空间的值和接口类全限定名一致-->
-<mapper namespace="cn.ywrby.mapper.OrderMapper">
+<mapper namespace="com.boyuren.mapper.OrderMapper">
 
     <resultMap id="orderMap" type="order">
         <id column="oid" property="id"/>
@@ -160,7 +160,7 @@ public interface OrderMapper {
 
 这种情况下MyBatis的查询方式如下,collection标签就是用于处理集合类型数据，ofType属性表示集合中存储的数据类型（这里用了别名）
 ```xml
-<mapper namespace="cn.ywrby.mapper.UserMapper">
+<mapper namespace="com.boyuren.mapper.UserMapper">
 
     <resultMap id="userMap" type="user">
         <id column="id" property="id"/>

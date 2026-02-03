@@ -52,7 +52,7 @@ public interface UserMapper {
     <!--加载映射关系-->
     <mappers>
         <!--加载映射关系：扫描注解-->
-        <package name="cn.ywrby.mapper"></package>
+        <package name="com.boyuren.mapper"></package>
     </mappers>
 ```
 
@@ -92,7 +92,7 @@ public interface UserMapper {
                     property = "orderList",
                     column = "id",
                     javaType = List.class,
-                    many = @Many(select = "cn.ywrby.mapper.OrderMapper.findByUid")
+                    many = @Many(select = "com.boyuren.mapper.OrderMapper.findByUid")
             )
     })
     public List<User> findAll();

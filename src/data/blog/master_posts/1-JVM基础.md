@@ -44,7 +44,7 @@ Program Counter Register（程序计数器，寄存器）。程序计数器是�
 以下面源代码与字节码文件为例
 
 ```java
-package cn.ywrby;
+package com.boyuren;
 
 import java.io.PrintStream;
 
@@ -103,7 +103,7 @@ public class JVMTest {
 
 下面以一段简单的代码演示整个虚拟机栈的在程序运行过程中的执行流程
 ```java
-package cn.ywrby;
+package com.boyuren;
 
 public class JVMTest {
     public static void main(String[] args) {
@@ -208,11 +208,11 @@ public class JVMTest {
     /*
     运行结果(报 栈内存溢出 错误)：
     java.lang.StackOverflowError
-	    at cn.ywrby.JVMTest.test1(JVMTest.java:18)
-	    at cn.ywrby.JVMTest.test1(JVMTest.java:18)
-	    at cn.ywrby.JVMTest.test1(JVMTest.java:18)
+	    at com.boyuren.JVMTest.test1(JVMTest.java:18)
+	    at com.boyuren.JVMTest.test1(JVMTest.java:18)
+	    at com.boyuren.JVMTest.test1(JVMTest.java:18)
 	    ....
-	    at cn.ywrby.JVMTest.test1(JVMTest.java:18)
+	    at com.boyuren.JVMTest.test1(JVMTest.java:18)
     24041
      */
 ```
@@ -263,7 +263,7 @@ public class JVMTest {
 java.lang.OutOfMemoryError: Overflow: String length out of range
 	at java.base/java.lang.StringConcatHelper.checkOverflow(StringConcatHelper.java:48)
 	at java.base/java.lang.StringConcatHelper.mix(StringConcatHelper.java:122)
-	at cn.ywrby.JVMTest.main(JVMTest.java:14)
+	at com.boyuren.JVMTest.main(JVMTest.java:14)
 28
 */
 ```
