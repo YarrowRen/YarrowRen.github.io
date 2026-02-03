@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:39:58
 modDatetime: *id001
-title: 23-Ajax
-slug: 23-Ajax
+title: "AJAX异步请求及原生实现方法"
+slug: "ajax-asynchronous-request-native"
 featured: false
 draft: false
 tags:

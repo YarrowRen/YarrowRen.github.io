@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:17
 modDatetime: *id001
-title: 17-Session
-slug: 17-Session
+title: "深入理解Session机制及其使用方法"
+slug: "session-mechanism-and-usage"
 featured: false
 draft: false
 tags:

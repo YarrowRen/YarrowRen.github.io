@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-09-03 14:24:30
 modDatetime: *id001
-title: 1-Vue基础
-slug: 1-Vue基础
+title: "Vue.js基础教程：实例创建与数据绑定"
+slug: "vuejs-basics-instance-data-binding"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-05-15 00:02:18
 modDatetime: *id001
-title: 基于tio实现P2P网络
-slug: 基于tio实现P2P网络
+title: "基于Tio的P2P网络架构实现指南"
+slug: "p2p-network-architecture-tio-guide"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 09:47:56
 modDatetime: *id001
-title: 9-Spring集成web环境
-slug: 9-Spring集成web环境
+title: "优化Spring应用上下文获取方式"
+slug: "optimize-spring-context-retrieval"
 featured: false
 draft: false
 tags:

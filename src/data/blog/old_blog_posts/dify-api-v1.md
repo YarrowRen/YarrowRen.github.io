@@ -1,10 +1,10 @@
 ---
-title: "Dify-API(V1)具体实现方式"
+title: "理解Dify的Token解密与Workflow执行机制"
 description: 探讨接入层Token解密与Workflow执行的进程模型、并发机制及负载均衡策略，解析Dify在API层的运行细节与性能特性。
 pubDatetime: 2025-05-25T23:38:21.383Z
 modDatetime: 2025-05-25T23:38:21.383Z
 author: "Boyu Ren"
-slug: "dify-api-v1"
+slug: "dify-token-decryption-workflow-execution"
 tags: 
     - Tencent
     - Dify

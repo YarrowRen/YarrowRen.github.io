@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2023-07-22 18:02:06
 modDatetime: *id001
-title: GDPR - 通用数据保护法规
-slug: GDPR
+title: "GDPR与DPD：欧盟数据保护法规全面解析"
+slug: "gdpr-vs-dpd-eu-data-protection"
 featured: false
 draft: false
 tags:

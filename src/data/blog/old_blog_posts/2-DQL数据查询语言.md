@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-27 23:10:45
 modDatetime: *id001
-title: 2-DQL 数据查询语言
-slug: 2-DQL数据查询语言
+title: "深入理解SQL数据查询语言：DQL基础与条件查询"
+slug: "understanding-dql-in-sql-language"
 featured: false
 draft: false
 tags:

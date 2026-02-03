@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-09-21 20:31:46
 modDatetime: *id001
-title: 5-Springboot进阶1
-slug: 5-Springboot进阶1
+title: "Springboot依赖管理与自动配置特性详解"
+slug: "springboot-dependency-management-auto-configuration"
 featured: false
 draft: false
 tags:

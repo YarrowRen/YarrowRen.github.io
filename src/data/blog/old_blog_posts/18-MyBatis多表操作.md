@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-21 11:52:14
 modDatetime: *id001
-title: 18-MyBatis多表操作
-slug: 18-MyBatis多表操作
+title: "MyBatis多表查询与一对一映射实践"
+slug: "mybatis-multi-table-query-one-to-one-mapping"
 featured: false
 draft: false
 tags:

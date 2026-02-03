@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-28 15:24:08
 modDatetime: *id001
-title: 5-DDL数据定义语言
-slug: 5-DDL数据定义语言
+title: "数据定义语言DDL详解：库和表的管理"
+slug: "ddl-database-table-management"
 featured: false
 draft: false
 tags:

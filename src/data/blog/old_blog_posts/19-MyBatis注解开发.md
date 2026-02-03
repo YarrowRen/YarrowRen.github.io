@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-21 16:43:50
 modDatetime: *id001
-title: 19-MyBatis注解开发
-slug: 19-MyBatis注解开发
+title: "MyBatis注解开发指南及使用示例"
+slug: "mybatis-annotation-development-guide"
 featured: false
 draft: false
 tags:

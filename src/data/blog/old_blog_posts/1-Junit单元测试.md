@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:27:51
 modDatetime: *id001
-title: 1-JUnit 单元测试
-slug: 1-JUnit单元测试
+title: "JUnit单元测试详解：黑盒与白盒测试方法"
+slug: "junit-unit-testing-guide"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:28:20
 modDatetime: *id001
-title: 9-Web 服务器软件概述与 Tomcat
-slug: 9-web服务器软件概述+Tomcat
+title: "Web服务器软件与Tomcat使用指南"
+slug: "web-server-software-tomcat-guide"
 featured: false
 draft: false
 tags:

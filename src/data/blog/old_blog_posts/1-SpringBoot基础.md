@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-17 13:55:08
 modDatetime: *id001
-title: 1-SpringBoot基础
-slug: 1-SpringBoot基础
+title: "SpringBoot快速入门与自动装配原理"
+slug: "springboot-quick-start-autoconfiguration"
 featured: false
 draft: false
 tags:

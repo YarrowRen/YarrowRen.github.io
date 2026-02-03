@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:58:11
 modDatetime: *id001
-title: 10-SpringMVC简介及组件解析
-slug: 10-SpringMVC简介
+title: "SpringMVC框架概述与开发步骤详解"
+slug: "springmvc-framework-overview-steps"
 featured: false
 draft: false
 tags:

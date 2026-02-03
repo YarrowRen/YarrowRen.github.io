@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-27 23:22:25
 modDatetime: *id001
-title: 2-SQL语言中的函数
-slug: 3-SQL语言中的函数
+title: "SQL常用函数详解及应用示例"
+slug: "sql-functions-guide-and-examples"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-07 08:39:56
 modDatetime: *id001
-title: 4-Dockerfile And Docker Compose
-slug: 4-Dockerfile
+title: "Docker镜像与Dockerfile核心技术解析"
+slug: "docker-image-and-dockerfile-techniques"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:22:36
 modDatetime: *id001
-title: 3-DOM
-slug: 3-DOM
+title: "深入理解DOM文档对象模型的结构与操作"
+slug: "understanding-dom-structure-and-manipulation"
 featured: false
 draft: false
 tags:

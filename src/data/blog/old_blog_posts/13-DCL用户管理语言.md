@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-04 21:36:58
 modDatetime: *id001
-title: 13-DCL 用户管理语言
-slug: 13-DCL用户管理语言
+title: "MySQL安全管理：用户与权限控制详解"
+slug: "mysql-user-permissions-management"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:28:04
 modDatetime: *id001
-title: 4-JDBC
-slug: 4-JDBC
+title: "JDBC数据库连接与操作详解"
+slug: "jdbc-database-connection-guide"
 featured: false
 draft: false
 tags:

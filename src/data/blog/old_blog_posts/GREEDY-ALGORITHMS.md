@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2023-08-05 21:30:05
 modDatetime: *id001
-title: GREEDY ALGORITHMS
-slug: GREEDY-ALGORITHMS
+title: "贪心算法及其应用场景分析"
+slug: "greedy-algorithm-and-applications"
 featured: false
 draft: false
 tags:

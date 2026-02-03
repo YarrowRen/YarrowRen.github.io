@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-13 22:40:38
 modDatetime: *id001
-title: 14-SpringMVC拦截器
-slug: 14-SpringMVC拦截器
+title: "SpringMVC拦截器的作用与实现"
+slug: "springmvc-interceptor-implementation"
 featured: false
 draft: false
 tags:

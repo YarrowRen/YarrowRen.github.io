@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:11
 modDatetime: *id001
-title: 11-Http概述
-slug: 11-Http概述
+title: "HTTP协议详解及请求响应数据格式"
+slug: "http-protocol-request-response-format"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-18 22:08:18
 modDatetime: *id001
-title: 14-关系代数Relation Algebra
-slug: 14-关系代数Relation-Algebra
+title: "关系代数中的基本运算详解"
+slug: "relation-algebra-basic-operations"
 featured: false
 draft: false
 tags:

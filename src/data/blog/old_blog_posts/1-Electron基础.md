@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-07-15 00:29:02
 modDatetime: *id001
-title: 1-Electron基础
-slug: 1-Electron基础
+title: "Electron应用开发入门与主渲染进程解析"
+slug: "electron-development-basics-process-analysis"
 featured: false
 draft: false
 tags:

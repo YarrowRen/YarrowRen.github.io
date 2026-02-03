@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-12 20:00:45
 modDatetime: *id001
-title: 13-SpringMVC文件上传
-slug: 13-SpringMVC文件上传
+title: "SpringMVC文件上传实现及多文件支持"
+slug: "springmvc-file-upload-implementation"
 featured: false
 draft: false
 tags:

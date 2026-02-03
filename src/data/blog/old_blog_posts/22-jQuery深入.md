@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:39:57
 modDatetime: *id001
-title: 22-jQuery深入
-slug: 22-jQuery深入
+title: "jQuery中的DOM操作与动画遍历技巧"
+slug: "jquery-dom-animation-traversal-tips"
 featured: false
 draft: false
 tags:

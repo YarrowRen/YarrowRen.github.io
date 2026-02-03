@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2023-08-02 21:52:10
 modDatetime: *id001
-title: Arithmetic Progression Graphs
-slug: Arithmetic-Progression-Graphs
+title: "算术级数图的定义与判定问题解析"
+slug: "arithmetic-progression-graphs-analysis"
 featured: false
 draft: false
 tags:

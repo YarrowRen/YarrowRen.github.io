@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-06 15:41:07
 modDatetime: *id001
-title: 2-Docker容器数据卷
-slug: 2-Docker容器数据卷
+title: "Docker数据卷：实现容器数据持久化与共享"
+slug: "docker-volume-data-persistence-sharing"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:15
 modDatetime: *id001
-title: 15-会话技术与Cookie
-slug: 15-会话技术与cookie
+title: "会话技术与Cookie在客户端的应用"
+slug: "session-tech-and-cookie-usage"
 featured: false
 draft: false
 tags:

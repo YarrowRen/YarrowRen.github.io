@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2023-07-29 20:44:56
 modDatetime: *id001
-title: Access Control
-slug: Access-Control
+title: "访问控制系统与模型解析"
+slug: "access-control-systems-and-models"
 featured: false
 draft: false
 tags:

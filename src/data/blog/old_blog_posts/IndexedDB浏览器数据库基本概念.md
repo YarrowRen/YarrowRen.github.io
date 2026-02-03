@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2022-01-24 17:15:29
 modDatetime: *id001
-title: IndexedDB 浏览器数据库基本概念
-slug: IndexedDB浏览器数据库基本概念
+title: "IndexedDB基础与Vue实战示例"
+slug: "indexeddb-basics-and-vue-example"
 featured: false
 draft: false
 tags:

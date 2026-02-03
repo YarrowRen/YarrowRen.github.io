@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:10
 modDatetime: *id001
-title: 10-Servlet
-slug: 10-Servlet
+title: "Servlet的概念、开发步骤与执行原理"
+slug: "servlet-concept-development-execution"
 featured: false
 draft: false
 tags:

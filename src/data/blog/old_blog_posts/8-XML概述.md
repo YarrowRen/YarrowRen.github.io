@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:28:08
 modDatetime: *id001
-title: 8-XML概述
-slug: 8-XML概述
+title: "XML语言基础与解析技术详解"
+slug: "xml-basics-and-parsing-techniques"
 featured: false
 draft: false
 tags:

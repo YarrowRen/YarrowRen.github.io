@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 13:59:21
 modDatetime: *id001
-title: 11-Stream流
-slug: 11-Stream流
+title: "Java Stream流的概念及使用方法"
+slug: "java-stream-concept-usage"
 featured: false
 draft: false
 tags:

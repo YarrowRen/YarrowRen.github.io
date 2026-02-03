@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-18 01:36:46
 modDatetime: *id001
-title: 16-MyBatis概述
-slug: 16-MyBatis概述
+title: "MyBatis持久层框架详解与快速开发指南"
+slug: "mybatis-framework-quick-start-guide"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:12
 modDatetime: *id001
-title: 12-Request对象+Response对象
-slug: 12-Request对象+Response对象
+title: "Request对象的原理与功能详解"
+slug: "request-object-principles-functions"
 featured: false
 draft: false
 tags:

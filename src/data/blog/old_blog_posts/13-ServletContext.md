@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:13
 modDatetime: *id001
-title: 13-ServletContext
-slug: 13-ServletContext
+title: "ServletContext对象的功能与使用方法"
+slug: "servletcontext-functions-usage"
 featured: false
 draft: false
 tags:

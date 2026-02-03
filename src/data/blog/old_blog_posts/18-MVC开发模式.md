@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:18
 modDatetime: *id001
-title: 18-MVC开发模式
-slug: 18-MVC开发模式
+title: "深入理解MVC架构的优缺点及应用"
+slug: "understanding-mvc-architecture"
 featured: false
 draft: false
 tags:

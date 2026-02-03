@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:22:37
 modDatetime: *id001
-title: 4-Bootstrap前端框架
-slug: 4-Bootstrap前端框架
+title: "深入了解Bootstrap框架及其响应式布局"
+slug: "bootstrap-framework-responsive-layout"
 featured: false
 draft: false
 tags:

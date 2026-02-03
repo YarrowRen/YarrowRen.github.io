@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-17 00:23:29
 modDatetime: *id001
-title: 15-SpringMVC异常处理
-slug: 15-SpringMVC异常处理机制
+title: "SpringMVC异常处理方法详解"
+slug: "springmvc-exception-handling"
 featured: false
 draft: false
 tags:

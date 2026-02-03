@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-17 20:49:56
 modDatetime: *id001
-title: 2-Yaml文件
-slug: 2-Yaml文件
+title: "SpringBoot中使用YAML文件进行配置详解"
+slug: "springboot-yaml-configuration-guide"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-02 17:06:10
 modDatetime: *id001
-title: 8-TCL事务控制语言
-slug: 8-TCL事务控制语言
+title: "事务控制语言详解与实现"
+slug: "transaction-control-language-guide"
 featured: false
 draft: false
 tags:

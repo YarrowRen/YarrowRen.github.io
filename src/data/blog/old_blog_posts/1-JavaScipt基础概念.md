@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:22:34
 modDatetime: *id001
-title: 1-JavaScript 基础概念
-slug: 1-JavaScript基础概念
+title: "JavaScript基础概念和语法"
+slug: "understanding-javascript-basics-and-syntax"
 featured: false
 draft: false
 tags:

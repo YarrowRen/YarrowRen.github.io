@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-19 14:14:02
 modDatetime: *id001
-title: 3-Lombok应用
-slug: 3-Lombok应用
+title: "使用Lombok简化SpringBoot项目POJO创建"
+slug: "simplify-pojo-creation-with-lombok"
 featured: false
 draft: false
 tags:

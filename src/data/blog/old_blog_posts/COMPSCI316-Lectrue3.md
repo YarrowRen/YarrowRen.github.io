@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2023-07-18 18:18:22
 modDatetime: *id001
-title: 'COMPSCI 316: Lectrue 3'
-slug: COMPSCI316-Lectrue3
+title: "计算机安全与网络安全基础概念解析"
+slug: "computer-network-security-basics"
 featured: false
 draft: false
 tags:

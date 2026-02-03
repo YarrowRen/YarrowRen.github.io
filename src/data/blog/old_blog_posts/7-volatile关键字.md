@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 13:59:17
 modDatetime: *id001
-title: 7-volatile关键字
-slug: 7-volatile关键字
+title: "多线程变量不可见性及解决方案"
+slug: "multithreading-variable-visibility"
 featured: false
 draft: false
 tags:

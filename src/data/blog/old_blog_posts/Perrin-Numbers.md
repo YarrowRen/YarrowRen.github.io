@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2023-07-30 15:53:49
 modDatetime: *id001
-title: Perrin Numbers
-slug: Perrin-Numbers
+title: "佩林数列与伪素数的计算方法"
+slug: "perrin-numbers-and-pseudo-primes"
 featured: false
 draft: false
 tags:

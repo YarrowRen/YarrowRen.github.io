@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 09:47:51
 modDatetime: *id001
-title: 8-Spring事务控制
-slug: 8-Spring事务控制
+title: "Spring事务控制详解与实现方法"
+slug: "spring-transaction-management-guide"
 featured: false
 draft: false
 tags:

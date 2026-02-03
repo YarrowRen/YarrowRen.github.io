@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-09-04 06:56:14
 modDatetime: *id001
-title: 3-Vue网络应用
-slug: 3-Vue网络应用
+title: "Vue中使用Axios进行网络通信与实例生命周期详解"
+slug: "vue-axios-network-communication-lifecycle"
 featured: false
 draft: false
 tags:

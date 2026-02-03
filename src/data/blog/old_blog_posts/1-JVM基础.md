@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-07-27 16:26:41
 modDatetime: *id001
-title: 1-JVM基础
-slug: 1-JVM基础
+title: "深入理解JVM内存结构与工作原理"
+slug: "jvm-memory-structure-and-function"
 featured: false
 draft: false
 tags:

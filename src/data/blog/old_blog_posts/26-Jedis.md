@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:40:09
 modDatetime: *id001
-title: 26-Jedis
-slug: 26-Jedis
+title: "Jedis Java客户端使用指南与连接池优化"
+slug: "jedis-java-client-guide-pool-optimization"
 featured: false
 draft: false
 tags:

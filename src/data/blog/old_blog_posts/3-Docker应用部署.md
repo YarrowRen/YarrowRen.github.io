@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-06 19:18:53
 modDatetime: *id001
-title: 3-Docker应用部署
-slug: 3-Docker应用部署
+title: "Docker容器中的MySQL和Tomcat部署指南"
+slug: "docker-mysql-tomcat-deployment-guide"
 featured: false
 draft: false
 tags:

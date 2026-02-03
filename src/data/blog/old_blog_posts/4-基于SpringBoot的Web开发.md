@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-19 15:17:22
 modDatetime: *id001
-title: 4-基于SpringBoot的Web开发
-slug: 4-基于SpringBoot的Web开发
+title: "SpringBoot Web开发中静态资源与Thymeleaf使用指南"
+slug: "springboot-web-development-static-resources-thymeleaf"
 featured: false
 draft: false
 tags:

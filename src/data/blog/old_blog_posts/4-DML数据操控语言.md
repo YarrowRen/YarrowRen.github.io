@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-28 14:59:07
 modDatetime: *id001
-title: 4-DML 数据操控语言
-slug: 4-DML数据操控语言
+title: "数据库DML数据操控语言详解"
+slug: "database-dml-data-manipulation"
 featured: false
 draft: false
 tags:

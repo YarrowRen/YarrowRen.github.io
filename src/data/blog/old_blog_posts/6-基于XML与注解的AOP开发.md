@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 09:39:48
 modDatetime: *id001
-title: 6-基于XML与注解的AOP开发
-slug: 6-基于XML与注解的AOP开发
+title: "使用XML配置Spring AOP切面实现"
+slug: "xml-spring-aop-configuration"
 featured: false
 draft: false
 tags:

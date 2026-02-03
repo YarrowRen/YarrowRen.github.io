@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:39:59
 modDatetime: *id001
-title: 24-JSON
-slug: 24-JSON
+title: "JSON语法与Java对象转换详解"
+slug: "json-syntax-java-conversion"
 featured: false
 draft: false
 tags:

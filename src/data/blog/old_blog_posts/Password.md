@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2023-07-25 17:02:00
 modDatetime: *id001
-title: Password
-slug: Password
+title: "身份认证与密码保护策略详解"
+slug: "identity-authentication-password-strategies"
 featured: false
 draft: false
 tags:

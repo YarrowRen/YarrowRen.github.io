@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 08:29:35
 modDatetime: *id001
-title: 5-AOP基础
-slug: 5-AOP基础
+title: "深入理解AOP面向切面编程及其实现技术"
+slug: "understanding-aop-aspect-oriented-programming"
 featured: false
 draft: false
 tags:

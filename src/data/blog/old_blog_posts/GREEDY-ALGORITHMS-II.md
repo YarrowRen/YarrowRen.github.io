@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2023-08-07 17:05:58
 modDatetime: *id001
-title: GREEDY ALGORITHMS II
-slug: GREEDY-ALGORITHMS-II
+title: "Dijkstra算法详解与实现"
+slug: "dijkstra-algorithm-explained"
 featured: false
 draft: false
 tags:

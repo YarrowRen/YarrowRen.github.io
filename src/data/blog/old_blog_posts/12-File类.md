@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 13:59:22
 modDatetime: *id001
-title: 12-File类
-slug: 12-File类
+title: "Java File类详解及路径操作方法"
+slug: "java-file-class-and-path-operations"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:16
 modDatetime: *id001
-title: 16-JSP基础
-slug: 16-JSP基础
+title: "JSP技术详解及其运行机制"
+slug: "jsp-technology-and-runtime-mechanism"
 featured: false
 draft: false
 tags:

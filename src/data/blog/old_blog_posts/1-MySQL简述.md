@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-27 21:04:29
 modDatetime: *id001
-title: 1-MySQL简述
-slug: 1-MySQL简述
+title: "MySQL数据库基础与常用操作指南"
+slug: "mysql-basics-and-common-operations"
 featured: false
 draft: false
 tags:

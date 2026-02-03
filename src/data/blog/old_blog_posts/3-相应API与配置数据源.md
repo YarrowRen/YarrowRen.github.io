@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 08:24:30
 modDatetime: *id001
-title: 3-相应API与配置数据源
-slug: 3-相应API与配置数据源
+title: "Spring容器实现与数据源配置详解"
+slug: "spring-container-data-source-configuration"
 featured: false
 draft: false
 tags:

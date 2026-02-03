@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 09:43:22
 modDatetime: *id001
-title: 7-JDBCTemplate
-slug: 7-JDBCTemplate
+title: "使用Spring JDBCTemplate简化数据库操作"
+slug: "spring-jdbctemplate-simplify-database-operations"
 featured: false
 draft: false
 tags:

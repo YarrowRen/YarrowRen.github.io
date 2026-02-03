@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 08:27:52
 modDatetime: *id001
-title: 4-注解开发与Junit集成
-slug: 4-注解开发与Junit集成
+title: "Spring框架注解开发指南"
+slug: "spring-framework-annotation-guide"
 featured: false
 draft: false
 tags:

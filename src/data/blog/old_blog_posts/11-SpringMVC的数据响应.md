@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-05 15:27:43
 modDatetime: *id001
-title: 11-SpringMVC的数据响应
-slug: 11-SpringMVC的数据响应
+title: "SpringMVC数据响应与页面跳转方法详解"
+slug: "springmvc-data-response-and-page-redirection"
 featured: false
 draft: false
 tags:

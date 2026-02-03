@@ -1,11 +1,11 @@
 ---
-title: "Dify 权限控制说明"
+title: "Dify 角色权限管理与校验机制详解"
 description: 
     Dify权限管理系统详细解析各角色权限，包括所有者、管理员、编辑者和数据集操作员的权限范围及权限控制机制，涵盖角色能力、权限校验流程及错误响应标准。
 pubDatetime: 2025-05-19T08:51:08.867Z
 modDatetime: 2025-05-19T08:51:08.867Z
 author: "Boyu Ren"
-slug: "dify-permission-control"
+slug: "dify-role-permission-management"
 tags: 
     - Tencent
     - Dify

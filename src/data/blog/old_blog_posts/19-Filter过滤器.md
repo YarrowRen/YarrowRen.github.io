@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:19
 modDatetime: *id001
-title: 19-Filter过滤器
-slug: 19-Filter过滤器
+title: "Java Web过滤器的实现与配置方法"
+slug: "java-web-filter-implementation"
 featured: false
 draft: false
 tags:

@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:39:56
 modDatetime: *id001
-title: 21-jQuery基础与选择器
-slug: 21-jQuery基础-选择器
+title: "jQuery基础与选择器详解"
+slug: "jquery-basics-and-selectors"
 featured: false
 draft: false
 tags:

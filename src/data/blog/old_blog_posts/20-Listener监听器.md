@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:34:49
 modDatetime: *id001
-title: 20-Listener监听器
-slug: 20-Listener监听器
+title: "Java Web中监听器的事件驱动机制与应用"
+slug: "java-web-event-listener-usage"
 featured: false
 draft: false
 tags:

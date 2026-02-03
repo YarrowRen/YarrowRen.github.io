@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-09-03 19:06:44
 modDatetime: *id001
-title: 2-本地应用：Vue指令
-slug: 2-本地应用：Vue指令
+title: "Vue常用指令解析与应用示例"
+slug: "vue-directives-examples"
 featured: false
 draft: false
 tags:

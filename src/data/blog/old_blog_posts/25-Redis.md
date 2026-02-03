@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:40:00
 modDatetime: *id001
-title: 25-Redis
-slug: 25-Redis
+title: "Redis数据库简介与持久化方案解析"
+slug: "redis-introduction-and-persistence"
 featured: false
 draft: false
 tags:

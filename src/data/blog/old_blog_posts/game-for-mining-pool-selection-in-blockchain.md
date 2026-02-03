@@ -1,11 +1,11 @@
 ---
-title: "区块链网络中矿池选择的演化博弈"
+title: "区块链矿池选择的演化博弈分析"
 description: 
     腾讯机器学习实习三面 —— 聚焦数据结构与分布式系统，涵盖跳表与哈希冲突处理、布隆过滤器在大数据判重中的应用，概率算法构造等概率数生成器；深入探讨 MySQL 分布式一致性、Socket 阻塞模型。
 pubDatetime: 2021-11-14T20:53:03.003Z
 modDatetime: 2021-11-14T20:53:03.003Z
 author: "Boyu Ren"
-slug: "game-for-mining-pool-selection-in-blockchain"
+slug: "evolutionary-game-mining-pool-selection"
 tags: 
   - 区块链
   - 演化博弈

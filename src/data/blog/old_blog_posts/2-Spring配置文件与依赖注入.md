@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 08:11:50
 modDatetime: *id001
-title: 2-Spring配置文件与依赖注入
-slug: 2-Spring配置文件与依赖注入
+title: "Spring中Bean配置详解与依赖注入"
+slug: "spring-bean-configuration-dependency-injection"
 featured: false
 draft: false
 tags:

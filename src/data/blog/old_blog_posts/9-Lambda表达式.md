@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 13:59:19
 modDatetime: *id001
-title: 9-Lambda表达式
-slug: 9-Lambda表达式
+title: "匿名内部类与Lambda表达式简化代码"
+slug: "anonymous-inner-class-lambda-simplification"
 featured: false
 draft: false
 tags:

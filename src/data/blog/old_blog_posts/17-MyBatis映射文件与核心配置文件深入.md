@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-20 13:53:36
 modDatetime: *id001
-title: 17-MyBatis映射文件与核心配置文件深入
-slug: 17-MyBatis映射文件与核心配置文件深入
+title: "MyBatis动态SQL实现条件查询技巧"
+slug: "mybatis-dynamic-sql-conditional-query"
 featured: false
 draft: false
 tags:

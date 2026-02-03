@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:28:06
 modDatetime: *id001
-title: 6-JDBCTemplate
-slug: 6-JDBCTemplate
+title: "Spring JDBC中的JDBCTemplate使用指南"
+slug: "spring-jdbc-jdbctemplate-guide"
 featured: false
 draft: false
 tags:

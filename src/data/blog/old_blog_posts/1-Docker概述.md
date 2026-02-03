@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-04-06 12:47:56
 modDatetime: *id001
-title: 1-Docker概述
-slug: 1-Docker概述
+title: "Docker使用指南与常用命令详解"
+slug: "docker-guide-and-commands"
 featured: false
 draft: false
 tags:

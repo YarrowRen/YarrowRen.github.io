@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-08 13:40:00
 modDatetime: *id001
-title: 12-SpringMVC的请求
-slug: 12-SpringMVC的请求
+title: "SpringMVC请求参数处理详解"
+slug: "springmvc-request-parameter-handling"
 featured: false
 draft: false
 tags:

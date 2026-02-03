@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-02 00:45:21
 modDatetime: *id001
-title: 1-Spring 基础
-slug: 1-Spring基础
+title: "Spring框架核心概念与应用优势解析"
+slug: "spring-framework-core-concepts-benefits"
 featured: false
 draft: false
 tags:

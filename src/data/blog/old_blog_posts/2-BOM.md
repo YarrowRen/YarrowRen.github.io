@@ -2,8 +2,8 @@
 author: Boyu Ren
 pubDatetime: &id001 2021-03-03 20:22:35
 modDatetime: *id001
-title: 2-BOM
-slug: 2-BOM
+title: "浏览器对象模型BOM的组成与使用"
+slug: "browser-object-model-bom-guide"
 featured: false
 draft: false
 tags:
