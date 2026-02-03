@@ -112,9 +112,6 @@ DROP USER 'test'@'%';
 * 跳过权限验证启动
 * 重置密码后恢复正常模式
 
-👉 参考视频教程：
-[https://www.bilibili.com/video/BV1uJ411k7wy?p=537](https://www.bilibili.com/video/BV1uJ411k7wy?p=537)
-
 ---
 
 ## 六、权限管理

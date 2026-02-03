@@ -218,9 +218,6 @@ webPro1.xml
 
 IDEA 可直接集成 Tomcat 进行 Web 项目开发与部署。
 
-👉 视频参考：
-[https://www.bilibili.com/video/BV1uJ411k7wy?p=683](https://www.bilibili.com/video/BV1uJ411k7wy?p=683)
-
 ---
 
 ## 八、常见问题

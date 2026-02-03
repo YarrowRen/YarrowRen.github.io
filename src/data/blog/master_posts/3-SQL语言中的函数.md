@@ -524,10 +524,6 @@ SELECT b.*,boy.*
 FROM beauty b
 CROSS JOIN boys boy;
 ```
-
-[外连接](https://www.bilibili.com/video/BV1uJ411k7wy?p=523)
-
-
 ## 子查询
 
 

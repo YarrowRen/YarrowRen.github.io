@@ -13,9 +13,6 @@ description: Dijkstra算法是一种用于计算单源最短路径的经典方�
 
 # Dijkstra's algorithm
 
-[算法图示：Bilibili《最短路径查找—Dijkstra算法》](https://www.bilibili.com/video/BV1zz4y1m7Nq)
-
-
 Dijkstra's algorithm（迪杰斯特拉算法）是一种用于求解单源最短路径问题的经典算法。该算法可以计算从单个起始节点到图中所有其他节点的最短路径。Dijkstra's algorithm适用于没有负权边的有向或无向带权图。
 
 算法的基本思想是从起始节点开始，不断扩展当前已知的最短路径，直到到达目标节点或处理完所有节点。该算法使用一个辅助数组（通常称为距离数组）来保存从起始节点到每个节点的最短路径长度。算法的步骤如下：
@@ -180,8 +177,6 @@ if __name__ == "__main__":
 
 # Prim's algorithm
 
-[算法图示：Bilibili《最小生成树Kruskal和Prim算法动画演示》](https://www.bilibili.com/video/BV1Eb41177d1)
-
 Prim's algorithm（普里姆算法）是用于解决最小生成树（Minimum Spanning Tree, MST）问题的一种常用贪心算法。它通过逐步添加节点来构建最小生成树，并保证最终生成的树是整个图中权重之和最小的树。
 
 算法步骤如下：
@@ -337,9 +332,6 @@ for edge in minimum_spanning_tree:
 ```
 
 上述代码通过定义并查集来简化Kruskal算法过程中的添加边过程和检测环路过程（如果两个点本身就在同一个集合内，就表明它们当前已经有一条能够相互连接的通路，此时再加入它们两个顶点的直接连接路径就会构成环路）
-
-[并查集图示](https://www.bilibili.com/video/BV1k14y1E7Uh)
-
 
 # Reverse-delete algorithm
 

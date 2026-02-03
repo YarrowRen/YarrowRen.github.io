@@ -109,9 +109,6 @@ Extensible Markup Language可扩展标记语言（可扩展指XML中的所有标
 3. 引入xsd文件命名空间，`xsi:schemaLocation="http://www.boyuren.cn/xml student.xsd"`
 4. 为每一个xsd约束声明一个前缀,作为标识`xmlns="http://www.boyuren.cn/xml"`
 
-[深入](https://www.bilibili.com/video/BV1uJ411k7wy?p=666)
-
-
 ## 解析
 
 操作XML文档，将文档中的数据读取到内存中
@@ -199,9 +196,5 @@ public class JsoupDemo1 {
 
 [语法参考](https://jsoup.org/apidocs/org/jsoup/select/Selector.html)
 
-[视频讲解](https://www.bilibili.com/video/BV1uJ411k7wy?p=673)
-
 ### 2. XPath
 XPath 是一门在 XML 文档中查找信息的语言。XPath 可用来在 XML 文档中对元素和属性进行遍历。
-
-[教程](https://www.w3school.com.cn/xpath/index.asp)
