@@ -32,3 +32,4 @@ new_blog/
 merox-erudite/
 temp/
 from-chatbot-to-plannable-llm-agents.md
+public/scripts/batch_lossless_compress.py
