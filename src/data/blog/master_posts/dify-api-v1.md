@@ -140,7 +140,7 @@ App 级并发限制并不是操作系统层面的限流，而是逻辑层控制�
 ## 四、Dify v1 API 完整执行流程说明
 
 
-![workflow](/images/dify_v1_api.png)
+![workflow](https://github.com/YarrowRen/picx-images-hosting/raw/master/blog_img/下载.7w7c506pdt.svg)
 
 ---
 

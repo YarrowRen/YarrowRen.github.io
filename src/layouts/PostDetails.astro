@@ -173,18 +173,6 @@ const nextPost =
     <Comments client:load slug={post.id} />
   </main>
   <Footer />
-  <!-- Image Lightbox Overlay -->
-  <div
-    id="image-lightbox"
-    class="hidden fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center"
-    >
-    <img
-      id="lightbox-image"
-      src=""
-      alt="Zoomed Image"
-      class="max-w-[90%] max-h-[90%] rounded shadow-lg"
-    />
-  </div>
 </Layout>
 
 <script is:inline data-astro-rerun>
@@ -317,26 +305,6 @@ const nextPost =
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
-
-  /** Image Lightbox: click to zoom */
-  function enableImageLightbox() {
-    const lightbox = document.getElementById("image-lightbox");
-    const lightboxImage = document.getElementById("lightbox-image");
-
-    document.querySelectorAll("article img").forEach((img) => {
-      img.classList.add("cursor-zoom-in");
-      img.addEventListener("click", () => {
-        lightboxImage.src = img.src;
-        lightbox.classList.remove("hidden");
-      });
-    });
-
-    lightbox.addEventListener("click", () => {
-      lightbox.classList.add("hidden");
-      lightboxImage.src = "";
-    });
-  }
-  enableImageLightbox();
 
   /** Generate TOC automatically from headings */
   function generateTOC() {
@@ -538,4 +506,48 @@ const nextPost =
     return ul;
   }
   generateTOC();
+</script>
+
+<script>
+  import lightGallery from 'lightgallery';
+  import lgZoom from 'lightgallery/plugins/zoom';
+  import 'lightgallery/css/lightgallery.css';
+  import 'lightgallery/css/lg-zoom.css';
+
+  let lgInstance: ReturnType<typeof lightGallery> | null = null;
+
+  function enableImageLightbox() {
+    if (lgInstance) { lgInstance.destroy(); lgInstance = null; }
+    const article = document.getElementById('article');
+    if (!article) return;
+
+    const imgs = Array.from(article.querySelectorAll('img'))
+      .filter(img => !img.closest('a'));
+    if (!imgs.length) return;
+
+    const dynamicEl = imgs.map(img => ({
+      src: img.src,
+      thumb: img.src,
+      alt: img.alt || '',
+    }));
+
+    lgInstance = lightGallery(document.body, {
+      dynamic: true,
+      dynamicEl,
+      plugins: [lgZoom],
+      speed: 400,
+      zoom: true,
+      showZoomInOutIcons: true,
+      actualSize: false,
+      download: false,
+      licenseKey: '0000-0000-000-0000',
+    });
+
+    imgs.forEach((img, idx) => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => lgInstance!.openGallery(idx));
+    });
+  }
+
+  document.addEventListener('astro:page-load', enableImageLightbox);
 </script>

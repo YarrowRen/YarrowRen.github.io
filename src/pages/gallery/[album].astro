@@ -4,20 +4,32 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 
 const { album } = Astro.params;
 const albumPath = `/assets/gallery/${album}`;
 const absoluteDir = path.resolve("public" + albumPath);
 
-// 读取相册图片
-let imageSources: string[] = [];
+// 读取相册图片，并在构建期获取尺寸以防止布局跳动
+interface ImageMeta { src: string; width: number; height: number }
+let images: ImageMeta[] = [];
 
 if (fs.existsSync(absoluteDir)) {
-  imageSources = fs
+  const files = fs
     .readdirSync(absoluteDir)
-    .filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))
-    .map((file) => `${albumPath}/${file}`);
+    .filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file));
+
+  images = await Promise.all(
+    files.map(async (file) => {
+      const src = `${albumPath}/${file}`;
+      const { width, height } = await sharp(path.join(absoluteDir, file)).metadata();
+      return { src, width: width ?? 800, height: height ?? 600 };
+    })
+  );
 }
+
+// 保持向后兼容（结构化数据等处仍使用 imageSources）
+const imageSources = images.map((img) => img.src);
 
 // 读取 meta.json
 let meta: any = {};
@@ -102,167 +114,48 @@ export async function getStaticPaths() {
     )}
 
     <div class="columns-1 sm:columns-2 lg:columns-3 gap-4" id="gallery-container">
-      {imageSources.map((src, index) => (
-        <div class="mb-4 break-inside-avoid">
+      {images.map((img, index) => (
+        <a href={img.src} class="mb-4 break-inside-avoid block">
           <img
-            src={src}
+            src={img.src}
+            width={img.width}
+            height={img.height}
             alt={`Image ${index}`}
-            class="rounded-lg cursor-pointer transition-transform duration-300 hover:scale-105 gallery-image"
-            data-src={src}
-            data-index={index}
+            class="rounded-lg transition-transform duration-300 hover:scale-105 gallery-image"
             loading="lazy"
           />
-        </div>
+        </a>
       ))}
     </div>
   </main>
 
   <Footer />
 
-  <!-- Lightbox -->
-  <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
-    <!-- Navigation buttons - Fixed to screen edges -->
-    <button id="prev-btn" class="fixed left-6 top-1/2 transform -translate-y-1/2 text-white text-5xl hover:text-gray-300 transition-colors p-4 z-60 hidden">
-      &#8249;
-    </button>
-    <button id="next-btn" class="fixed right-6 top-1/2 transform -translate-y-1/2 text-white text-5xl hover:text-gray-300 transition-colors p-4 z-60 hidden">
-      &#8250;
-    </button>
-    
-    <div class="relative max-w-full max-h-full flex items-center justify-center">
-      <img id="lightbox-img" src="" alt="Preview" class="max-w-full max-h-[90vh] rounded-lg shadow-xl" />
-      
-      <!-- Close button -->
-      <button id="close-btn" class="absolute top-6 right-6 text-white text-3xl hover:text-gray-300 transition-colors">&times;</button>
-      
-      <!-- Image counter -->
-      <div id="image-counter" class="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded hidden">
-        <span id="current-image">1</span> / <span id="total-images">1</span>
-      </div>
-    </div>
-  </div>
+  <script>
+    import lightGallery from 'lightgallery';
+    import lgZoom from 'lightgallery/plugins/zoom';
+    import 'lightgallery/css/lightgallery.css';
+    import 'lightgallery/css/lg-zoom.css';
 
-  <!-- Lightbox Script -->
-  <script define:vars={{ imageSources }}>
-    let currentImageIndex = 0;
+    let lgInstance: ReturnType<typeof lightGallery> | null = null;
 
-    function showLightbox(src, index) {
-      currentImageIndex = index;
-      document.getElementById("lightbox-img").src = src;
-      document.getElementById("lightbox").classList.remove("hidden");
-      
-      updateNavigationButtons();
-      updateImageCounter();
+    function initGallery() {
+      if (lgInstance) { lgInstance.destroy(); lgInstance = null; }
+      const container = document.getElementById('gallery-container');
+      if (!container) return;
+      lgInstance = lightGallery(container, {
+        selector: 'a',
+        plugins: [lgZoom],
+        speed: 400,
+        zoom: true,
+        showZoomInOutIcons: true,
+        actualSize: false,
+        download: false,
+        licenseKey: '0000-0000-000-0000',
+      });
     }
 
-    function hideLightbox() {
-      document.getElementById("lightbox").classList.add("hidden");
-      document.getElementById("prev-btn").classList.add("hidden");
-      document.getElementById("next-btn").classList.add("hidden");
-      document.getElementById("image-counter").classList.add("hidden");
-    }
-
-    function previousImage() {
-      if (currentImageIndex > 0) {
-        currentImageIndex--;
-        document.getElementById("lightbox-img").src = imageSources[currentImageIndex];
-        updateNavigationButtons();
-        updateImageCounter();
-      }
-    }
-
-    function nextImage() {
-      if (currentImageIndex < imageSources.length - 1) {
-        currentImageIndex++;
-        document.getElementById("lightbox-img").src = imageSources[currentImageIndex];
-        updateNavigationButtons();
-        updateImageCounter();
-      }
-    }
-
-    function updateNavigationButtons() {
-      const prevBtn = document.getElementById("prev-btn");
-      const nextBtn = document.getElementById("next-btn");
-      
-      if (imageSources.length <= 1) {
-        prevBtn.classList.add("hidden");
-        nextBtn.classList.add("hidden");
-        return;
-      }
-      
-      if (currentImageIndex > 0) {
-        prevBtn.classList.remove("hidden");
-      } else {
-        prevBtn.classList.add("hidden");
-      }
-      
-      if (currentImageIndex < imageSources.length - 1) {
-        nextBtn.classList.remove("hidden");
-      } else {
-        nextBtn.classList.add("hidden");
-      }
-    }
-
-    function updateImageCounter() {
-      if (imageSources.length <= 1) {
-        document.getElementById("image-counter").classList.add("hidden");
-        return;
-      }
-      
-      document.getElementById("current-image").textContent = currentImageIndex + 1;
-      document.getElementById("total-images").textContent = imageSources.length;
-      document.getElementById("image-counter").classList.remove("hidden");
-    }
-
-    // Use event delegation for more reliable event handling
-    document.addEventListener('click', function(e) {
-      // Handle gallery image clicks
-      if (e.target.classList.contains('gallery-image')) {
-        const src = e.target.dataset.src;
-        const index = parseInt(e.target.dataset.index);
-        console.log('Image clicked:', src, index); // Debug log
-        showLightbox(src, index);
-        return;
-      }
-      
-      // Handle navigation button clicks
-      if (e.target.id === 'prev-btn') {
-        previousImage();
-        return;
-      }
-      
-      if (e.target.id === 'next-btn') {
-        nextImage();
-        return;
-      }
-      
-      if (e.target.id === 'close-btn') {
-        hideLightbox();
-        return;
-      }
-      
-      // Handle lightbox background click
-      const lightbox = document.getElementById('lightbox');
-      if (lightbox && !lightbox.classList.contains('hidden') && e.target === lightbox) {
-        hideLightbox();
-      }
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', function(e) {
-      const lightbox = document.getElementById('lightbox');
-      if (lightbox && !lightbox.classList.contains('hidden')) {
-        if (e.key === 'Escape') {
-          hideLightbox();
-        } else if (e.key === 'ArrowLeft') {
-          previousImage();
-        } else if (e.key === 'ArrowRight') {
-          nextImage();
-        }
-      }
-    });
-
-    // No additional layout JavaScript needed for CSS Columns
+    document.addEventListener('astro:page-load', initGallery);
   </script>
 
   <style is:global>
@@ -271,46 +164,6 @@ export async function getStaticPaths() {
       width: 100%;
       height: auto;
       display: block;
-    }
-    
-    /* Lightbox styling */
-    #lightbox {
-      background-color: rgba(0, 0, 0, 0.6);
-    }
-    
-    /* Navigation buttons styling */
-    #prev-btn, #next-btn {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(4px);
-      border: none;
-      cursor: pointer;
-    }
-    
-    #prev-btn:hover, #next-btn:hover {
-      background: rgba(0, 0, 0, 0.5);
-    }
-    
-    /* Mobile responsive adjustments for navigation */
-    @media (max-width: 768px) {
-      #prev-btn, #next-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 2rem;
-      }
-      
-      #prev-btn {
-        left: 1rem;
-      }
-      
-      #next-btn {
-        right: 1rem;
-      }
     }
   </style>
 </Layout>
