@@ -27,7 +27,21 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       <div class="flex flex-col sm:flex-row sm:items-center max-w-5xl mx-auto px-4 gap-8">
         <!-- 左侧 20%：头像 + 社交 -->
         <div class="w-full sm:w-[25%] flex flex-col items-center sm:items-start text-center sm:text-left shrink-0">
-          <img src="/title.jpg" alt="avatar" class="w-24 h-24 rounded-full border shadow mb-4" />
+          <div id="avatar-wrapper" class="relative mb-4" style="width:96px;height:96px;">
+            <div style="width:96px;height:96px;border-radius:50%;overflow:hidden;position:relative;z-index:1;">
+              <img id="hero-avatar" src="/title.jpg" alt="avatar" class="w-24 h-24 rounded-full border shadow cursor-pointer select-none" />
+            </div>
+            <svg id="avatar-ring-svg" width="104" height="104" viewBox="0 0 104 104"
+              style="position:absolute;top:-4px;left:-4px;pointer-events:none;z-index:2;">
+              <circle cx="52" cy="52" r="48"
+                fill="none"
+                stroke-width="3"
+                stroke-linecap="round"
+                transform="rotate(-90 52 52)"
+                id="avatar-ring-circle"
+                style="stroke:var(--ring-color, #8b5cf6);stroke-dasharray:301.6;stroke-dashoffset:301.6;transition:stroke-dashoffset 0.25s ease;" />
+            </svg>
+          </div>
           <div class="flex gap-3 justify-center sm:justify-start">
             <a href="https://github.com/YarrowRen" target="_blank" aria-label="GitHub" class="social-icon">
               <img src="/icons/github.svg" class="w-5 h-5" />
@@ -106,6 +120,33 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   <Footer />
 </Layout>
 
+<style>
+  :root,
+  html[data-theme="light"] {
+    --ring-color: #8b5cf6;
+  }
+  html[data-theme="dark"] {
+    --ring-color: #ff6b01;
+  }
+
+  @keyframes avatar-pulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.12); }
+    100% { transform: scale(1); }
+  }
+  @keyframes avatar-flip {
+    0%   { transform: scale(1) rotateY(0deg); }
+    50%  { transform: scale(0.85) rotateY(90deg); opacity: 0.4; }
+    100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+  }
+  #hero-avatar.pulse {
+    animation: avatar-pulse 0.2s ease;
+  }
+  #hero-avatar.flip {
+    animation: avatar-flip 0.45s ease;
+  }
+</style>
+
 <script>
   document.addEventListener("astro:page-load", () => {
     const indexLayout = (document.querySelector("#main-content") as HTMLElement)
@@ -113,5 +154,80 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     if (indexLayout) {
       sessionStorage.setItem("backUrl", "/");
     }
+
+    // Easter egg: triple-click avatar to toggle easter egg image
+    const avatar = document.getElementById("hero-avatar") as HTMLImageElement | null;
+    const ringCircle = document.getElementById("avatar-ring-circle") as SVGCircleElement | null;
+    if (!avatar || !ringCircle) return;
+
+    const normalSrc = "/title.jpg";
+    const easterSrc = "/favicon.svg";
+    let clickCount = 0;
+    let clickTimer: ReturnType<typeof setTimeout> | null = null;
+    let easterActive = false;
+
+    const circumference = 301.6;
+
+    function setRing(step: number) {
+      // step 0=hidden, 1=1/3, 2=2/3, 3=full
+      ringCircle!.style.strokeDashoffset = String(circumference * (1 - step / 3));
+    }
+
+    function resetRing() {
+      ringCircle!.style.strokeDashoffset = String(circumference);
+    }
+
+    avatar.addEventListener("click", () => {
+      clickCount++;
+      if (clickTimer) clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => {
+        clickCount = 0;
+        resetRing();
+      }, 1000);
+
+      // pulse feedback + update ring progress
+      avatar.classList.remove("pulse");
+      void avatar.offsetWidth; // reflow to restart animation
+      avatar.classList.add("pulse");
+      setTimeout(() => avatar.classList.remove("pulse"), 200);
+
+      setRing(clickCount);
+
+      if (clickCount >= 3) {
+        clickCount = 0;
+        if (clickTimer) clearTimeout(clickTimer);
+
+        // flip transition: swap src at mid-point, then clear ring
+        avatar.classList.add("flip");
+        setTimeout(() => {
+          avatar.src = easterActive ? normalSrc : easterSrc;
+          easterActive = !easterActive;
+        }, 225);
+        setTimeout(() => {
+          avatar.classList.remove("flip");
+          resetRing();
+        }, 450);
+      }
+    });
+
+    // Konami code: only active when easter egg is on
+    const konamiCode = [
+      "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
+      "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight"
+    ];
+    let konamiIndex = 0;
+
+    document.addEventListener("keydown", (e) => {
+      if (!easterActive) { konamiIndex = 0; return; }
+      if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          konamiIndex = 0;
+          window.location.href = "https://nohentai.com";
+        }
+      } else {
+        konamiIndex = e.key === konamiCode[0] ? 1 : 0;
+      }
+    });
   });
 </script>
