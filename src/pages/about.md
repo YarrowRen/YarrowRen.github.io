@@ -46,7 +46,7 @@ lang: "cn"
 ### Work Experience
 
 - July 2025 - Present
-  - NLP Algorithm Engineer @ **ZUOYEBANG - NLP Group 📚**   
+  - NLP Algorithm Engineer @ **ZUOYEBANG - NLP Group 💯**   
 - Jan 2025 - July 2025
   - Machine Learning Engineer (Intern) @ **Tencent Lightspeed Studios 🐧**  
 - May 2024 - Jan 2025
