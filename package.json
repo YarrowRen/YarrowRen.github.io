@@ -15,6 +15,7 @@
     "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
     "@astrojs/react": "^4.2.7",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",

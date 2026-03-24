@@ -10,6 +10,7 @@ import rehypeKatex from "rehype-katex";
 
 
 import react from "@astrojs/react";
+import mdx from "@astrojs/mdx";
 
 
 // https://astro.build/config
@@ -17,7 +18,7 @@ export default defineConfig({
   site: SITE.website,
   integrations: [sitemap({
     filter: page => SITE.showArchives || !page.endsWith("/archives"),
-  }), react()],
+  }), react(), mdx()],
   markdown: {
     remarkPlugins: [remarkMath, remarkToc, [remarkCollapse, { test: "Table of contents" }]],
     rehypePlugins: [rehypeKatex],
