@@ -465,6 +465,11 @@ const nextPost =
     let startX = 0;
     let startY = 0;
     let savedScrollY = 0;
+    let pinchStartDistance = 0;
+    let pinchStartScale = 1;
+    let pinchCenterX = 0;
+    let pinchCenterY = 0;
+    const activePointers = new Map();
     const buttonZoomStep = 0.03;
     const wheelZoomFactor = 0.0008;
 
@@ -589,13 +594,52 @@ const nextPost =
     }, { passive: false });
 
     viewport.addEventListener("pointerdown", event => {
-      dragging = true;
-      startX = event.clientX - translateX;
-      startY = event.clientY - translateY;
+      activePointers.set(event.pointerId, {
+        clientX: event.clientX,
+        clientY: event.clientY,
+      });
+
+      if (activePointers.size === 1) {
+        dragging = true;
+        startX = event.clientX - translateX;
+        startY = event.clientY - translateY;
+      }
+
+      if (activePointers.size === 2) {
+        dragging = false;
+        const [firstPointer, secondPointer] = Array.from(activePointers.values());
+        const deltaX = secondPointer.clientX - firstPointer.clientX;
+        const deltaY = secondPointer.clientY - firstPointer.clientY;
+        pinchStartDistance = Math.hypot(deltaX, deltaY);
+        pinchStartScale = scale;
+        pinchCenterX = (firstPointer.clientX + secondPointer.clientX) / 2;
+        pinchCenterY = (firstPointer.clientY + secondPointer.clientY) / 2;
+      }
+
       viewport.setPointerCapture(event.pointerId);
     });
 
     viewport.addEventListener("pointermove", event => {
+      if (!activePointers.has(event.pointerId)) return;
+
+      activePointers.set(event.pointerId, {
+        clientX: event.clientX,
+        clientY: event.clientY,
+      });
+
+      if (activePointers.size === 2) {
+        const [firstPointer, secondPointer] = Array.from(activePointers.values());
+        const deltaX = secondPointer.clientX - firstPointer.clientX;
+        const deltaY = secondPointer.clientY - firstPointer.clientY;
+        const distance = Math.hypot(deltaX, deltaY);
+
+        if (pinchStartDistance > 0) {
+          const nextScale = pinchStartScale * (distance / pinchStartDistance);
+          zoomAtPoint(nextScale, pinchCenterX, pinchCenterY);
+        }
+        return;
+      }
+
       if (!dragging) return;
       translateX = event.clientX - startX;
       translateY = event.clientY - startY;
@@ -603,10 +647,18 @@ const nextPost =
     });
 
     const stopDragging = event => {
-      if (!dragging) return;
+      activePointers.delete(event.pointerId);
       dragging = false;
+      pinchStartDistance = 0;
       if (event instanceof PointerEvent) {
         viewport.releasePointerCapture(event.pointerId);
+      }
+
+      if (activePointers.size === 1) {
+        const [remainingPointer] = Array.from(activePointers.values());
+        dragging = true;
+        startX = remainingPointer.clientX - translateX;
+        startY = remainingPointer.clientY - translateY;
       }
     };
 
