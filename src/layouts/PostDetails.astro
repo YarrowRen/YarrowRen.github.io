@@ -175,6 +175,92 @@ const nextPost =
   <Footer />
 </Layout>
 
+<script>
+  let mermaidModulePromise;
+
+  async function getMermaid() {
+    mermaidModulePromise ??= import("mermaid").then(({ default: mermaid }) => mermaid);
+    const mermaid = await mermaidModulePromise;
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "loose",
+      theme: document.documentElement.dataset.theme === "dark" ? "dark" : "default",
+    });
+
+    return mermaid;
+  }
+
+  async function renderMermaidDiagrams() {
+    const diagrams = Array.from(
+      document.querySelectorAll<HTMLElement>(".mermaid")
+    ).filter(
+      diagram => diagram.dataset.mermaidProcessed !== "true"
+    );
+
+    if (!diagrams.length) return;
+    const mermaid = await getMermaid();
+
+    for (const [index, diagram] of diagrams.entries()) {
+      const rawSource = diagram.dataset.mermaidSource ?? diagram.textContent?.trim() ?? "";
+      diagram.dataset.mermaidSource = rawSource;
+      diagram.classList.add("mermaid-rendering");
+      const renderResult = await mermaid.render(`mermaid-diagram-${index}-${Date.now()}`, rawSource);
+      diagram.innerHTML = renderResult.svg;
+      diagram.dataset.mermaidProcessed = "true";
+      diagram.classList.add("mermaid-ready");
+      diagram.classList.remove("mermaid-rendering");
+      diagram.setAttribute("role", "button");
+      diagram.setAttribute("tabindex", "0");
+      diagram.setAttribute("aria-label", "Open Mermaid diagram preview");
+
+      if (!diagram.querySelector(".mermaid-toolbar")) {
+        const toolbar = document.createElement("div");
+        toolbar.className = "mermaid-toolbar";
+        toolbar.innerHTML = `
+          <button type="button" class="mermaid-toolbar__button" data-mermaid-action="toggle-view">代码</button>
+          <button type="button" class="mermaid-toolbar__button" data-mermaid-action="copy-source">复制</button>
+          <button type="button" class="mermaid-toolbar__button" data-mermaid-action="toggle-expand">展开</button>
+        `;
+
+        const sourcePanel = document.createElement("div");
+        sourcePanel.className = "mermaid-source";
+        sourcePanel.hidden = true;
+
+        const sourceText = document.createElement("div");
+        sourceText.className = "mermaid-source__text";
+        sourceText.textContent = diagram.dataset.mermaidSource ?? "";
+        sourcePanel.appendChild(sourceText);
+
+        diagram.appendChild(toolbar);
+        diagram.appendChild(sourcePanel);
+      }
+    }
+  }
+
+  async function rerenderMermaidDiagrams() {
+    const diagrams = Array.from(document.querySelectorAll<HTMLElement>(".mermaid"));
+    if (!diagrams.length) return;
+
+    diagrams.forEach(diagram => {
+      const source = diagram.dataset.mermaidSource ?? diagram.textContent?.trim() ?? "";
+      diagram.classList.remove("mermaid-ready", "mermaid-showing-code", "mermaid-expanded");
+      diagram.classList.add("mermaid-rendering");
+      diagram.removeAttribute("role");
+      diagram.removeAttribute("tabindex");
+      diagram.removeAttribute("aria-label");
+      delete diagram.dataset.mermaidProcessed;
+      diagram.dataset.mermaidSource = source;
+    });
+
+    await renderMermaidDiagrams();
+  }
+
+  document.addEventListener("astro:page-load", renderMermaidDiagrams);
+  document.addEventListener("theme-change", rerenderMermaidDiagrams);
+  renderMermaidDiagrams();
+</script>
+
 <script is:inline data-astro-rerun>
   /** Create a progress indicator
    *  at the top */
@@ -253,9 +339,15 @@ const nextPost =
    * allowing users to copy code easily. */
   function attachCopyButtons() {
     const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+    const codeBlocks = Array.from(
+      document.querySelectorAll("pre")
+    ).filter(codeBlock => {
+      return !codeBlock.classList.contains("mermaid") && !!codeBlock.querySelector("code");
+    });
 
     for (const codeBlock of codeBlocks) {
+      if (codeBlock.querySelector(".copy-code")) continue;
+
       const wrapper = document.createElement("div");
       wrapper.style.position = "relative";
 
@@ -290,6 +382,238 @@ const nextPost =
     }
   }
   attachCopyButtons();
+  document.addEventListener("astro:page-load", attachCopyButtons);
+
+  function setupMermaidInlineControls() {
+    document.addEventListener("click", async event => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const action = target.dataset.mermaidAction;
+      if (!action) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const diagram = target.closest(".mermaid");
+      if (!(diagram instanceof HTMLElement)) return;
+
+      const sourcePanel = diagram.querySelector(".mermaid-source");
+      const source = diagram.dataset.mermaidSource ?? "";
+
+      if (action === "toggle-view") {
+        const showingCode = sourcePanel instanceof HTMLElement ? !sourcePanel.hidden : false;
+        const sourceText = sourcePanel?.querySelector(".mermaid-source__text");
+        if (sourceText instanceof HTMLElement) {
+          sourceText.textContent = source;
+        }
+        if (sourcePanel instanceof HTMLElement) {
+          sourcePanel.hidden = showingCode;
+        }
+        diagram.classList.toggle("mermaid-showing-code", !showingCode);
+        target.textContent = showingCode ? "代码" : "图像";
+      }
+
+      if (action === "copy-source") {
+        await navigator.clipboard.writeText(source);
+        const previousLabel = target.textContent;
+        target.textContent = "已复制";
+        setTimeout(() => {
+          target.textContent = previousLabel ?? "复制";
+        }, 900);
+      }
+
+      if (action === "toggle-expand") {
+        const expanded = diagram.classList.toggle("mermaid-expanded");
+        target.textContent = expanded ? "收起" : "展开";
+      }
+    });
+  }
+  setupMermaidInlineControls();
+
+  function setupMermaidLightbox() {
+    if (document.getElementById("mermaid-lightbox")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "mermaid-lightbox";
+    overlay.className = "mermaid-lightbox hidden";
+    overlay.innerHTML = `
+      <div class="mermaid-lightbox__backdrop" data-close="true"></div>
+      <div class="mermaid-lightbox__panel">
+        <div class="mermaid-lightbox__toolbar">
+          <button type="button" data-action="zoom-out" aria-label="Zoom out">-</button>
+          <button type="button" data-action="reset" aria-label="Reset zoom">Reset</button>
+          <button type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
+          <button type="button" data-action="close" aria-label="Close preview">Close</button>
+        </div>
+        <div class="mermaid-lightbox__viewport">
+          <div class="mermaid-lightbox__content"></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const content = overlay.querySelector(".mermaid-lightbox__content");
+    const viewport = overlay.querySelector(".mermaid-lightbox__viewport");
+
+    if (!(content instanceof HTMLDivElement) || !(viewport instanceof HTMLDivElement)) return;
+
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let savedScrollY = 0;
+    const buttonZoomStep = 0.03;
+    const wheelZoomFactor = 0.0008;
+
+    const clampScale = (value) => Math.min(4, Math.max(0.5, value));
+
+    const applyTransform = () => {
+      content.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    };
+
+    const zoomAtPoint = (nextScale, clientX, clientY) => {
+      const clampedScale = clampScale(nextScale);
+      if (clampedScale === scale) return;
+
+      const rect = viewport.getBoundingClientRect();
+      const pointX = clientX - rect.left;
+      const pointY = clientY - rect.top;
+      const contentX = (pointX - translateX) / scale;
+      const contentY = (pointY - translateY) / scale;
+
+      translateX = pointX - contentX * clampedScale;
+      translateY = pointY - contentY * clampedScale;
+      scale = clampedScale;
+      applyTransform();
+    };
+
+    const resetTransform = () => {
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    };
+
+    const closeOverlay = () => {
+      overlay.classList.add("hidden");
+      document.body.classList.remove("mermaid-lightbox-open");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      content.innerHTML = "";
+      resetTransform();
+      window.scrollTo({ top: savedScrollY, behavior: "instant" });
+    };
+
+    const openOverlay = (diagram) => {
+      const svg = diagram.querySelector("svg");
+      if (!(svg instanceof SVGElement)) return;
+
+      content.innerHTML = "";
+      content.appendChild(svg.cloneNode(true));
+      savedScrollY = window.scrollY;
+      overlay.classList.remove("hidden");
+      document.body.classList.add("mermaid-lightbox-open");
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${savedScrollY}px`;
+      document.body.style.width = "100%";
+      resetTransform();
+    };
+
+    document.addEventListener("click", event => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (target.closest(".mermaid-toolbar") || target.closest(".mermaid-source")) return;
+
+      const diagram = target.closest(".mermaid-ready");
+      if (!(diagram instanceof HTMLElement) || overlay.contains(target)) return;
+
+      const svg = target.closest("svg");
+      if (!svg || !diagram.contains(svg)) return;
+
+      openOverlay(diagram);
+    });
+
+    document.addEventListener("keydown", event => {
+      const target = event.target;
+      if (
+        event.key === "Enter" &&
+        target instanceof HTMLElement &&
+        target.classList.contains("mermaid-ready")
+      ) {
+        event.preventDefault();
+        openOverlay(target);
+      }
+
+      if (event.key === "Escape" && !overlay.classList.contains("hidden")) {
+        closeOverlay();
+      }
+    });
+
+    overlay.addEventListener("click", event => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const action = target.dataset.action;
+      if (target.dataset.close === "true" || action === "close") {
+        closeOverlay();
+        return;
+      }
+      if (action === "zoom-in") {
+        const rect = viewport.getBoundingClientRect();
+        zoomAtPoint(
+          scale + buttonZoomStep,
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2
+        );
+      }
+      if (action === "zoom-out") {
+        const rect = viewport.getBoundingClientRect();
+        zoomAtPoint(
+          scale - buttonZoomStep,
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2
+        );
+      }
+      if (action === "reset") {
+        resetTransform();
+      }
+    });
+
+    viewport.addEventListener("wheel", event => {
+      event.preventDefault();
+      zoomAtPoint(scale - event.deltaY * wheelZoomFactor, event.clientX, event.clientY);
+    }, { passive: false });
+
+    viewport.addEventListener("pointerdown", event => {
+      dragging = true;
+      startX = event.clientX - translateX;
+      startY = event.clientY - translateY;
+      viewport.setPointerCapture(event.pointerId);
+    });
+
+    viewport.addEventListener("pointermove", event => {
+      if (!dragging) return;
+      translateX = event.clientX - startX;
+      translateY = event.clientY - startY;
+      applyTransform();
+    });
+
+    const stopDragging = event => {
+      if (!dragging) return;
+      dragging = false;
+      if (event instanceof PointerEvent) {
+        viewport.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    viewport.addEventListener("pointerup", stopDragging);
+    viewport.addEventListener("pointercancel", stopDragging);
+  }
+  setupMermaidLightbox();
 
   /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */

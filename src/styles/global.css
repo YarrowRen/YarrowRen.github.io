@@ -58,6 +58,110 @@ html[data-theme="dark"] {
   @apply underline decoration-wavy decoration-2 underline-offset-4;
 }
 
+body.mermaid-lightbox-open {
+  overflow: hidden;
+}
+
+.mermaid-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mermaid-lightbox.hidden {
+  display: none;
+}
+
+.mermaid-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 42%),
+    color-mix(in srgb, #081018 78%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.mermaid-lightbox__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 92vh;
+  width: min(92vw, 1400px);
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mermaid-lightbox__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px -28px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+}
+
+.mermaid-lightbox__toolbar button {
+  border: 1px solid color-mix(in srgb, var(--color-accent) 18%, var(--color-border));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-background) 94%, transparent);
+  padding: 0.42rem 0.82rem;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.mermaid-lightbox__toolbar button:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 44%, var(--color-border));
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-background));
+  transform: translateY(-1px);
+}
+
+.mermaid-lightbox__viewport {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  cursor: grab;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 24%, var(--color-border));
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-background) 96%, white) 0%,
+      var(--color-background) 100%
+    );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-background) 60%, transparent) inset,
+    0 32px 60px -36px rgba(0, 0, 0, 0.55);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.mermaid-lightbox__viewport:active {
+  cursor: grabbing;
+}
+
+.mermaid-lightbox__content {
+  transform-origin: top left;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mermaid-lightbox__content svg {
+  display: block;
+  max-width: none;
+  margin: 0 auto;
+}
+
 /* Table of Contents Styling */
 article details > summary {
   font-weight: 600;

@@ -21,6 +21,11 @@ let themeValue = getPreferTheme();
 function setPreference() {
   localStorage.setItem("theme", themeValue);
   reflectPreference();
+  document.dispatchEvent(
+    new CustomEvent("theme-change", {
+      detail: { theme: themeValue },
+    })
+  );
 }
 
 function reflectPreference() {
@@ -44,6 +49,7 @@ function reflectPreference() {
       .querySelector("meta[name='theme-color']")
       ?.setAttribute("content", bgColor);
   }
+
 }
 
 // set early so no page flashes / CSS is made aware

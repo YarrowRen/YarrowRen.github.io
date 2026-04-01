@@ -6,6 +6,7 @@ import remarkCollapse from "remark-collapse";
 import { SITE } from "./src/config";
 
 import remarkMath from "remark-math";
+import remarkMermaid from "./src/utils/remarkMermaid";
 import rehypeKatex from "rehype-katex";
 
 
@@ -20,7 +21,7 @@ export default defineConfig({
     filter: page => SITE.showArchives || !page.endsWith("/archives"),
   }), react(), mdx()],
   markdown: {
-    remarkPlugins: [remarkMath, remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+    remarkPlugins: [remarkMath, remarkMermaid, remarkToc, [remarkCollapse, { test: "Table of contents" }]],
     rehypePlugins: [rehypeKatex],
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
