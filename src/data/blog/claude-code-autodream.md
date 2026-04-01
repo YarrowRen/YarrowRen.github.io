@@ -1,6 +1,6 @@
 ---
 title: "从泄漏源码看 Claude Code：AutoDream 自进化记忆机制"
-description: ""
+description: "基于 ClaudeCode-autoDream部分 相关源码与任务链路整理。本报告重点落在 AutoDream 自身的实际实现。"
 pubDatetime: 2026-04-01T07:56:25.902Z
 modDatetime: 2026-04-01T07:56:25.902Z
 author: "Boyu Ren"
@@ -23,6 +23,52 @@ AutoDream 不是普通的对话能力，而是 Claude Code 自动记忆体系中
 1. 启动阶段，`startBackgroundHousekeeping()` 调用 `initAutoDream()` 完成初始化，说明它属于后台 housekeeping 能力，而非主查询循环本体。
 2. 每轮 stop hook 结束时，如果当前不是 bare/simple 模式、不是子 agent，则会 fire-and-forget 调用 `executeAutoDream()`。
 3. `executeAutoDream()` 本身不做业务，只转发到 `initAutoDream()` 闭包中注册的 `runner`，真正逻辑都在 `runAutoDream()` 里。
+
+```mermaid
+flowchart TB
+    A[用户完成一轮主对话] --> B[stopHooks 触发 executeAutoDream]
+    B --> C{是否为 bare/simple 模式\n或子 agent?}
+    C -- 是 --> Z[跳过 AutoDream]
+    C -- 否 --> D[AutoDream Runner]
+
+    D --> E{Gate 1:\n功能是否开启?}
+    E -- 否 --> Z
+    E -- 是 --> F[读取上次 consolidation 时间\nreadLastConsolidatedAt]
+
+    F --> G{Gate 2:\n距离上次是否超过 minHours?}
+    G -- 否 --> Z
+    G -- 是 --> H{Gate 3:\n是否命中 session 扫描节流?}
+    H -- 是 --> Z
+    H -- 否 --> I[扫描 transcript 目录\nlistSessionsTouchedSince]
+
+    I --> J[排除当前 session]
+    J --> K{Gate 4:\nsession 数是否达到 minSessions?}
+    K -- 否 --> Z
+    K -- 是 --> L{Gate 5:\n尝试获取 consolidation lock}
+    L -- 失败 --> Z
+    L -- 成功 --> M[注册 DreamTask\n创建 abortController]
+
+    M --> N[构造 consolidation prompt\n+ 本次运行 extra 限制]
+    N --> O[runForkedAgent\n启动后台 dream agent]
+
+    O --> P[onMessage 监听 agent 输出]
+    P --> Q[更新 DreamTask\ntext / toolUseCount / filesTouched]
+
+    O --> R{执行结果}
+    R -- 成功 --> S[completeDreamTask]
+    S --> T{是否有 filesTouched?}
+    T -- 是 --> U[向主 transcript 追加\nImproved memory 提示]
+    T -- 否 --> V[结束]
+    U --> V
+
+    R -- 失败 --> W[failDreamTask]
+    W --> X[rollbackConsolidationLock]
+    X --> Y[结束]
+
+    Z --> Y
+    V --> Y
+
+```
 
 关键定位代码：
 
@@ -58,6 +104,86 @@ AutoDream 的主流程可以概括为：
 9. 监听 agent 输出，提取文本和写入路径，更新 DreamTask。
 10. 成功则完成任务并在主 transcript 追加 “Improved …” 系统消息。
 11. 失败或被杀时回滚 lock 时间戳，避免错误推进状态。
+
+```mermaid
+flowchart LR
+    subgraph TriggerLayer[触发层]
+        A1[backgroundHousekeeping\ninitAutoDream]
+        A2[stopHooks\nexecuteAutoDream]
+    end
+
+    subgraph GateLayer[门控层]
+        B1[功能开关\nisAutoDreamEnabled]
+        B2[Auto Memory 开关\nisAutoMemoryEnabled]
+        B3[模式限制\n非 KAIROS / 非 Remote]
+        B4[时间门控\nminHours]
+        B5[扫描节流\nSESSION_SCAN_INTERVAL_MS]
+        B6[Session 数门控\nminSessions]
+    end
+
+    subgraph StateLayer[状态与并发控制]
+        C1[.consolidate-lock]
+        C2[文件 mtime = lastConsolidatedAt]
+        C3[文件内容 = holder PID]
+        C4[失败/kill 时回滚 mtime]
+    end
+
+    subgraph ExecutionLayer[执行层]
+        D1[buildConsolidationPrompt]
+        D2[extra:\n只读 Bash 限制\n+ session 列表]
+        D3[runForkedAgent]
+        D4[createAutoMemCanUseTool]
+        D5[skipTranscript = true]
+    end
+
+    subgraph PromptLayer[Prompt 结构]
+        E1[Phase 1\nOrient]
+        E2[Phase 2\nGather recent signal]
+        E3[Phase 3\nConsolidate]
+        E4[Phase 4\nPrune and index]
+    end
+
+    subgraph UILayer[可见性层]
+        F1[DreamTask 注册]
+        F2[onMessage 解析输出]
+        F3[turns / toolUseCount / filesTouched]
+        F4[appendSystemMessage\nImproved ...]
+        F5[kill -> abort + rollback]
+    end
+
+    A1 --> A2
+    A2 --> B1
+    A2 --> B2
+    A2 --> B3
+    B1 --> B4
+    B2 --> B4
+    B3 --> B4
+    B4 --> B5
+    B5 --> B6
+    B6 --> C1
+
+    C1 --> C2
+    C1 --> C3
+    C1 --> C4
+
+    C1 --> D1
+    D1 --> D2
+    D2 --> D3
+    D3 --> D4
+    D3 --> D5
+
+    D1 --> E1
+    D1 --> E2
+    D1 --> E3
+    D1 --> E4
+
+    D3 --> F1
+    D3 --> F2
+    F2 --> F3
+    D3 --> F4
+    F1 --> F5
+
+```
 
 其中最关键的入口实现集中在 `src/services/autoDream/autoDream.ts:122-271`。
 
@@ -167,6 +293,38 @@ AutoDream 最漂亮的一段实现，在 `consolidationLock.ts`。
 - `src/services/autoDream/consolidationLock.ts:16-23`
 - `src/services/autoDream/consolidationLock.ts:25-45`
 
+```mermaid
+flowchart TD
+    A[".consolidate-lock"] --> B["mtime"]
+    A --> C["file body"]
+
+    B --> D["lastConsolidatedAt"]
+    C --> E["current holder PID"]
+
+    F["尝试启动 AutoDream"] --> G{"lock 文件存在且未过期?"}
+    G -- 否 --> H["直接写入当前 PID"]
+    G -- 是 --> I{"PID 对应进程是否仍存活?"}
+
+    I -- 是 --> J["认为锁被持有，本轮放弃"]
+    I -- 否 --> K["视为 stale lock，允许 reclaim"]
+
+    K --> H
+    H --> L["回读文件内容验证"]
+    L --> M{"PID 是否仍是自己?"}
+
+    M -- 否 --> N["竞争失败，返回 null"]
+    M -- 是 --> O["获取锁成功，返回 priorMtime"]
+
+    O --> P{"后续 dream 执行结果"}
+    P -- 成功 --> Q["保留当前 mtime，作为新的 lastConsolidatedAt"]
+    P -- 失败/被 kill --> R["rollbackConsolidationLock(priorMtime)"]
+
+    R --> S{"priorMtime 是否为 0?"}
+    S -- 是 --> T["删除 lock 文件"]
+    S -- 否 --> U["清空 PID 内容并恢复旧 mtime"]
+
+```
+
 ### 6.1 获取锁
 
 `tryAcquireConsolidationLock()` 的流程：
@@ -275,6 +433,66 @@ AutoDream 没有自己写一个专用执行器，而是直接复用通用 forked
 ## 9. DreamTask：让后台 agent 对用户“可见但不打扰”
 
 如果只有后台 forked agent，用户几乎察觉不到它在做什么。Claude Code 为此专门加了 `DreamTask`，把 AutoDream 暴露到现有任务系统里。
+
+```mermaid
+sequenceDiagram
+    participant User as 用户
+    participant Main as 主对话主循环
+    participant StopHook as stopHooks
+    participant AutoDream as AutoDream Runner
+    participant Lock as .consolidate-lock
+    participant FS as transcript/memory 文件系统
+    participant Agent as Forked Dream Agent
+    participant Task as DreamTask/UI
+
+    User->>Main: 完成一轮交互
+    Main->>StopHook: turn end
+    StopHook->>AutoDream: executeAutoDream(...)
+
+    AutoDream->>Lock: 读取 lock mtime
+    Lock-->>AutoDream: lastConsolidatedAt
+
+    AutoDream->>AutoDream: 检查功能开关/模式/时间门控/扫描节流
+    alt 未通过门控
+        AutoDream-->>StopHook: 直接返回
+    else 通过门控
+        AutoDream->>FS: 扫描最近被 touched 的 sessions
+        FS-->>AutoDream: sessionIds
+        AutoDream->>AutoDream: 排除当前 session 并检查 minSessions
+
+        alt session 数不足
+            AutoDream-->>StopHook: 跳过
+        else session 数足够
+            AutoDream->>Lock: tryAcquireConsolidationLock()
+            alt 锁被占用或竞争失败
+                Lock-->>AutoDream: null
+                AutoDream-->>StopHook: 跳过
+            else 获取成功
+                Lock-->>AutoDream: priorMtime
+                AutoDream->>Task: registerDreamTask()
+
+                AutoDream->>AutoDream: buildConsolidationPrompt()
+                AutoDream->>Agent: runForkedAgent(prompt, canUseTool, abortController)
+
+                loop dream agent 输出消息
+                    Agent-->>AutoDream: assistant message / tool_use
+                    AutoDream->>Task: addDreamTurn(text, toolUseCount, filesTouched)
+                end
+
+                alt 执行成功
+                    Agent-->>AutoDream: result
+                    AutoDream->>Task: completeDreamTask()
+                    AutoDream-->>Main: appendSystemMessage(Improved ...)
+                else 执行失败
+                    Agent-->>AutoDream: error
+                    AutoDream->>Task: failDreamTask()
+                    AutoDream->>Lock: rollbackConsolidationLock(priorMtime)
+                end
+            end
+        end
+    end
+
+```
 
 对应代码：
 
