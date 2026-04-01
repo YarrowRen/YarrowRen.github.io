@@ -12,17 +12,966 @@ draft: false
 featured: false
 ---
 
-基于 `src/services/autoDream` 相关源码与任务链路整理。本报告重点落在 AutoDream 自身的实际实现。
+> 基于 `src/services/autoDream/` 及相关模块的完整代码阅读  
+> 核心文件：`autoDream.ts` / `consolidationLock.ts` / `consolidationPrompt.ts` / `config.ts` / `DreamTask.ts`
 
-## 1. 模块定位
+---
 
-AutoDream 不是普通的对话能力，而是 Claude Code 自动记忆体系中的“后台整合器”。它不会在每轮对话里直接写总结，而是在满足一定条件后，后台 fork 一个独立 agent，对 memory 目录和最近 session 进行一次“梦境式 consolidation”，把零散、过时、重复的信息整理为更稳定的长期记忆。
+## 1. 功能定位与设计动机
 
-从调用链看：
+### 1.1 是什么
 
-1. 启动阶段，`startBackgroundHousekeeping()` 调用 `initAutoDream()` 完成初始化，说明它属于后台 housekeeping 能力，而非主查询循环本体。
-2. 每轮 stop hook 结束时，如果当前不是 bare/simple 模式、不是子 agent，则会 fire-and-forget 调用 `executeAutoDream()`。
-3. `executeAutoDream()` 本身不做业务，只转发到 `initAutoDream()` 闭包中注册的 `runner`，真正逻辑都在 `runAutoDream()` 里。
+AutoDream 是 Claude Code 的**后台记忆整合系统**。它会在满足时间和会话数量双重条件时，自动 fork 一个子 agent，对 `~/.claude/projects/<git-root>/memory/` 目录下的长期记忆文件执行四阶段的"反思与整合"操作。
+
+文件头注释直接说明了它的本质：
+
+```
+// Background memory consolidation. Fires the /dream prompt as a forked
+// subagent when time-gate passes AND enough sessions have accumulated.
+```
+
+### 1.2 解决什么问题
+
+Claude Code 的 `extractMemories` 机制在每轮对话结束时实时提取记忆，写入 memory 目录。这产生了两个长期问题：
+
+1. **记忆碎片化**：多个会话写入的记忆可能重复、矛盾或表达不一致
+2. **索引膨胀**：`MEMORY.md`（入口索引）会随时间膨胀，超出上下文窗口限制（200 行截断）
+
+AutoDream 的角色是**定期整合者**：它不负责实时写入，而是负责把零散积累的记忆合并、修正、去重，维护记忆系统的长期健康。
+
+### 1.3 与 /dream 命令的关系
+
+AutoDream 的 prompt 逻辑（`consolidationPrompt.ts`）从 `dream.ts` 中独立提取，原因是：
+
+```typescript
+// Extracted from dream.ts so auto-dream ships independently of KAIROS
+// feature flags (dream.ts is behind a feature()-gated require).
+```
+
+`/dream` 是手动触发的斜杠命令，位于 KAIROS feature flag 后面。AutoDream 则不依赖 KAIROS，独立运行。两者共享同一套四阶段 prompt 结构，但 AutoDream 的工具权限更严格（只读 Bash），而手动 `/dream` 在主循环中运行，拥有正常权限。
+
+---
+
+## 2. 整体架构
+
+### 2.1 模块结构
+
+```
+src/services/autoDream/
+├── autoDream.ts          # 主调度器：门控判断、lock 获取、fork 启动、收尾
+├── config.ts             # 轻量叶子模块：是否启用的单一职责判断
+├── consolidationLock.ts  # 锁文件管理：mtime 复用为 lastConsolidatedAt
+└── consolidationPrompt.ts # 四阶段 prompt 构建（与 KAIROS 解耦）
+
+src/tasks/DreamTask/
+└── DreamTask.ts          # UI 可见性：任务注册、进度更新、kill 支持
+
+src/components/tasks/
+└── DreamDetailDialog.tsx # TUI 对话框：实时展示 dream agent 的推理文本
+
+src/utils/
+└── backgroundHousekeeping.ts  # 启动入口：initAutoDream() 在此调用
+
+src/query/
+└── stopHooks.ts          # 每轮触发点：executeAutoDream() 在每轮结束后调用
+```
+
+### 2.2 模块依赖原则
+
+`config.ts` 被特意设计为**轻依赖叶子模块**：
+
+```typescript
+// Leaf config module — intentionally minimal imports so UI components
+// can read the auto-dream enabled state without dragging in the forked
+// agent / task registry / message builder chain that autoDream.ts pulls in.
+```
+
+这使得 UI 组件（如 `MemoryFileSelector.tsx`）可以直接读取 `isAutoDreamEnabled()` 状态，而不会因为引入 `autoDream.ts` 导致把 forkedAgent、taskRegistry、messageBuilder 等重依赖链条拖进渲染路径。这是 CLI/React 混合架构中常见的依赖分层策略。
+
+### 2.3 生命周期
+
+```
+进程启动
+  └── startBackgroundHousekeeping()
+        └── initAutoDream()           ← 初始化闭包，注册 runner
+
+每轮对话结束
+  └── handleStopHooks()
+        └── executeAutoDream()        ← 调用 runner（若 null 则 no-op）
+              └── runAutoDream()
+                    ├── 门控检查（廉价优先）
+                    ├── tryAcquireConsolidationLock()
+                    ├── registerDreamTask()           ← 注册到 UI
+                    ├── runForkedAgent()              ← 启动 dream agent
+                    └── completeDreamTask() / failDreamTask() / rollback
+```
+
+### 2.4 分层架构关系图
+
+```mermaid
+flowchart LR
+    subgraph TriggerLayer[触发层]
+        A1[backgroundHousekeeping\ninitAutoDream]
+        A2[stopHooks\nexecuteAutoDream]
+        A3[runner 闭包\nrunAutoDream]
+    end
+
+    subgraph GateLayer[门控层]
+        B1[功能开关\nisAutoDreamEnabled]
+        B2[Auto Memory 开关\nisAutoMemoryEnabled]
+        B3[模式限制\n非 KAIROS / 非 Remote]
+        B4[时间门控\nminHours]
+        B5[扫描节流\nSESSION_SCAN_INTERVAL_MS]
+        B6[Session 数门控\nminSessions]
+    end
+
+    subgraph StateLayer[状态与并发控制]
+        C1[.consolidate-lock]
+        C2[文件 mtime = lastConsolidatedAt]
+        C3[文件内容 = holder PID]
+        C4[失败/kill 时回滚 mtime]
+    end
+
+    subgraph ExecutionLayer[执行层]
+        D1[buildConsolidationPrompt]
+        D2[extra:\n只读 Bash 限制\n+ session 列表]
+        D3[createAutoMemCanUseTool]
+        D4[runForkedAgent]
+        D5[skipTranscript = true]
+    end
+
+    subgraph PromptLayer[Prompt 结构]
+        E1[Phase 1\nOrient]
+        E2[Phase 2\nGather recent signal]
+        E3[Phase 3\nConsolidate]
+        E4[Phase 4\nPrune and index]
+    end
+
+    subgraph UILayer[可见性层]
+        F1[DreamTask 注册]
+        F2[onMessage 解析输出]
+        F3[turns / toolUseCount / filesTouched]
+        F4[完成后追加系统消息\nImproved ...]
+        F5[kill -> abort + rollback]
+    end
+
+    A1 --> A3
+    A2 --> A3
+
+    A3 --> B1
+    A3 --> B2
+    A3 --> B3
+    B1 --> B4
+    B2 --> B4
+    B3 --> B4
+    B4 --> B5
+    B5 --> B6
+    B6 --> C1
+
+    C1 --> C2
+    C1 --> C3
+    C4 --> C1
+
+    C1 --> F1
+    F1 --> D1
+    D2 --> D1
+    D1 --> D4
+    D3 --> D4
+    D5 --> D4
+
+    D1 --> E1
+    D1 --> E2
+    D1 --> E3
+    D1 --> E4
+
+    D4 --> F2
+    F2 --> F3
+    F3 --> F4
+    F1 --> F5
+    F5 --> C4
+```
+
+这张图表达的是**分层依赖关系**，不是严格的时序图，因此将“初始化 runner”“门控”“锁状态”“执行器”“Prompt 结构”“UI 可见性”分别拆层展示。和第 15 节的执行流程图配合阅读，可以同时看到"系统由哪些层组成"与"一次 dream 实际如何流转"。
+
+---
+
+## 3. 触发门控系统（Gate System）
+
+### 3.1 设计原则：廉价优先
+
+门控检查按成本从低到高排列，任何一关不通则立即返回，不进入后续更昂贵的操作：
+
+```typescript
+// Gate order (cheapest first):
+//   1. Time: hours since lastConsolidatedAt >= minHours (one stat)
+//   2. Sessions: transcript count with mtime > lastConsolidatedAt >= minSessions
+//   3. Lock: no other process mid-consolidation
+```
+
+### 3.2 总开关门控（isGateOpen）
+
+```typescript
+function isGateOpen(): boolean {
+  if (getKairosActive()) return false  // KAIROS 模式有自己的 dream 机制
+  if (getIsRemoteMode()) return false  // 远程模式禁用
+  if (!isAutoMemoryEnabled()) return false  // 自动记忆必须开启
+  return isAutoDreamEnabled()          // 最终检查用户设置 / GrowthBook
+}
+```
+
+四个条件的语义：
+- **KAIROS 模式**：KAIROS 有基于磁盘 skill 的 dream 机制，AutoDream 不重复介入
+- **远程模式**：CCR 远程容器环境下不触发
+- **autoMemory 开关**：记忆目录不存在或被禁用时没有整合目标
+- **autoDream 开关**：用户配置或 GrowthBook 实验平台的双重控制
+
+### 3.3 时间门控
+
+```typescript
+const hoursSince = (Date.now() - lastAt) / 3_600_000
+if (!force && hoursSince < cfg.minHours) return
+```
+
+`lastAt` 来自锁文件的 `mtime`（详见第 4 节），默认 `minHours = 24`。时间门控的成本仅为一次 `fs.stat()`。
+
+### 3.4 扫描节流（Scan Throttle）
+
+时间门通过后，在进入成本更高的"扫描 session 文件"之前，还有一道节流：
+
+```typescript
+const SESSION_SCAN_INTERVAL_MS = 10 * 60 * 1000  // 10 分钟
+
+const sinceScanMs = Date.now() - lastSessionScanAt
+if (!force && sinceScanMs < SESSION_SCAN_INTERVAL_MS) return
+lastSessionScanAt = Date.now()  // 注意：在扫描前更新，不是扫描后
+```
+
+**设计动机**：若时间门已过但 session 数量还不够，lock 文件的 mtime 不会更新，导致时间门每轮都通过，形成无意义的高频 session 目录扫描。10 分钟节流避免了这种"热空转"。
+
+注意时间戳在扫描前就更新，这样即使本轮 session 数不足，节流也能生效。
+
+### 3.5 Session 门控
+
+```typescript
+sessionIds = await listSessionsTouchedSince(lastAt)
+// 排除当前 session（mtime 天然是最新的，不能计入"新增"）
+sessionIds = sessionIds.filter(id => id !== currentSession)
+if (!force && sessionIds.length < cfg.minSessions) return
+```
+
+`listSessionsTouchedSince` 通过文件 `mtime`（而非 `birthtime`，因为 ext4 等文件系统 birthtime 不可靠）统计自上次 consolidation 以来被"触碰"过的 session 数量。
+
+默认 `minSessions = 5`，表示 AutoDream 的目标是"低频但有价值"的整合，而不是频繁小修小补。
+
+### 3.6 完整门控流程图
+
+```
+executeAutoDream()
+       │
+       ▼
+ isGateOpen()? ─── No ──→ return（KAIROS / remote / mem disabled / dream disabled）
+       │ Yes
+       ▼
+ readLastConsolidatedAt()  ←── stat(lock file).mtime，成本最低
+       │
+ hoursSince < minHours? ─── Yes ──→ return
+       │ No
+       ▼
+ sinceScanMs < 10min? ──── Yes ──→ return（scan throttle）
+       │ No
+       ▼
+ listSessionsTouchedSince()  ←── 扫描 session 目录，成本较高
+       │
+ sessionCount < minSessions? ── Yes ──→ return
+       │ No
+       ▼
+ tryAcquireConsolidationLock()
+       │
+ null（被占）? ──────────────── Yes ──→ return
+       │ No（获取成功）
+       ▼
+ runForkedAgent()  ←── 启动 dream agent，成本最高
+```
+
+---
+
+## 4. 锁机制：mtime 即状态
+
+`consolidationLock.ts` 是整个系统最精巧的设计之一。
+
+### 4.1 单文件双语义
+
+```
+文件路径：<autoMemPath>/.consolidate-lock
+文件内容：当前持锁进程的 PID
+文件 mtime：上次成功 consolidation 的时间戳
+```
+
+一个文件同时承载两个语义：**锁的持有者（PID）** 和 **上次整合时间（mtime）**。避免了多份状态之间的同步问题，且 mtime 的读取成本仅为一次 `stat()`。
+
+```typescript
+export async function readLastConsolidatedAt(): Promise<number> {
+  try {
+    const s = await stat(lockPath())
+    return s.mtimeMs
+  } catch {
+    return 0  // 文件不存在 = 从未整合过
+  }
+}
+```
+
+### 4.2 轻量竞争锁（乐观并发控制）
+
+`tryAcquireConsolidationLock()` 不使用重量级文件锁（如 `flock`），而是采用"写入后回读验证"的轻量方案：
+
+```typescript
+// Step 1: 并行读取 mtime 和持锁 PID
+const [s, raw] = await Promise.all([stat(path), readFile(path, 'utf8')])
+
+// Step 2: 如果锁未过期且持有者仍在运行，则退出
+if (mtimeMs !== undefined && Date.now() - mtimeMs < HOLDER_STALE_MS) {
+  if (holderPid !== undefined && isProcessRunning(holderPid)) {
+    return null  // 被占，返回 null 表示"正常竞争失败"
+  }
+  // PID 已死或内容不可解析 → 允许 reclaim
+}
+
+// Step 3: 写入当前 PID（writeFile 自动刷新 mtime）
+await writeFile(path, String(process.pid))
+
+// Step 4: 回读验证——两个进程同时 reclaim，最终只有一个 PID 留下
+const verify = await readFile(path, 'utf8')
+if (parseInt(verify.trim(), 10) !== process.pid) return null  // 竞争失败
+
+return mtimeMs ?? 0  // 返回旧 mtime 供回滚用
+```
+
+**竞争处理**：两个进程同时写入时，最后写入的 PID 获胜。输者在回读验证时发现 PID 不是自己，主动退出。这是 O(1) 的轻量竞争方案。
+
+### 4.3 过期保护（PID 复用防护）
+
+```typescript
+const HOLDER_STALE_MS = 60 * 60 * 1000  // 1 小时
+
+// 即使 PID 看起来活着，超过 1 小时也强制 reclaim
+if (Date.now() - mtimeMs < HOLDER_STALE_MS) { ... }
+```
+
+防止 PID 复用导致误判：OS 的 PID 是可复用的，一个新进程可能恰好分配到和旧 dream agent 相同的 PID。1 小时过期窗口确保即使发生 PID 复用，锁也不会永久卡死。
+
+### 4.4 回滚机制
+
+当 fork 失败或用户强制终止时，必须将 lock 文件的 mtime 恢复到**获取锁之前的状态**，否则系统会误以为刚完成了一次整合，从而推迟下一次触发：
+
+```typescript
+export async function rollbackConsolidationLock(priorMtime: number): Promise<void> {
+  if (priorMtime === 0) {
+    await unlink(path)    // 之前没有锁文件 → 删掉恢复原状
+    return
+  }
+  await writeFile(path, '')      // 清空 PID（让当前进程不再"看起来持有"）
+  const t = priorMtime / 1000
+  await utimes(path, t, t)       // 把 mtime 改回旧值
+}
+```
+
+`utimes` 是这个设计的关键：它允许精确恢复文件的 mtime，从而精确恢复"上次整合时间"这个语义。
+
+### 4.4.1 锁文件状态机图
+
+```mermaid
+flowchart TD
+    A[".consolidate-lock"] --> B["mtime"]
+    A --> C["file body"]
+
+    B --> D["lastConsolidatedAt"]
+    C --> E["current holder PID"]
+
+    F["尝试启动 AutoDream"] --> G{"lock 文件存在且未过期?"}
+    G -- 否 --> H["直接写入当前 PID"]
+    G -- 是 --> I{"PID 对应进程是否仍存活?"}
+
+    I -- 是 --> J["认为锁被持有，本轮放弃"]
+    I -- 否 --> K["视为 stale lock，允许 reclaim"]
+
+    K --> H
+    H --> L["回读文件内容验证"]
+    L --> M{"PID 是否仍是自己?"}
+
+    M -- 否 --> N["竞争失败，返回 null"]
+    M -- 是 --> O["获取锁成功，返回 priorMtime"]
+
+    O --> P{"后续 dream 执行结果"}
+    P -- 成功 --> Q["保留当前 mtime，作为新的 lastConsolidatedAt"]
+    P -- 失败/被 kill --> R["rollbackConsolidationLock(priorMtime)"]
+
+    R --> S{"priorMtime 是否为 0?"}
+    S -- 是 --> T["删除 lock 文件"]
+    S -- 否 --> U["清空 PID 内容并恢复旧 mtime"]
+```
+
+这张图强调的是：`.consolidate-lock` 不是单纯的互斥锁，而是同时承担了**并发控制**和**调度状态记录**两种职责。成功时保留新的 mtime；失败或用户 kill 时，则通过 `priorMtime` 精确回滚到启动前状态。
+
+### 4.5 手动 /dream 的乐观记录
+
+```typescript
+export async function recordConsolidation(): Promise<void> {
+  // 手动触发时，乐观地在 prompt-build 阶段就写锁，而不是等待完成后回调
+  await writeFile(lockPath(), String(process.pid))
+}
+```
+
+手动 `/dream` 不等待整合完成再记录，而是在 prompt 构建时就写入。这是"尽力而为"的语义——实现最简，代价是如果 `/dream` 中途失败，下次 AutoDream 检查可能被错误延后。注释中明确说明这是 best-effort，不追求严格事务性。
+
+---
+
+## 5. Forked Agent 执行
+
+### 5.1 runForkedAgent 调用
+
+```typescript
+const result = await runForkedAgent({
+  promptMessages: [createUserMessage({ content: prompt })],
+  cacheSafeParams: createCacheSafeParams(context),  // 复用主会话 prompt cache
+  canUseTool: createAutoMemCanUseTool(memoryRoot),  // 受限工具权限
+  querySource: 'auto_dream',
+  forkLabel: 'auto_dream',
+  skipTranscript: true,     // 不写转录文件（后台任务不需要持久化记录）
+  overrides: { abortController },   // 允许用户从 UI 终止
+  onMessage: makeDreamProgressWatcher(taskId, setAppState),  // 实时进度
+})
+```
+
+### 5.2 Prompt Cache 复用
+
+`createCacheSafeParams(context)` 从当前 REPL 上下文中提取已渲染的 system prompt 字节，直接传给 forked agent。这确保：
+
+1. dream agent 与主会话的 system prompt 完全一致（字节级别）
+2. 不触发 Feature Flag 的重新计算（若有 Flag 在主会话启动后状态变化）
+3. **直接命中主会话在 Anthropic 服务器端的 prompt cache**
+
+这是 AutoDream 的核心成本优化——dream agent 的 system prompt token 几乎全部命中缓存，边际成本趋近于零。
+
+### 5.3 skipTranscript
+
+AutoDream 设置 `skipTranscript: true`，dream agent 的中间过程不写转录文件。原因是：
+- 后台任务的中间推理对用户价值有限，不需要持久化
+- 避免在 transcript 目录产生大量 dream 相关的 JSONL 文件污染会话历史
+
+### 5.4 AbortController 集成
+
+每次 dream 启动时创建一个 `AbortController`，传入 `DreamTaskState` 和 `runForkedAgent`：
+
+```typescript
+const abortController = new AbortController()
+const taskId = registerDreamTask(setAppState, {
+  sessionsReviewing: sessionIds.length,
+  priorMtime,
+  abortController,  // ← 存入 DreamTask 供用户 kill
+})
+```
+
+用户在 TUI 中按 `x` 终止 dream 时，`DreamTask.kill()` 调用 `abortController.abort()`，同时触发 `rollbackConsolidationLock(priorMtime)` 回滚锁状态。
+
+---
+
+## 6. 四阶段 Consolidation Prompt
+
+`consolidationPrompt.ts` 中的 `buildConsolidationPrompt()` 定义了 dream agent 的工作规范，分为四个严格顺序的阶段。
+
+### 6.1 Phase 1 — Orient（定向）
+
+```markdown
+## Phase 1 — Orient
+- `ls` the memory directory to see what already exists
+- Read `MEMORY.md` to understand the current index
+- Skim existing topic files so you improve them rather than creating duplicates
+- If `logs/` or `sessions/` subdirectories exist, review recent entries there
+```
+
+**设计意图**：先理解"已有记忆长什么样"，再决定写什么。这防止 agent 盲目追加内容，也防止创建重复的 topic 文件。Phase 1 是纯读取阶段，不做任何写入。
+
+### 6.2 Phase 2 — Gather（采集）
+
+```markdown
+## Phase 2 — Gather recent signal
+Sources in rough priority order:
+1. Daily logs (`logs/YYYY/MM/YYYY-MM-DD.md`) — append-only stream
+2. Existing memories that drifted — facts that contradict codebase now
+3. Transcript search — grep narrowly, don't read whole files
+```
+
+**三层优先级**：日志文件（结构化、增量）→ 已有记忆的漂移检测 → 按需的 transcript 窄范围搜索。
+
+关键约束：`Don't exhaustively read transcripts. Look only for things you already suspect matter.`
+
+AutoDream 不是全量索引器，只在"已经怀疑某件事重要"时才去 grep transcript，严格控制成本和噪音。
+
+### 6.3 Phase 3 — Consolidate（整合）
+
+```markdown
+## Phase 3 — Consolidate
+Focus on:
+- Merging new signal into existing topic files rather than creating near-duplicates
+- Converting relative dates ("yesterday", "last week") to absolute dates
+- Deleting contradicted facts — if today's investigation disproves an old memory, fix it
+```
+
+**三个核心动作**：
+1. **合并**：新信号并入已有 topic 文件，而非另建文件
+2. **时间绝对化**：相对日期（"昨天"）转换为绝对日期，确保记忆跨时间可读
+3. **纠错**：发现旧记忆与当前事实矛盾时，直接修正旧记忆（而不是追加"更正"）
+
+Phase 3 才真正落盘写 memory 文件，且必须遵守系统 prompt 中 auto-memory 的格式规范（frontmatter + type 字段）。
+
+### 6.4 Phase 4 — Prune and Index（修剪与索引）
+
+```markdown
+## Phase 4 — Prune and index
+Update `MEMORY.md` so it stays under 200 lines AND under ~25KB.
+- Each entry: one line under ~150 characters: `- [Title](file.md) — one-line hook`
+- Remove stale, wrong, or superseded pointers
+- Demote verbose entries (>200 chars → move detail to topic file)
+- Resolve contradictions between files
+```
+
+**MEMORY.md 的约束**：
+- 最多 200 行（超过后被截断，不再加载到上下文）
+- 每条索引 ≤150 字符，仅作导览，不放正文
+- 过长的索引行（>200 字符）说明内容应该移到 topic 文件
+
+Phase 4 决定了用户下次启动 Claude Code 时能看到多少长期记忆。
+
+### 6.5 Extra 注入机制
+
+```typescript
+const extra = `
+**Tool constraints for this run:** Bash is restricted to read-only commands...
+
+Sessions since last consolidation (${sessionIds.length}):
+${sessionIds.map(id => `- ${id}`).join('\n')}`
+
+const prompt = buildConsolidationPrompt(memoryRoot, transcriptDir, extra)
+```
+
+`extra` 作为独立的 `## Additional context` 段追加到 prompt 末尾，不混入主 prompt 正文。这将"稳定的规则定义"和"本次运行的临时信息"分层——工具约束、session 列表属于运行时上下文，而四阶段规范是 dream 的通用定义，这样"稳定部分"对 prompt cache 更友好。
+
+---
+
+## 7. 权限沙箱：createAutoMemCanUseTool
+
+AutoDream 使用严格的权限沙箱，与 `extractMemories` 共享同一套 `createAutoMemCanUseTool(memoryDir)` 实现：
+
+```typescript
+export function createAutoMemCanUseTool(memoryDir: string): CanUseToolFn {
+  return async (tool, input) => {
+    // 1. 允许 Read / Grep / Glob（纯只读，无限制）
+    if ([FILE_READ, GREP, GLOB].includes(tool.name)) {
+      return { behavior: 'allow', updatedInput: input }
+    }
+
+    // 2. 允许 Bash，但仅限通过 isReadOnly() 检查的命令
+    //    (ls, find, grep, cat, stat, wc, head, tail 等)
+    if (tool.name === BASH) {
+      const parsed = tool.inputSchema.safeParse(input)
+      if (parsed.success && tool.isReadOnly(parsed.data)) {
+        return { behavior: 'allow', updatedInput: input }
+      }
+      return denyAutoMemTool(tool, 'Only read-only shell commands are permitted...')
+    }
+
+    // 3. 允许 FileEdit / FileWrite，但必须写入 autoMem 目录内
+    if ([FILE_EDIT, FILE_WRITE].includes(tool.name) && 'file_path' in input) {
+      if (typeof filePath === 'string' && isAutoMemPath(filePath)) {
+        return { behavior: 'allow', updatedInput: input }
+      }
+    }
+
+    // 4. 其他一切拒绝
+    return denyAutoMemTool(tool, `only read + autoMem writes allowed`)
+  }
+}
+```
+
+**沙箱规则总结**：
+
+| 工具 | 权限 | 约束 |
+|------|------|------|
+| Read / Grep / Glob | ✅ 完全允许 | 无 |
+| Bash | ✅ 有条件允许 | 必须通过 `isReadOnly()` 检查 |
+| FileEdit / FileWrite | ✅ 有条件允许 | 路径必须在 `autoMemPath` 内 |
+| 其他所有工具 | ❌ 拒绝 | 包括 Agent、TodoWrite、Web 等 |
+
+**拒绝时的副作用**：每次工具拒绝都会触发遥测事件 `tengu_auto_mem_tool_denied`，包含被拒工具名（已脱敏）。这为 Anthropic 提供了"dream agent 在真实场景下需要哪些工具"的观测数据。
+
+### 7.1 一个容易忽略的细节：REPL 也被允许
+
+源码里 `createAutoMemCanUseTool()` 还特判放行了 `REPL` 工具：
+
+```typescript
+if (tool.name === REPL_TOOL_NAME) {
+  return { behavior: 'allow', updatedInput: input }
+}
+```
+
+这并不意味着 dream agent 获得了更高权限。REPL 只是外层壳；在 REPL 模式下，内部原子工具（Read/Bash/Edit/Write）仍会再次经过同一个 `canUseTool` 检查，真正的读写边界没有放松。
+
+源码注释还解释了更深一层原因：如果为了 AutoDream 单独裁剪工具列表，会破坏 prompt cache 共享，因为**工具列表本身就是 cache key 的一部分**。因此这里采用的是"允许 REPL 外壳存在，但继续在内部原子工具层做权限约束"的折中方案，兼顾缓存命中率与安全性。
+
+---
+
+## 8. DreamTask：UI 可见性层
+
+### 8.1 设计动机
+
+```typescript
+// Background task entry for auto-dream (memory consolidation subagent).
+// Makes the otherwise-invisible forked agent visible in the footer pill and
+// Shift+Down dialog. The dream agent itself is unchanged — this is pure UI
+// surfacing via the existing task registry.
+```
+
+AutoDream 的 forked agent 本质上是完全后台运行的，用户在不看任务列表时感知不到。`DreamTask` 的作用是把这个"不可见的后台 agent"接入现有的 Task 注册表，让用户可以：
+- 在底部状态栏看到"dreaming"标识
+- 通过 `Shift+Down` 打开 `DreamDetailDialog` 查看实时推理进度
+- 按 `x` 键主动终止
+
+### 8.2 两阶段状态机
+
+```typescript
+export type DreamPhase = 'starting' | 'updating'
+```
+
+Phase 检测不解析 prompt 的具体阶段（Orient/Gather/Consolidate/Prune），而是用一个简单的信号：**第一个 FileEdit/FileWrite tool_use 出现时**，从 `starting` 翻转为 `updating`。
+
+```typescript
+return {
+  ...task,
+  phase: newTouched.length > 0 ? 'updating' : task.phase,
+  filesTouched: [...task.filesTouched, ...newTouched],
+  turns: task.turns.slice(-(MAX_TURNS - 1)).concat(turn),
+}
+```
+
+这个设计非常务实：用"是否开始写文件"来判断是否进入实质工作阶段，简洁且准确。
+
+### 8.3 Turn 缓冲
+
+```typescript
+const MAX_TURNS = 30
+turns: task.turns.slice(-(MAX_TURNS - 1)).concat(turn)
+```
+
+只保留最近 30 轮 assistant 消息，防止长时间 dream 把内存撑爆，同时 TUI 也只展示最近 6 轮（`VISIBLE_TURNS = 6`），更早的折叠为计数显示。
+
+### 8.4 filesTouched 的注意事项
+
+```typescript
+/**
+ * Paths observed in Edit/Write tool_use blocks via onMessage. This is an
+ * INCOMPLETE reflection of what the dream agent actually changed — it misses
+ * any bash-mediated writes and only captures the tool calls we pattern-match.
+ * Treat as "at least these were touched", not "only these were touched".
+ */
+filesTouched: string[]
+```
+
+`filesTouched` 只通过模式匹配 `FileEdit`/`FileWrite` 的 `tool_use` 块来追踪。如果 dream agent 用 Bash 写文件（虽然权限沙箱不允许，但理论上），不会被记录。这是一个明确接受的"至少"语义。
+
+### 8.5 Kill 与锁回滚的联动
+
+```typescript
+async kill(taskId, setAppState) {
+  updateTaskState<DreamTaskState>(taskId, setAppState, task => {
+    task.abortController?.abort()   // 终止 forked agent
+    priorMtime = task.priorMtime
+    return { ...task, status: 'killed', ... }
+  })
+  // 回滚 lock mtime，让下次 session 可以重试
+  if (priorMtime !== undefined) {
+    await rollbackConsolidationLock(priorMtime)
+  }
+}
+```
+
+Kill 操作同时做三件事：① 中止 forked agent（通过 AbortController）；② 更新 DreamTask 状态为 killed；③ 回滚锁文件的 mtime，避免因为被 kill 而错误推迟下一次触发。
+
+### 8.6 `notified: true` 的语义
+
+`completeDreamTask()` 与 `failDreamTask()` 都会在任务进入终态时立刻设置 `notified: true`：
+
+```typescript
+return {
+  ...task,
+  status: 'completed',
+  endTime: Date.now(),
+  notified: true,
+  abortController: undefined,
+}
+```
+
+这说明 DreamTask 本身**不是一个需要模型层二次通知的任务类型**。它的用户可见反馈主要有两层：
+- 运行中：通过 footer pill 与 `DreamDetailDialog` 实时展示
+- 完成后：通过主 transcript 中的 `appendSystemMessage(... verb: 'Improved')` 暴露结果
+
+因此一旦任务完成或失败，任务系统就可以直接把它视为"已通知"，满足后续清理/驱逐条件，而不需要等待额外的通知链路。
+
+---
+
+## 9. 进度监听：makeDreamProgressWatcher
+
+```typescript
+function makeDreamProgressWatcher(taskId, setAppState) {
+  return (msg: Message) => {
+    if (msg.type !== 'assistant') return
+    let text = ''
+    let toolUseCount = 0
+    const touchedPaths: string[] = []
+
+    for (const block of msg.message.content) {
+      if (block.type === 'text') {
+        text += block.text                    // 推理文本，展示给用户
+      } else if (block.type === 'tool_use') {
+        toolUseCount++                        // tool use 折叠为计数
+        if (block.name === FILE_EDIT || block.name === FILE_WRITE) {
+          touchedPaths.push(block.input.file_path)  // 记录被写路径
+        }
+      }
+    }
+
+    addDreamTurn(taskId, { text, toolUseCount }, touchedPaths, setAppState)
+  }
+}
+```
+
+**设计决策**：
+- **文本块**：完整保留，展示在 `DreamDetailDialog` 中，让用户能看到 agent 的推理过程
+- **Tool use 块**：折叠为计数（`toolUseCount`），用户看到"执行了 N 个工具调用"而不是每个调用的细节
+- **空 turn 跳过**：`text === '' && toolUseCount === 0 && newTouched.length === 0` 时不触发 state 更新，避免无意义的 re-render
+
+---
+
+## 10. 触发时机：stopHooks 集成
+
+AutoDream 在 `handleStopHooks()` 中被调用，即**每轮对话结束后**：
+
+```typescript
+// src/query/stopHooks.ts
+if (!isBareMode()) {
+  if (!toolUseContext.agentId) {   // ← 仅在主线程，不在子 agent 中触发
+    void executeAutoDream(stopHookContext, toolUseContext.appendSystemMessage)
+  }
+}
+```
+
+**关键约束**：
+- `!toolUseContext.agentId`：只在主线程 session 中触发，子 agent（包括 dream agent 自身）不能递归触发 dream
+- `void`：fire-and-forget，不 await。AutoDream 是纯后台任务，不阻塞主线程返回
+- `!isBareMode()`：`--bare` 模式和 `-p/--print` 脚本模式跳过，避免后台 agent 在关闭时争用资源
+
+`executeAutoDream` 是对 `runner?.()` 的封装：
+
+```typescript
+export async function executeAutoDream(
+  context: REPLHookContext,
+  appendSystemMessage?: AppendSystemMessageFn,
+): Promise<void> {
+  await runner?.(context, appendSystemMessage)
+}
+```
+
+在 `initAutoDream()` 被调用之前，`runner` 为 `null`，`executeAutoDream` 是安全的 no-op。
+
+---
+
+## 11. 配置与 Feature Flag 体系
+
+### 11.1 双层配置
+
+```typescript
+export function isAutoDreamEnabled(): boolean {
+  // 优先级 1：用户显式配置
+  const setting = getInitialSettings().autoDreamEnabled
+  if (setting !== undefined) return setting
+
+  // 优先级 2：GrowthBook 实验平台（tengu_onyx_plover）
+  const gb = getFeatureValue_CACHED_MAY_BE_STALE<{ enabled?: unknown } | null>(
+    'tengu_onyx_plover', null,
+  )
+  return gb?.enabled === true  // 只接受严格 true，缺失/类型错误 = 未开启
+}
+```
+
+`autoDreamEnabled` 在 settings schema 中定义为可选 boolean，用户可在 `settings.json` 中显式覆盖 GrowthBook 的默认值。
+
+### 11.2 调度参数的 GrowthBook 控制
+
+调度参数（minHours / minSessions）通过同一个 GrowthBook flag `tengu_onyx_plover` 控制，但与启用开关分开读取（`isAutoDreamEnabled` 在 `config.ts`，`getConfig` 在 `autoDream.ts`）：
+
+```typescript
+function getConfig(): AutoDreamConfig {
+  const raw = getFeatureValue_CACHED_MAY_BE_STALE<Partial<AutoDreamConfig> | null>(
+    'tengu_onyx_plover', null,
+  )
+  return {
+    minHours: typeof raw?.minHours === 'number' && Number.isFinite(raw.minHours) && raw.minHours > 0
+      ? raw.minHours : DEFAULTS.minHours,   // 默认 24 小时
+    minSessions: typeof raw?.minSessions === 'number' && ...
+      ? raw.minSessions : DEFAULTS.minSessions,  // 默认 5 个 session
+  }
+}
+```
+
+每个字段独立进行类型和数值校验，防御 GrowthBook 缓存值陈旧或类型错误。
+
+### 11.3 ConfigTool 暴露
+
+```typescript
+// src/tools/ConfigTool/supportedSettings.ts
+autoDreamEnabled: {
+  source: 'settings',
+  type: 'boolean',
+  description: 'Enable background memory consolidation',
+}
+```
+
+用户可以通过 `/config` 命令在 TUI 内直接切换 AutoDream 开关，同时 `MemoryFileSelector.tsx` 展示当前状态和上次整合时间。
+
+---
+
+## 12. 错误处理与容错设计
+
+### 12.1 错误不上浮原则
+
+AutoDream 所有错误均在内部处理，不向用户抛出：
+
+```typescript
+try {
+  lastAt = await readLastConsolidatedAt()
+} catch (e: unknown) {
+  logForDebugging(`[autoDream] readLastConsolidatedAt failed: ${e.message}`)
+  return  // 静默跳过，不影响主线程
+}
+```
+
+每个关键操作都有独立的 try-catch，失败时 `logForDebugging`（仅在 debug 模式可见）并直接 return，不会把后台任务的错误暴露给用户。
+
+### 12.2 Fork 失败的回滚
+
+```typescript
+} catch (e: unknown) {
+  if (abortController.signal.aborted) {
+    logForDebugging('[autoDream] aborted by user')
+    return  // 用户主动 kill，DreamTask.kill 已处理好状态
+  }
+  logForDebugging(`[autoDream] fork failed: ${e.message}`)
+  logEvent('tengu_auto_dream_failed', {})
+  failDreamTask(taskId, setAppState)
+  await rollbackConsolidationLock(priorMtime)  // ← 关键：回滚 mtime
+}
+```
+
+fork 失败时区分两种情况：
+1. **用户主动 abort**：`DreamTask.kill()` 已经处理了状态更新和锁回滚，这里直接 return 不重复处理
+2. **意外 fork 失败**：设置 DreamTask 为 failed，触发遥测，并回滚 lock mtime 让下次可以重试
+
+### 12.3 Scan Throttle 作为退避机制
+
+注释中特别说明：`rollback` 失败时，代价是下次触发被错误延后到 `minHours` 之后。`SESSION_SCAN_INTERVAL_MS`（10 分钟）也作为一种"自然退避"机制——即使在异常情况下，也不会每轮都高频扫描文件系统。
+
+---
+
+## 13. 与 extractMemories 的关系
+
+AutoDream 与 `extractMemories` 是互补关系，不是重复：
+
+| 维度 | extractMemories | AutoDream |
+|------|-----------------|-----------|
+| **触发频率** | 每轮对话结束（高频） | 每 24h + 5 sessions（低频） |
+| **触发方式** | 实时，每轮自动 | 定期，后台 |
+| **职责** | 从当轮对话提取新记忆 | 整合/修剪/修正已有记忆 |
+| **写入内容** | 新增 memory 文件 | 合并、删除、修正已有文件 |
+| **类比** | 实时笔记 | 定期整理笔记本 |
+| **prompt cache** | 共享主会话缓存 | 共享主会话缓存 |
+| **工具权限** | 共享 createAutoMemCanUseTool | 共享 createAutoMemCanUseTool |
+
+两者共享同一套权限沙箱（`createAutoMemCanUseTool`），确保无论是实时提取还是后台整合，都无法操作 memory 目录以外的文件。
+
+在 `stopHooks.ts` 中，两者顺序执行（都是 fire-and-forget）：
+
+```typescript
+// 先触发 extractMemories（实时提取当轮内容）
+void extractMemoriesModule!.executeExtractMemories(stopHookContext, ...)
+// 再触发 AutoDream（后台检查是否需要整合）
+void executeAutoDream(stopHookContext, ...)
+```
+
+---
+
+## 14. 核心设计优势分析
+
+### 14.1 成本极低的每轮检查
+
+AutoDream 在每轮对话结束时运行（fire-and-forget），但绝大多数情况下成本极低：
+
+- **常规路径**：一次 GrowthBook 缓存读取（内存）+ 一次 `fs.stat()`（锁文件）
+- **只在门控全部通过时**才进行 session 目录扫描和 fork
+
+这使得 AutoDream 可以"无感"地挂在每轮 stopHook 上，而不需要单独的定时器或后台线程。
+
+### 14.2 Prompt Cache 共享的零成本整合
+
+`createCacheSafeParams` 复用主会话已渲染的 system prompt 字节，dream agent 的 system prompt 在 Anthropic 服务器端直接命中缓存：
+
+```typescript
+logForDebugging(
+  `[autoDream] completed — cache: read=${result.totalUsage.cache_read_input_tokens} created=${result.totalUsage.cache_creation_input_tokens}`
+)
+```
+
+完成时记录 cache_read vs cache_created 的比例，可用于验证缓存命中效果。在实践中，dream agent 的 system prompt（约 5-8K token）几乎全部 cache_read，真实成本仅为整合工作本身的 output token。
+
+### 14.3 锁即时钟的单文件设计
+
+用文件 mtime 同时表示"锁的存在"和"上次整合时间"，避免了多份状态文件的同步问题：
+
+- 传统方案：`lock.json`（锁）+ `last_run.json`（时间）→ 可能不一致
+- AutoDream 方案：`.consolidate-lock`（mtime = 时间，body = 持有者 PID）→ 天然一致
+
+### 14.4 门控的廉价优先排序
+
+三级门控（时间 → session 数量 → lock）按成本升序排列，确保大多数"不需要触发"的轮次只花费最低成本（一次 stat）就能退出。
+
+### 14.5 闭包作用域的状态隔离
+
+```typescript
+export function initAutoDream(): void {
+  let lastSessionScanAt = 0  // 扫描节流时间戳
+
+  runner = async function runAutoDream(...) { ... }
+}
+```
+
+`lastSessionScanAt` 存在 `initAutoDream()` 的闭包中，不是模块级变量。这使得测试可以通过 `beforeEach` 调用 `initAutoDream()` 获得完全干净的闭包，不同测试之间无法互相污染。
+
+### 14.6 UI 可见性与后台任务的解耦
+
+Dream agent 本身完全不知道 `DreamTask`，`DreamTask` 是纯粹的 UI 层，通过 `onMessage` 回调和 `setAppState` 观察 dream agent 的输出：
+
+```
+dream agent (forkedAgent) ──onMessage──→ makeDreamProgressWatcher
+                                               └──→ addDreamTurn()
+                                                       └──→ setAppState (DreamTaskState)
+                                                               └──→ DreamDetailDialog (TUI)
+```
+
+这个解耦使得 dream agent 的实现可以完全不关心 UI 渲染，UI 层也可以独立演进。
+
+---
+
+## 15. 关键数据流总览
+
+### 15.1 完整执行流程
 
 ```mermaid
 flowchart TB
@@ -61,378 +1010,22 @@ flowchart TB
     T -- 否 --> V[结束]
     U --> V
 
-    R -- 失败 --> W[failDreamTask]
-    W --> X[rollbackConsolidationLock]
-    X --> Y[结束]
+    O -. 用户在任务面板 kill .-> K1[DreamTask.kill]
+    K1 --> K2[abortController.abort]
+    K2 --> K3[标记任务为 killed]
+    K3 --> K4[rollbackConsolidationLock]
+    K4 --> Y[结束]
 
+    R -- 异常失败 --> W[failDreamTask]
+    W --> X[rollbackConsolidationLock]
+    X --> Y
+
+    R -- 因用户 abort 退出 --> Y
     Z --> Y
     V --> Y
-
 ```
 
-关键定位代码：
-
-- `src/utils/backgroundHousekeeping.ts:31-38`
-- `src/query/stopHooks.ts:133-156`
-- `src/services/autoDream/autoDream.ts:122-125`
-- `src/services/autoDream/autoDream.ts:319-323`
-
-## 2. 核心设计目标
-
-结合源码，AutoDream 的目标不是“保存全部对话”，而是做一次低频、高价值、可回滚的记忆整合。它试图解决几个问题：
-
-- 背景记忆不能每轮都跑，否则代价过高。
-- memory 目录是长期资产，不能让多个进程同时写。
-- consolidation 失败不能把“上次成功 consolidation 时间”错误推进。
-- 自动整理必须尽量复用现有 prompt/cache 基础设施，而不是新造一套执行框架。
-- 整理过程要对用户可见，但不能污染主会话 transcript。
-
-这几个目标基本决定了 AutoDream 的实现风格：少量 gate、轻量 lock、复用 forked agent、UI 上挂 task、主会话只看到简短系统消息。
-
-## 3. 实现总览
-
-AutoDream 的主流程可以概括为：
-
-1. 判定功能是否开启。
-2. 读取上次 consolidation 时间。
-3. 做时间门控。
-4. 做 session 数量门控。
-5. 获取 consolidation lock。
-6. 注册 DreamTask 供 UI 展示与中止。
-7. 构造 dream prompt。
-8. 以 forked agent 运行 consolidation。
-9. 监听 agent 输出，提取文本和写入路径，更新 DreamTask。
-10. 成功则完成任务并在主 transcript 追加 “Improved …” 系统消息。
-11. 失败或被杀时回滚 lock 时间戳，避免错误推进状态。
-
-```mermaid
-flowchart LR
-    subgraph TriggerLayer[触发层]
-        A1[backgroundHousekeeping\ninitAutoDream]
-        A2[stopHooks\nexecuteAutoDream]
-    end
-
-    subgraph GateLayer[门控层]
-        B1[功能开关\nisAutoDreamEnabled]
-        B2[Auto Memory 开关\nisAutoMemoryEnabled]
-        B3[模式限制\n非 KAIROS / 非 Remote]
-        B4[时间门控\nminHours]
-        B5[扫描节流\nSESSION_SCAN_INTERVAL_MS]
-        B6[Session 数门控\nminSessions]
-    end
-
-    subgraph StateLayer[状态与并发控制]
-        C1[.consolidate-lock]
-        C2[文件 mtime = lastConsolidatedAt]
-        C3[文件内容 = holder PID]
-        C4[失败/kill 时回滚 mtime]
-    end
-
-    subgraph ExecutionLayer[执行层]
-        D1[buildConsolidationPrompt]
-        D2[extra:\n只读 Bash 限制\n+ session 列表]
-        D3[runForkedAgent]
-        D4[createAutoMemCanUseTool]
-        D5[skipTranscript = true]
-    end
-
-    subgraph PromptLayer[Prompt 结构]
-        E1[Phase 1\nOrient]
-        E2[Phase 2\nGather recent signal]
-        E3[Phase 3\nConsolidate]
-        E4[Phase 4\nPrune and index]
-    end
-
-    subgraph UILayer[可见性层]
-        F1[DreamTask 注册]
-        F2[onMessage 解析输出]
-        F3[turns / toolUseCount / filesTouched]
-        F4[appendSystemMessage\nImproved ...]
-        F5[kill -> abort + rollback]
-    end
-
-    A1 --> A2
-    A2 --> B1
-    A2 --> B2
-    A2 --> B3
-    B1 --> B4
-    B2 --> B4
-    B3 --> B4
-    B4 --> B5
-    B5 --> B6
-    B6 --> C1
-
-    C1 --> C2
-    C1 --> C3
-    C1 --> C4
-
-    C1 --> D1
-    D1 --> D2
-    D2 --> D3
-    D3 --> D4
-    D3 --> D5
-
-    D1 --> E1
-    D1 --> E2
-    D1 --> E3
-    D1 --> E4
-
-    D3 --> F1
-    D3 --> F2
-    F2 --> F3
-    D3 --> F4
-    F1 --> F5
-
-```
-
-其中最关键的入口实现集中在 `src/services/autoDream/autoDream.ts:122-271`。
-
-## 4. 触发机制：不是定时器，而是 turn-end opportunistic execution
-
-一个很重要的实现特征是，AutoDream 不是后台 cron，也不是独立守护进程，而是“每轮结束时顺手检查一次”。触发点在 stop hook：
-
-- `src/query/stopHooks.ts:154-155` 只在主 agent 上调用 `executeAutoDream(...)`
-- `src/query/stopHooks.ts:133-156` 同时说明 bare/simple 模式整体跳过 background bookkeeping
-
-这种设计有几个实际好处：
-
-- 不引入额外常驻线程或外部调度器。
-- 与现有 query 生命周期自然对齐，工程复杂度低。
-- 只有用户真的在使用 Claude Code 时才有机会触发，不浪费空闲资源。
-
-代价也很明显：它不是严格按时运行，而是“当用户继续使用产品时，到了门槛就触发”。这是一种典型的 opportunistic background job 设计。
-
-## 5. Gate 机制：先便宜后昂贵
-
-源码顶部注释已经把设计讲得很清楚：按最便宜到最贵的顺序做 gate。
-
-关键代码：
-
-- `src/services/autoDream/autoDream.ts:5-8`
-- `src/services/autoDream/autoDream.ts:125-190`
-
-### 5.1 开关门控
-
-`isGateOpen()` 会拦掉几类场景：
-
-- KAIROS 模式关闭 AutoDream，因为 KAIROS 用的是另一套 disk-skill dream 路径。
-- Remote mode 关闭。
-- auto memory 总开关关闭。
-- 最后才检查 AutoDream 自身是否启用。
-
-对应代码：
-
-- `src/services/autoDream/autoDream.ts:95-100`
-
-而 `isAutoDreamEnabled()` 的优先级是：
-
-1. 用户 `settings.json` 中显式配置 `autoDreamEnabled`
-2. 否则回退到 GrowthBook feature flag `tengu_onyx_plover`
-
-对应代码：
-
-- `src/services/autoDream/config.ts:8-20`
-
-这说明 AutoDream 是一个典型的“用户设置优先，实验平台兜底”的可灰度能力。
-
-### 5.2 时间门控
-
-`readLastConsolidatedAt()` 通过 lock 文件的 `mtime` 读取上次 consolidation 时间，缺失则返回 `0`。主逻辑里再计算：
-
-`hoursSince = (Date.now() - lastAt) / 3_600_000`
-
-只有 `hoursSince >= minHours` 才继续，默认是 `24h`。
-
-对应代码：
-
-- `src/services/autoDream/consolidationLock.ts:25-35`
-- `src/services/autoDream/autoDream.ts:130-141`
-- `src/services/autoDream/autoDream.ts:63-66`
-
-### 5.3 Session 门控
-
-时间满足后，不会立刻 dream，而是检查“自上次 consolidation 以来，有多少 session 被 touched”。实现是扫描 transcript 目录，找 `mtime > lastAt` 的 session 文件，再排除当前会话。
-
-默认阈值是 `5` 个 session。
-
-对应代码：
-
-- `src/services/autoDream/consolidationLock.ts:110-124`
-- `src/services/autoDream/autoDream.ts:153-171`
-
-这里的设计很有意思：它不是按消息数，而是按“session 被触碰的数量”来估计值得不值得做 consolidation。这更接近长期记忆整理的真实信号。
-
-### 5.4 扫描节流
-
-还有一个容易被忽略但很关键的细节：如果时间门槛已经通过，但 session 数还不够，那么下一轮对话会再次通过时间门槛。为了避免每轮都扫 transcript 目录，源码加了 `SESSION_SCAN_INTERVAL_MS = 10min` 的节流。
-
-对应代码：
-
-- `src/services/autoDream/autoDream.ts:54-56`
-- `src/services/autoDream/autoDream.ts:143-151`
-
-这体现出作者对“便宜 gate 之后仍然可能出现的次优热路径”考虑得很细。
-
-## 6. Lock 设计：mtime 既是锁，也是 lastConsolidatedAt
-
-AutoDream 最漂亮的一段实现，在 `consolidationLock.ts`。
-
-它没有单独维护：
-
-- 一个 “last_consolidated_at” 状态文件
-- 一个 “lock” 文件
-
-而是把两件事合成一个 `.consolidate-lock`：
-
-- 文件内容：当前持有者 PID
-- 文件 `mtime`：上次 consolidation 时间
-
-对应代码：
-
-- `src/services/autoDream/consolidationLock.ts:1-5`
-- `src/services/autoDream/consolidationLock.ts:16-23`
-- `src/services/autoDream/consolidationLock.ts:25-45`
-
-```mermaid
-flowchart TD
-    A[".consolidate-lock"] --> B["mtime"]
-    A --> C["file body"]
-
-    B --> D["lastConsolidatedAt"]
-    C --> E["current holder PID"]
-
-    F["尝试启动 AutoDream"] --> G{"lock 文件存在且未过期?"}
-    G -- 否 --> H["直接写入当前 PID"]
-    G -- 是 --> I{"PID 对应进程是否仍存活?"}
-
-    I -- 是 --> J["认为锁被持有，本轮放弃"]
-    I -- 否 --> K["视为 stale lock，允许 reclaim"]
-
-    K --> H
-    H --> L["回读文件内容验证"]
-    L --> M{"PID 是否仍是自己?"}
-
-    M -- 否 --> N["竞争失败，返回 null"]
-    M -- 是 --> O["获取锁成功，返回 priorMtime"]
-
-    O --> P{"后续 dream 执行结果"}
-    P -- 成功 --> Q["保留当前 mtime，作为新的 lastConsolidatedAt"]
-    P -- 失败/被 kill --> R["rollbackConsolidationLock(priorMtime)"]
-
-    R --> S{"priorMtime 是否为 0?"}
-    S -- 是 --> T["删除 lock 文件"]
-    S -- 否 --> U["清空 PID 内容并恢复旧 mtime"]
-
-```
-
-### 6.1 获取锁
-
-`tryAcquireConsolidationLock()` 的流程：
-
-1. 读旧文件的 `mtime` 和 PID。
-2. 若 `mtime` 距今未超过 `HOLDER_STALE_MS` 且 PID 仍存活，则视为锁被持有。
-3. 否则尝试 reclaim。
-4. 写入当前进程 PID。
-5. 再读一次文件内容，若 PID 不是自己，说明竞争失败，返回 `null`。
-6. 返回旧的 `mtime`，供失败时回滚。
-
-对应代码：
-
-- `src/services/autoDream/consolidationLock.ts:46-84`
-
-这不是重量级锁，但对该场景足够实用：轻量、跨进程、可恢复。
-
-### 6.2 回滚
-
-如果 forked agent 启动失败，或任务被 kill，AutoDream 会调用 `rollbackConsolidationLock(priorMtime)`：
-
-- 之前没有文件时直接删文件。
-- 否则清空 PID body，再把 `mtime` 改回去。
-
-对应代码：
-
-- `src/services/autoDream/consolidationLock.ts:86-108`
-
-这点非常关键。否则只要“尝试过一次但失败”，系统就会错误地认为 consolidation 已经刚跑过，从而延后真正有价值的下一次整理。
-
-### 6.3 为什么这个设计好
-
-这个锁方案的核心优势有三点：
-
-- 状态合并：一个文件同时承载“互斥锁”和“最近成功时间”。
-- 失败可恢复：通过 `priorMtime` 回滚，不污染调度状态。
-- 成本极低：日常检查只要一次 `stat`。
-
-这也是 AutoDream 整个模块最体现工程成熟度的地方。
-
-## 7. Prompt 设计：四阶段 consolidation，而不是摘要一把梭
-
-`buildConsolidationPrompt()` 把 consolidation 明确拆成四个 phase：
-
-1. Orient
-2. Gather recent signal
-3. Consolidate
-4. Prune and index
-
-对应代码：
-
-- `src/services/autoDream/consolidationPrompt.ts:10-64`
-
-它要求 agent：
-
-- 先看 memory 目录和 `MEMORY.md`
-- 优先读 daily logs
-- transcript 只允许窄 grep，不允许整包读取
-- 倾向更新已有 topic file，而不是制造重复文件
-- 把相对时间转成绝对时间
-- 修正被新证据推翻的旧记忆
-- 控制 `MEMORY.md` 作为索引而不是内容 dump
-
-这说明 AutoDream 的本质并非“压缩对话”，而是“维护一个可长期演化的知识库”。
-
-### 7.1 Prompt 与权限约束解耦
-
-自动 dream 运行时，会在 `extra` 里附加一段本次运行专属限制，明确 Bash 只能做只读操作，不能写文件或重定向。
-
-对应代码：
-
-- `src/services/autoDream/autoDream.ts:213-222`
-
-源码注释也明确解释了为什么这段限制不写进共享 prompt body：手动 `/dream` 运行在主 loop 中，权限与 AutoDream 后台任务不同，写死会产生误导。
-
-这体现出一个成熟模式：共享 prompt 只放稳定规则，运行态约束用动态 `extra` 注入。
-
-## 8. 执行方式：复用 forked agent 框架
-
-AutoDream 没有自己写一个专用执行器，而是直接复用通用 forked agent 基础设施：
-
-- `runForkedAgent`
-- `createCacheSafeParams`
-- `createAutoMemCanUseTool`
-
-对应代码：
-
-- `src/services/autoDream/autoDream.ts:224-233`
-
-核心参数含义：
-
-- `promptMessages`: 用构造好的 consolidation prompt 作为 user message
-- `cacheSafeParams`: 复用现有 cache-safe 参数构造逻辑
-- `canUseTool`: 只允许 auto-memory 安全范围内的工具访问
-- `querySource` / `forkLabel`: 标记来源为 `auto_dream`
-- `skipTranscript: true`: 不把后台 dream 混入主 transcript
-- `overrides.abortController`: 支持用户中止
-- `onMessage`: 监听 forked agent 输出，反馈到 DreamTask
-
-这一层设计的意义很大：
-
-- AutoDream 不是“旁门左道脚本”，而是统一 agent runtime 上的一个专门工作流。
-- 它自然继承缓存、安全参数、消息回调、工具权限等基础设施。
-- 后续维护成本显著低于自研一套独立 dream runner。
-
-## 9. DreamTask：让后台 agent 对用户“可见但不打扰”
-
-如果只有后台 forked agent，用户几乎察觉不到它在做什么。Claude Code 为此专门加了 `DreamTask`，把 AutoDream 暴露到现有任务系统里。
+### 15.2 锁文件状态机
 
 ```mermaid
 sequenceDiagram
@@ -449,231 +1042,128 @@ sequenceDiagram
     Main->>StopHook: turn end
     StopHook->>AutoDream: executeAutoDream(...)
 
-    AutoDream->>Lock: 读取 lock mtime
-    Lock-->>AutoDream: lastConsolidatedAt
-
-    AutoDream->>AutoDream: 检查功能开关/模式/时间门控/扫描节流
-    alt 未通过门控
+    AutoDream->>AutoDream: 检查功能开关/模式限制
+    alt 未开启或模式受限
         AutoDream-->>StopHook: 直接返回
-    else 通过门控
-        AutoDream->>FS: 扫描最近被 touched 的 sessions
-        FS-->>AutoDream: sessionIds
-        AutoDream->>AutoDream: 排除当前 session 并检查 minSessions
+    else 允许继续
+        AutoDream->>Lock: 读取 lock mtime
+        Lock-->>AutoDream: lastConsolidatedAt
+        AutoDream->>AutoDream: 检查时间门控/扫描节流
 
-        alt session 数不足
-            AutoDream-->>StopHook: 跳过
-        else session 数足够
-            AutoDream->>Lock: tryAcquireConsolidationLock()
-            alt 锁被占用或竞争失败
-                Lock-->>AutoDream: null
+        alt 未通过门控
+            AutoDream-->>StopHook: 直接返回
+        else 通过门控
+            AutoDream->>FS: 扫描最近被 touched 的 sessions
+            FS-->>AutoDream: sessionIds
+            AutoDream->>AutoDream: 排除当前 session 并检查 minSessions
+
+            alt session 数不足
                 AutoDream-->>StopHook: 跳过
-            else 获取成功
-                Lock-->>AutoDream: priorMtime
-                AutoDream->>Task: registerDreamTask()
+            else session 数足够
+                AutoDream->>Lock: tryAcquireConsolidationLock()
+                alt 锁被占用或竞争失败
+                    Lock-->>AutoDream: null
+                    AutoDream-->>StopHook: 跳过
+                else 获取成功
+                    Lock-->>AutoDream: priorMtime
+                    AutoDream->>Task: registerDreamTask()
 
-                AutoDream->>AutoDream: buildConsolidationPrompt()
-                AutoDream->>Agent: runForkedAgent(prompt, canUseTool, abortController)
+                    AutoDream->>AutoDream: buildConsolidationPrompt()
+                    AutoDream->>Agent: runForkedAgent(prompt, canUseTool, abortController)
 
-                loop dream agent 输出消息
-                    Agent-->>AutoDream: assistant message / tool_use
-                    AutoDream->>Task: addDreamTurn(text, toolUseCount, filesTouched)
-                end
+                    loop dream agent 输出消息
+                        Agent-->>AutoDream: assistant message / tool_use
+                        AutoDream->>Task: addDreamTurn(text, toolUseCount, filesTouched)
+                    end
 
-                alt 执行成功
-                    Agent-->>AutoDream: result
-                    AutoDream->>Task: completeDreamTask()
-                    AutoDream-->>Main: appendSystemMessage(Improved ...)
-                else 执行失败
-                    Agent-->>AutoDream: error
-                    AutoDream->>Task: failDreamTask()
-                    AutoDream->>Lock: rollbackConsolidationLock(priorMtime)
+                    opt 用户在任务面板主动 kill
+                        User->>Task: kill
+                        Task->>Agent: abortController.abort()
+                        Task->>Task: 标记任务为 killed
+                        Task->>Lock: rollbackConsolidationLock(priorMtime)
+                    end
+
+                    alt 执行成功
+                        Agent-->>AutoDream: result
+                        AutoDream->>Task: completeDreamTask()
+                        opt filesTouched.length > 0
+                            AutoDream-->>Main: appendSystemMessage(Improved ...)
+                        end
+                    else 因用户 abort 退出
+                        Agent-->>AutoDream: aborted
+                        AutoDream-->>StopHook: 直接返回（不重复 fail/rollback）
+                    else 异常失败
+                        Agent-->>AutoDream: error
+                        AutoDream->>Task: failDreamTask()
+                        AutoDream->>Lock: rollbackConsolidationLock(priorMtime)
+                    end
                 end
             end
         end
     end
-
 ```
 
-对应代码：
-
-- `src/tasks/DreamTask/DreamTask.ts:1-4`
-
-### 9.1 任务状态
-
-DreamTask 记录：
-
-- 当前 phase：`starting` / `updating`
-- 正在 review 的 session 数
-- 至少被 Edit/Write 工具触碰过的文件路径
-- 最近最多 30 个 assistant turn
-- abortController
-- `priorMtime`，供 kill 时回滚 lock
-
-对应代码：
-
-- `src/tasks/DreamTask/DreamTask.ts:20-40`
-- `src/tasks/DreamTask/DreamTask.ts:52-74`
-
-### 9.2 进度监听
-
-`makeDreamProgressWatcher()` 会在每条 assistant 消息上做轻量解析：
-
-- 收集 text block 作为用户可见进度文本
-- 统计 tool_use 数量
-- 只对 FileEdit/FileWrite 提取 `file_path`
-- 再写入 DreamTask
-
-对应代码：
-
-- `src/services/autoDream/autoDream.ts:275-313`
-- `src/tasks/DreamTask/DreamTask.ts:76-104`
-
-这个设计很克制。它没有试图完整重建 dream agent 的内部状态，而是只提取“用户关心的最小可见信息”。
-
-### 9.3 任务结束与中止
-
-成功时：
-
-- `completeDreamTask()`
-- 如存在被触碰的文件，则通过 `appendSystemMessage()` 在主 transcript 追加一条 `Improved ...` 消息
-
-对应代码：
-
-- `src/services/autoDream/autoDream.ts:235-257`
-- `src/tasks/DreamTask/DreamTask.ts:106-120`
-
-失败时：
-
-- `failDreamTask()`
-- 回滚 lock 的 `mtime`
-
-对应代码：
-
-- `src/services/autoDream/autoDream.ts:258-270`
-- `src/tasks/DreamTask/DreamTask.ts:122-129`
-
-用户 kill 时：
-
-- 先 `abort()`
-- 标记任务为 `killed`
-- 再执行 `rollbackConsolidationLock(priorMtime)`
-
-对应代码：
-
-- `src/tasks/DreamTask/DreamTask.ts:132-156`
-
-这套链路很完整：调度、可见性、中止、回滚闭环都齐了。
-
-## 10. 关键实现优势
-
-结合源码，AutoDream 的核心优势主要有以下几项。
-
-### 10.1 低开销触发
-
-日常每轮只需要做极少量检查，甚至源码注释直接写了“enabled 时每轮成本是一次 GB cache read + 一次 stat”。
-
-对应代码：
-
-- `src/services/autoDream/autoDream.ts:315-318`
-
-这使 AutoDream 能成为默认背景能力，而不会明显拖慢每一轮交互。
-
-### 10.2 状态一致性强
-
-锁与最近成功时间复用同一个文件，并且失败时显式回滚。相比很多“后台任务只要启动就记成功时间”的实现，这套方案对一致性更严谨。
-
-### 10.3 与主会话隔离良好
-
-`skipTranscript: true` 让后台整理不污染主对话，但又通过 DreamTask 和 `appendSystemMessage` 给用户适度反馈。这是“隔离执行 + 轻量可见性”的很稳妥实现。
-
-### 10.4 Prompt 目标明确，不是粗暴总结
-
-Prompt 明确要求：
-
-- 合并重复 memory
-- 修复漂移事实
-- 转换绝对日期
-- 修剪索引
-
-所以它不是“把历史聊天压缩一下”，而是“维护长期知识资产”。
-
-### 10.5 工程复用度高
-
-AutoDream 几乎没有发明新的基础设施，而是搭在现有系统上：
-
-- feature flag / settings
-- forked agent runtime
-- task registry
-- auto-memory path
-- analytics
-- stop hooks
-
-这类实现通常更稳定，也更容易持续演进。
-
-## 11. 局限与边界
-
-源码里也能看到 AutoDream 并非无懈可击，而是有一些清晰边界。
-
-### 11.1 不是实时记忆
-
-它是低频 consolidation，不负责每轮捕获新记忆。更像 nightly compaction，只是触发方式不是定时器而是 turn-end opportunistic。
-
-### 11.2 session 计数是启发式
-
-它看的是“自上次以来被 touched 的 session 数”，不是变化质量，也不是新增知识量。因此有可能：
-
-- session 多但信号弱，也会触发
-- session 少但价值高，可能暂时不触发
-
-这是成本与精度之间的实际折中。
-
-### 11.3 文件触碰统计不是完整真相
-
-`DreamTask.filesTouched` 只从 FileEdit/FileWrite 工具里提取，注释明确写了：如果 dream agent 通过 bash 间接写文件，这里会漏掉，因此只能理解为“至少这些文件被触碰过”。
-
-对应代码：
-
-- `src/tasks/DreamTask/DreamTask.ts:29-35`
-
-### 11.4 强依赖 memory 目录质量
-
-AutoDream 假设 memory 目录已经存在某种结构化规范，包括 `MEMORY.md`、topic files、可能的 daily logs。它更像维护器，而不是从零到一构建知识库的万能引擎。
-
-## 12. 与参考总结相比，应该如何理解 AutoDream
-
-参考材料里把 AutoDream 概括为“自我进化记忆系统”，这个方向是对的，但源码显示它并不神秘，核心并不是某种新型模型能力，而是几层工程拼装后的结果：
-
-- 触发层：turn-end + gate + throttle
-- 并发层：PID lock + stale reclaim + rollback
-- 执行层：forked agent + restricted tools
-- 提示层：4-phase consolidation prompt
-- 可见性层：DreamTask + inline completion message
-- 配置层：settings 优先，GrowthBook 兜底
-
-换句话说，AutoDream 的强点不在“会做梦”这个概念，而在它把“长期记忆整理”做成了一个成本可控、失败可恢复、对用户可见、与主会话低耦合的后台工作流。
-
-## 13. 关键代码索引
-
-如果只看最重要的源码，建议优先读这几段：
-
-1. 调度主流程：`src/services/autoDream/autoDream.ts:122-271`
-2. Gate 与默认阈值：`src/services/autoDream/autoDream.ts:54-100`
-3. Prompt 构造：`src/services/autoDream/consolidationPrompt.ts:10-64`
-4. 锁与回滚：`src/services/autoDream/consolidationLock.ts:25-108`
-5. Session 扫描：`src/services/autoDream/consolidationLock.ts:110-124`
-6. 可配置开关：`src/services/autoDream/config.ts:13-20`
-7. 任务可见性与 kill 回滚：`src/tasks/DreamTask/DreamTask.ts:52-156`
-8. 实际触发点：`src/query/stopHooks.ts:133-156`
-9. 初始化位置：`src/utils/backgroundHousekeeping.ts:31-38`
-
-## 14. 总结
-
-从源码看，AutoDream 是 Claude Code auto-memory 体系中的“后台整理器”，不是单纯摘要器，也不是随时运行的守护进程。它通过 gate、节流、锁、回滚、forked agent 和任务系统，把长期记忆 consolidation 做成了一个低成本、可灰度、可恢复的后台流程。
-
-它最值得借鉴的不是 prompt 文案本身，而是三个工程思想：
-
-- 用最便宜的 gate 提前挡掉大多数无意义执行。
-- 用一个轻量状态文件同时解决“互斥”和“最近成功时间”。
-- 让后台 agent 与主会话隔离，但仍对用户保留最小必要可见性。
-
-如果把 Claude Code 的记忆能力拆开看，AutoDream 负责的不是“记住”，而是“把已经积累下来的记忆重新整理为更可靠的长期结构”。这一点，正是它在整个系统中的核心价值。
+### 15.3 锁文件状态机
+
+```
+[无锁文件]
+    │
+    │ tryAcquireConsolidationLock()
+    ├── 写入 PID，mtime = now
+    ▼
+[锁文件存在: PID=当前进程, mtime=启动时间]
+    │
+    ├── 成功完成 → mtime 保持（下次判断距今多久）
+    │
+    ├── fork 失败 → rollback: utimes(priorMtime) → mtime 恢复
+    │
+    ├── 用户 Kill → rollback: utimes(priorMtime) → mtime 恢复
+    │
+    └── 进程崩溃 → 锁文件残留，PID 死亡
+              │
+              └── 下次 tryAcquire: PID 已死 → reclaim → 写入新 PID
+```
+
+### 15.4 文件系统布局
+
+```
+~/.claude/projects/<sanitized-git-root>/
+└── memory/                       ← getAutoMemPath()
+    ├── .consolidate-lock         ← mtime = lastConsolidatedAt, body = PID
+    ├── MEMORY.md                 ← 入口索引（≤200行，≤25KB）
+    ├── user-profile.md           ← topic 文件（类型: user）
+    ├── feedback-testing.md       ← topic 文件（类型: feedback）
+    └── project-goals.md          ← topic 文件（类型: project）
+
+~/.claude/projects/<sanitized-git-root>/
+└── sessions/                     ← getProjectDir(cwd)
+    ├── <sessionId-1>.jsonl       ← 会话转录（listSessionsTouchedSince 扫描）
+    ├── <sessionId-2>.jsonl
+    └── ...
+```
+
+---
+
+## 附录：关键文件与函数速查
+
+| 文件 | 关键函数 | 职责 |
+|------|---------|------|
+| `autoDream.ts` | `initAutoDream()` | 初始化闭包、注册 runner |
+| `autoDream.ts` | `executeAutoDream()` | stopHooks 调用入口，runner?.() 包装 |
+| `autoDream.ts` | `runAutoDream()` | 门控检查 + fork 执行 + 收尾 |
+| `autoDream.ts` | `makeDreamProgressWatcher()` | 监听 forked agent 消息，更新 DreamTask |
+| `config.ts` | `isAutoDreamEnabled()` | 读取用户设置 / GrowthBook，轻量叶子模块 |
+| `consolidationLock.ts` | `readLastConsolidatedAt()` | stat(lock).mtime → 上次整合时间 |
+| `consolidationLock.ts` | `tryAcquireConsolidationLock()` | 写 PID + 回读验证的轻量竞争锁 |
+| `consolidationLock.ts` | `rollbackConsolidationLock()` | utimes 恢复旧 mtime |
+| `consolidationLock.ts` | `listSessionsTouchedSince()` | 扫描 session 文件 mtime |
+| `consolidationLock.ts` | `recordConsolidation()` | 手动 /dream 的乐观 stamp |
+| `consolidationPrompt.ts` | `buildConsolidationPrompt()` | 构建四阶段 dream prompt |
+| `DreamTask.ts` | `registerDreamTask()` | 注册后台任务到 UI 任务列表 |
+| `DreamTask.ts` | `addDreamTurn()` | 更新 turns / filesTouched / phase |
+| `DreamTask.ts` | `DreamTask.kill()` | 中止 + 回滚锁 mtime |
+| `extractMemories.ts` | `createAutoMemCanUseTool()` | AutoDream 与 extractMemories 共享的权限沙箱 |
+| `stopHooks.ts` | `handleStopHooks()` | 每轮结束时调用 executeAutoDream |
+| `backgroundHousekeeping.ts` | `startBackgroundHousekeeping()` | 启动时调用 initAutoDream |
+
+---
