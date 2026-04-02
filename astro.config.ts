@@ -32,7 +32,18 @@ export default defineConfig({
               : "warn",
         },
       ],
-      [rehypeMermaid, { strategy: "img-svg", dark: true }],
+      [
+        rehypeMermaid,
+        {
+          strategy: "img-svg",
+          dark: true,
+          mermaidConfig: {
+            flowchart: {
+              htmlLabels: false,
+            },
+          },
+        },
+      ],
     ],
     syntaxHighlight: {
       type: "shiki",
