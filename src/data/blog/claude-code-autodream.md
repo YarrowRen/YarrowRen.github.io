@@ -25,9 +25,12 @@ AutoDream 是 Claude Code 的**后台记忆整合系统**。它会在满足时�
 
 文件头注释直接说明了它的本质：
 
-```
+```typescript
 // Background memory consolidation. Fires the /dream prompt as a forked
 // subagent when time-gate passes AND enough sessions have accumulated.
+
+// 后台记忆整合系统。当时间门控通过且累计了足够多的 session 时，
+// 以 forked 子 agent 形式触发 /dream 整合流程。
 ```
 
 ### 1.2 解决什么问题
@@ -46,6 +49,9 @@ AutoDream 的 prompt 逻辑（`consolidationPrompt.ts`）从 `dream.ts` 中独�
 ```typescript
 // Extracted from dream.ts so auto-dream ships independently of KAIROS
 // feature flags (dream.ts is behind a feature()-gated require).
+
+// 从 dream.ts 中独立提取，使 auto-dream 不受 KAIROS feature flag 约束，
+// 可独立发布（dream.ts 本身位于 feature()-gated require 之后）。
 ```
 
 `/dream` 是手动触发的斜杠命令，位于 KAIROS feature flag 后面。AutoDream 则不依赖 KAIROS，独立运行。两者共享同一套四阶段 prompt 结构，但 AutoDream 的工具权限更严格（只读 Bash），而手动 `/dream` 在主循环中运行，拥有正常权限。
@@ -84,26 +90,37 @@ src/query/
 // Leaf config module — intentionally minimal imports so UI components
 // can read the auto-dream enabled state without dragging in the forked
 // agent / task registry / message builder chain that autoDream.ts pulls in.
+
+// 轻依赖叶子模块——刻意压缩 import，使 UI 组件读取 auto-dream 开关时，
+// 不会把 forked agent / task registry / message builder 等重依赖拖进渲染路径。
 ```
 
 这使得 UI 组件（如 `MemoryFileSelector.tsx`）可以直接读取 `isAutoDreamEnabled()` 状态，而不会因为引入 `autoDream.ts` 导致把 forkedAgent、taskRegistry、messageBuilder 等重依赖链条拖进渲染路径。这是 CLI/React 混合架构中常见的依赖分层策略。
 
 ### 2.3 生命周期
 
-```
-进程启动
-  └── startBackgroundHousekeeping()
-        └── initAutoDream()           ← 初始化闭包，注册 runner
+```mermaid
+flowchart TD
+    subgraph Startup["进程启动"]
+        S1["startBackgroundHousekeeping()"]
+        S2["initAutoDream()\n初始化闭包，注册 runner"]
+        S1 --> S2
+    end
 
-每轮对话结束
-  └── handleStopHooks()
-        └── executeAutoDream()        ← 调用 runner（若 null 则 no-op）
-              └── runAutoDream()
-                    ├── 门控检查（廉价优先）
-                    ├── tryAcquireConsolidationLock()
-                    ├── registerDreamTask()           ← 注册到 UI
-                    ├── runForkedAgent()              ← 启动 dream agent
-                    └── completeDreamTask() / failDreamTask() / rollback
+    subgraph PerTurn["每轮对话结束"]
+        T1["handleStopHooks()"]
+        T2["executeAutoDream()\n调用 runner\n（若 null 则 no-op）"]
+        T3["runAutoDream()"]
+        T4["门控检查（廉价优先）"]
+        T5["tryAcquireConsolidationLock()"]
+        T6["registerDreamTask()\n注册到 UI"]
+        T7["runForkedAgent()\n启动 dream agent"]
+        T8["completeDreamTask()\n/ failDreamTask() / rollback"]
+
+        T1 --> T2 --> T3 --> T4 --> T5 --> T6 --> T7 --> T8
+    end
+
+    S2 -. runner 闭包 .-> T2
 ```
 
 ### 2.4 分层架构关系图
@@ -206,6 +223,11 @@ flowchart LR
 //   1. Time: hours since lastConsolidatedAt >= minHours (one stat)
 //   2. Sessions: transcript count with mtime > lastConsolidatedAt >= minSessions
 //   3. Lock: no other process mid-consolidation
+
+// 门控按成本从低到高排列：
+//   1. 时间：距上次整合是否超过 minHours（仅一次 stat）
+//   2. Session 数：mtime 晚于上次整合的 transcript 数量是否达到 minSessions
+//   3. 锁：没有其他进程正在执行 consolidation
 ```
 
 ### 3.2 总开关门控（isGateOpen）
@@ -265,32 +287,30 @@ if (!force && sessionIds.length < cfg.minSessions) return
 
 ### 3.6 完整门控流程图
 
-```
-executeAutoDream()
-       │
-       ▼
- isGateOpen()? ─── No ──→ return（KAIROS / remote / mem disabled / dream disabled）
-       │ Yes
-       ▼
- readLastConsolidatedAt()  ←── stat(lock file).mtime，成本最低
-       │
- hoursSince < minHours? ─── Yes ──→ return
-       │ No
-       ▼
- sinceScanMs < 10min? ──── Yes ──→ return（scan throttle）
-       │ No
-       ▼
- listSessionsTouchedSince()  ←── 扫描 session 目录，成本较高
-       │
- sessionCount < minSessions? ── Yes ──→ return
-       │ No
-       ▼
- tryAcquireConsolidationLock()
-       │
- null（被占）? ──────────────── Yes ──→ return
-       │ No（获取成功）
-       ▼
- runForkedAgent()  ←── 启动 dream agent，成本最高
+```mermaid
+flowchart TD
+    A["executeAutoDream()"] --> B{"isGateOpen()?\nKAIROS / Remote /\nautoMem / autoDream"}
+    B -- 未通过 --> Z["return（跳过）"]
+
+    B -- 通过 --> C["readLastConsolidatedAt()\nstat lock file — 成本：1 次 stat"]
+    C --> D{"hoursSince < minHours?"}
+    D -- 是 --> Z
+
+    D -- 否 --> E{"sinceScanMs < 10min?\nscan throttle"}
+    E -- 是 --> Z
+
+    E -- 否 --> F["listSessionsTouchedSince()\n扫描 session 目录 — 成本较高"]
+    F --> F2["排除当前 session\nfilter id !== currentSession"]
+    F2 --> G{"sessionCount < minSessions?"}
+    G -- 是 --> Z
+
+    G -- 否 --> H["tryAcquireConsolidationLock()\n写 PID + 回读验证"]
+    H -- null（被占） --> Z
+
+    H -- priorMtime --> I["获取 lock 成功\n进入执行阶段"]
+
+    style Z fill:#f5f5f5,stroke:#999
+    style I fill:#d4edda,stroke:#28a745
 ```
 
 ---
@@ -381,18 +401,17 @@ export async function rollbackConsolidationLock(priorMtime: number): Promise<voi
 
 ```mermaid
 flowchart TD
-    A[".consolidate-lock"] --> B["mtime"]
-    A --> C["file body"]
-
-    B --> D["lastConsolidatedAt"]
-    C --> E["current holder PID"]
+    subgraph FileStructure["文件结构（双语义）"]
+        A[".consolidate-lock"] --> B["mtime → lastConsolidatedAt"]
+        A --> C["file body → current holder PID"]
+    end
 
     F["尝试启动 AutoDream"] --> G{"lock 文件存在且未过期?"}
-    G -- 否 --> H["直接写入当前 PID"]
+    G -- 否\n（文件不存在 or 已过期） --> H["直接写入当前 PID\n（mtime 自动刷新为 now）"]
     G -- 是 --> I{"PID 对应进程是否仍存活?"}
 
-    I -- 是 --> J["认为锁被持有，本轮放弃"]
-    I -- 否 --> K["视为 stale lock，允许 reclaim"]
+    I -- 是 --> J["认为锁被持有，本轮放弃\n返回 null"]
+    I -- 否\n（PID 已死 or 无法解析） --> K["视为 stale lock，允许 reclaim"]
 
     K --> H
     H --> L["回读文件内容验证"]
@@ -402,12 +421,12 @@ flowchart TD
     M -- 是 --> O["获取锁成功，返回 priorMtime"]
 
     O --> P{"后续 dream 执行结果"}
-    P -- 成功 --> Q["保留当前 mtime，作为新的 lastConsolidatedAt"]
+    P -- 成功 --> Q["保留当前 mtime\n作为新的 lastConsolidatedAt"]
     P -- 失败/被 kill --> R["rollbackConsolidationLock(priorMtime)"]
 
     R --> S{"priorMtime 是否为 0?"}
     S -- 是 --> T["删除 lock 文件"]
-    S -- 否 --> U["清空 PID 内容并恢复旧 mtime"]
+    S -- 否 --> U["清空 PID 内容并恢复旧 mtime\n（utimes 精确回写）"]
 ```
 
 这张图强调的是：`.consolidate-lock` 不是单纯的互斥锁，而是同时承担了**并发控制**和**调度状态记录**两种职责。成功时保留新的 mtime；失败或用户 kill 时，则通过 `priorMtime` 精确回滚到启动前状态。
@@ -487,6 +506,12 @@ const taskId = registerDreamTask(setAppState, {
 - Read `MEMORY.md` to understand the current index
 - Skim existing topic files so you improve them rather than creating duplicates
 - If `logs/` or `sessions/` subdirectories exist, review recent entries there
+
+## 第一阶段——定向
+- 列出 memory 目录，了解已有内容
+- 读取 MEMORY.md，掌握当前索引结构
+- 浏览已有 topic 文件，避免创建重复文件
+- 如存在 logs/ 或 sessions/ 子目录，查看近期条目
 ```
 
 **设计意图**：先理解"已有记忆长什么样"，再决定写什么。这防止 agent 盲目追加内容，也防止创建重复的 topic 文件。Phase 1 是纯读取阶段，不做任何写入。
@@ -499,6 +524,12 @@ Sources in rough priority order:
 1. Daily logs (`logs/YYYY/MM/YYYY-MM-DD.md`) — append-only stream
 2. Existing memories that drifted — facts that contradict codebase now
 3. Transcript search — grep narrowly, don't read whole files
+
+## 第二阶段——采集信号
+按优先级查找值得持久化的新信息：
+1. 日志文件（logs/YYYY/MM/YYYY-MM-DD.md）——纯追加流
+2. 已有记忆中的漂移——与当前代码库相悖的旧事实
+3. Transcript 搜索——按需窄范围 grep，不全量读取
 ```
 
 **三层优先级**：日志文件（结构化、增量）→ 已有记忆的漂移检测 → 按需的 transcript 窄范围搜索。
@@ -515,6 +546,12 @@ Focus on:
 - Merging new signal into existing topic files rather than creating near-duplicates
 - Converting relative dates ("yesterday", "last week") to absolute dates
 - Deleting contradicted facts — if today's investigation disproves an old memory, fix it
+
+## 第三阶段——整合
+重点：
+- 将新信号并入已有 topic 文件，而非另建近似重复的文件
+- 将相对日期（"昨天"、"上周"）转换为绝对日期
+- 删除被推翻的旧事实——若新调查否定了旧记忆，直接修正源头
 ```
 
 **三个核心动作**：
@@ -533,6 +570,13 @@ Update `MEMORY.md` so it stays under 200 lines AND under ~25KB.
 - Remove stale, wrong, or superseded pointers
 - Demote verbose entries (>200 chars → move detail to topic file)
 - Resolve contradictions between files
+
+## 第四阶段——修剪与索引
+更新 MEMORY.md，保持在 200 行以内且不超过约 25KB。
+- 每条索引一行，不超过约 150 字符：`- [标题](file.md) — 一句话摘要`
+- 删除过期、错误或已被取代的指针
+- 压缩冗长条目（>200 字符 → 将正文内容移入 topic 文件）
+- 解决文件间的矛盾
 ```
 
 **MEMORY.md 的约束**：
@@ -629,6 +673,10 @@ if (tool.name === REPL_TOOL_NAME) {
 // Makes the otherwise-invisible forked agent visible in the footer pill and
 // Shift+Down dialog. The dream agent itself is unchanged — this is pure UI
 // surfacing via the existing task registry.
+
+// auto-dream 的后台任务入口（记忆整合子 agent）。
+// 让原本不可见的 forked agent 在底部状态栏和 Shift+Down 对话框中可见。
+// dream agent 本身不做任何修改——这是纯 UI 层通过现有任务注册表的接入。
 ```
 
 AutoDream 的 forked agent 本质上是完全后台运行的，用户在不看任务列表时感知不到。`DreamTask` 的作用是把这个"不可见的后台 agent"接入现有的 Task 注册表，让用户可以：
@@ -672,6 +720,10 @@ turns: task.turns.slice(-(MAX_TURNS - 1)).concat(turn)
  * INCOMPLETE reflection of what the dream agent actually changed — it misses
  * any bash-mediated writes and only captures the tool calls we pattern-match.
  * Treat as "at least these were touched", not "only these were touched".
+ *
+ * 通过 onMessage 中的 Edit/Write tool_use 块观察到的文件路径。
+ * 这是对 dream agent 实际改动的不完整反映——会遗漏 Bash 间接写入，
+ * 仅捕获模式匹配到的工具调用。语义为"至少触碰了这些"，而非"只触碰了这些"。
  */
 filesTouched: string[]
 ```
@@ -1020,12 +1072,13 @@ flowchart TB
     W --> X[rollbackConsolidationLock]
     X --> Y
 
-    R -- 因用户 abort 退出 --> Y
+    O -. 因用户 abort 抛异常\ncatch 确认 aborted 后直接返回 .-> AB[直接 return\n不重复 fail/rollback]
+    AB --> Y
     Z --> Y
     V --> Y
 ```
 
-### 15.2 锁文件状态机
+### 15.2 完整执行时序图
 
 ```mermaid
 sequenceDiagram
