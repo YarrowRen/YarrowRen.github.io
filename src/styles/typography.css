@@ -40,93 +40,17 @@
     @apply break-all sm:break-normal;
   }
 
+  .prose table {
+    display: block;
+    width: max-content;
+    min-width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   pre > code {
     white-space: pre;
-  }
-
-  .prose .mermaid {
-    @apply overflow-auto rounded-xl border bg-background p-4;
-    border-color: color-mix(in srgb, var(--color-accent) 22%, var(--color-border));
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--color-background) 70%, transparent) inset,
-      0 14px 32px -24px color-mix(in srgb, var(--color-accent) 38%, transparent);
-    max-height: 75vh;
-    position: relative;
-    padding-top: 3.4rem;
-    transition:
-      border-color 180ms ease,
-      box-shadow 180ms ease,
-      transform 180ms ease;
-  }
-
-  .prose .mermaid-ready {
-    cursor: zoom-in;
-  }
-
-  .prose .mermaid-rendering {
-    color: transparent;
-  }
-
-  .prose .mermaid[data-processed="true"] {
-    @apply p-4;
-    padding-top: 3.4rem;
-  }
-
-  .prose .mermaid svg {
-    @apply mx-auto h-auto max-w-full;
-  }
-
-  .prose .mermaid-expanded {
-    max-height: none;
-  }
-
-  .prose .mermaid-showing-code {
-    max-height: none;
-    overflow: visible;
-  }
-
-  .prose .mermaid-source {
-    @apply mt-0 p-0;
-    max-height: none;
-  }
-
-  .prose .mermaid-source[hidden],
-  .prose .mermaid-showing-code svg {
-    display: none;
-  }
-
-  .prose .mermaid-toolbar {
-    position: absolute;
-    top: 0.8rem;
-    right: 0.8rem;
-    z-index: 2;
-    display: flex;
-    gap: 0.45rem;
-  }
-
-  .prose .mermaid-toolbar__button {
-    @apply rounded-md border px-2 py-1 text-xs font-medium;
-    border-color: color-mix(in srgb, var(--color-accent) 16%, var(--color-border));
-    background: color-mix(in srgb, var(--color-background) 90%, transparent);
-    line-height: 1;
-  }
-
-  .prose .mermaid-source__text {
-    @apply p-4;
-    font-size: 0.82rem;
-    line-height: 1.55;
-    white-space: pre-wrap;
-    word-break: break-word;
-    background: transparent;
-    color: var(--color-foreground);
-  }
-
-  .prose .mermaid-ready:hover {
-    border-color: color-mix(in srgb, var(--color-accent) 42%, var(--color-border));
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--color-accent) 18%, transparent) inset,
-      0 22px 40px -28px color-mix(in srgb, var(--color-accent) 48%, transparent);
-    transform: translateY(-1px);
   }
 
   /* Apply Dark Theme (if multi-theme specified) */

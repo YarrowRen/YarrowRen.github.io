@@ -6,8 +6,8 @@ import remarkCollapse from "remark-collapse";
 import { SITE } from "./src/config";
 
 import remarkMath from "remark-math";
-import remarkMermaid from "./src/utils/remarkMermaid";
 import rehypeKatex from "rehype-katex";
+import rehypeMermaid from "rehype-mermaid";
 
 
 import react from "@astrojs/react";
@@ -21,8 +21,15 @@ export default defineConfig({
     filter: page => SITE.showArchives || !page.endsWith("/archives"),
   }), react(), mdx()],
   markdown: {
-    remarkPlugins: [remarkMath, remarkMermaid, remarkToc, [remarkCollapse, { test: "Table of contents" }]],
-    rehypePlugins: [rehypeKatex],
+    remarkPlugins: [remarkMath, remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+    rehypePlugins: [
+      rehypeKatex,
+      [rehypeMermaid, { strategy: "img-svg", dark: true }],
+    ],
+    syntaxHighlight: {
+      type: "shiki",
+      excludeLangs: ["mermaid", "math"],
+    },
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },

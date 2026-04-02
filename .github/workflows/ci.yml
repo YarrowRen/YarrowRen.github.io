@@ -13,7 +13,7 @@ jobs:
   build:
     name: Code standards & build
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -36,6 +36,9 @@ jobs:
 
       - name: "📦 Install dependencies"
         run: pnpm install
+
+      - name: "🎭 Install Playwright Chromium"
+        run: pnpm exec playwright install chromium
 
       - name: "🔎 Lint code"
         run: pnpm run lint

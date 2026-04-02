@@ -138,6 +138,62 @@ export async function getStaticPaths() {
     import 'lightgallery/css/lg-zoom.css';
 
     let lgInstance: ReturnType<typeof lightGallery> | null = null;
+    const lightboxBgStorageKey = 'lightgallery-background-mode';
+
+    function getLightboxBgMode() {
+      return localStorage.getItem(lightboxBgStorageKey) === 'black' ? 'black' : 'white';
+    }
+
+    function applyLightboxBgMode(root: HTMLElement, mode: 'black' | 'white') {
+      root.classList.toggle('lg-bg-white', mode === 'white');
+      root.classList.toggle('lg-bg-black', mode !== 'white');
+    }
+
+    function attachLightboxBgToggle(instance: ReturnType<typeof lightGallery>) {
+      const lgAny = instance as any;
+      const onAfterOpen = () => {
+        const container = lgAny.$container?.get?.() as HTMLElement | undefined;
+        const toolbar = lgAny.$toolbar?.get?.() as HTMLElement | undefined;
+        if (!container || !toolbar) return;
+
+        applyLightboxBgMode(container, getLightboxBgMode());
+
+        let toggleButton = toolbar.querySelector<HTMLButtonElement>('.lg-bg-toggle');
+        if (!toggleButton) {
+          toggleButton = document.createElement('button');
+          toggleButton.type = 'button';
+          toggleButton.className = 'lg-bg-toggle lg-icon';
+          toolbar.appendChild(toggleButton);
+
+          toggleButton.addEventListener('click', () => {
+            const nextMode = container.classList.contains('lg-bg-white') ? 'black' : 'white';
+            localStorage.setItem(lightboxBgStorageKey, nextMode);
+            applyLightboxBgMode(container, nextMode);
+            toggleButton?.setAttribute(
+              'aria-label',
+              nextMode === 'white' ? '切换为黑色背景' : '切换为白色背景'
+            );
+            toggleButton?.setAttribute(
+              'title',
+              nextMode === 'white' ? '切换为黑色背景' : '切换为白色背景'
+            );
+          });
+        }
+
+        const mode = container.classList.contains('lg-bg-white') ? 'white' : 'black';
+        toggleButton.setAttribute(
+          'aria-label',
+          mode === 'white' ? '切换为黑色背景' : '切换为白色背景'
+        );
+        toggleButton.setAttribute(
+          'title',
+          mode === 'white' ? '切换为黑色背景' : '切换为白色背景'
+        );
+      };
+
+      lgAny.LGel?.off?.('lgAfterOpen.bgToggle');
+      lgAny.LGel?.on?.('lgAfterOpen.bgToggle', onAfterOpen);
+    }
 
     function initGallery() {
       if (lgInstance) { lgInstance.destroy(); lgInstance = null; }
@@ -153,6 +209,7 @@ export async function getStaticPaths() {
         download: false,
         licenseKey: '0000-0000-000-0000',
       });
+      attachLightboxBgToggle(lgInstance);
     }
 
     document.addEventListener('astro:page-load', initGallery);
