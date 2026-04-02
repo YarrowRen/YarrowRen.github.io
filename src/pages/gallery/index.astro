@@ -78,7 +78,7 @@ if (fs.existsSync(albumDir)) {
       <p class="text-gray-500 dark:text-gray-400 italic">暂无相册，快去旅行吧！🌏</p>
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {albums.map(({ folder, title, cover, date, location, description }) => (
+        {albums.map(({ folder, title, cover, date }) => (
           <a
             href={`/gallery/${folder}`}
             class="block bg-gray-100 dark:bg-gray-800 rounded shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition overflow-hidden"

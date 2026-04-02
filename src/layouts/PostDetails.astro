@@ -374,7 +374,6 @@ const nextPost =
     // Update TOC position and height based on scroll and header visibility
     function updateTOCPosition() {
       const scrollY = window.scrollY;
-      const mainContentRect = mainContent.getBoundingClientRect();
       
       // Calculate how much of header is still visible
       const headerHeight = header ? header.offsetHeight : 0;

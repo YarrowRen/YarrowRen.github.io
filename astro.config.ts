@@ -23,7 +23,15 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath, remarkToc, [remarkCollapse, { test: "Table of contents" }]],
     rehypePlugins: [
-      rehypeKatex,
+      [
+        rehypeKatex,
+        {
+          strict: (errorCode: string) =>
+            errorCode === "unicodeTextInMathMode" || errorCode === "unknownSymbol"
+              ? "ignore"
+              : "warn",
+        },
+      ],
       [rehypeMermaid, { strategy: "img-svg", dark: true }],
     ],
     syntaxHighlight: {
@@ -33,6 +41,15 @@ export default defineConfig({
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },
+      langAlias: {
+        Bash: "bash",
+        Java: "java",
+        R: "r",
+        jsp: "html",
+        conf: "ini",
+        test: "plaintext",
+        factories: "plaintext",
+      },
       wrap: true,
     },
   },

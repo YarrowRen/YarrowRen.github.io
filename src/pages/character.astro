@@ -3,27 +3,9 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Main from "@/layouts/Main.astro";
-import { getCharacterAssets, type CharacterImage } from "@/utils/characterAssets";
+import { getCharacterAssets } from "@/utils/characterAssets";
 
 const characterAssets = getCharacterAssets();
-
-// Helper function to render image or placeholder
-function renderImageOrPlaceholder(image: CharacterImage | null, defaultText: string, className: string = "h-64") {
-  if (image) {
-    return `
-      <div class="character-image bg-white dark:bg-white rounded-lg overflow-hidden cursor-pointer ${className}" 
-           data-src="${image.src}" 
-           data-alt="${image.alt}" 
-           data-caption="${image.caption || image.alt}">
-        <img src="${image.src}" alt="${image.alt}" class="w-full h-full object-cover" loading="lazy">
-      </div>`;
-  } else {
-    return `
-      <div class="character-image-placeholder bg-white dark:bg-white rounded-lg ${className} flex items-center justify-center">
-        <span class="text-gray-500 dark:text-gray-400">${defaultText}</span>
-      </div>`;
-  }
-}
 ---
 
 <Layout title="Character - Yarrow Ren">

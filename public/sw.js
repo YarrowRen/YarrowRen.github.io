@@ -50,7 +50,8 @@ self.addEventListener('fetch', event => {
   if (request.destination === 'image') {
     // Image caching strategy
     event.respondWith(
-      caches.open(IMAGE_CACHE).then(cache => {
+      (async () => {
+        const cache = await caches.open(IMAGE_CACHE);
         return cache.match(request).then(response => {
           if (response) {
             return response;
@@ -63,7 +64,7 @@ self.addEventListener('fetch', event => {
             return networkResponse;
           });
         });
-      })
+      })()
     );
   } else if (url.pathname.startsWith('/posts/') || 
              url.pathname.startsWith('/gallery/')) {
