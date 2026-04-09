@@ -188,6 +188,7 @@ const nextPost =
 
   window.__tocCleanup = () => {
     _ctrl.abort();
+    document.querySelectorAll('.toc-backdrop, .toc-toggle-tab').forEach(el => el.remove());
   };
 
   // Cleanup before next page swap
@@ -366,14 +367,11 @@ const nextPost =
     backdrop.className = 'toc-backdrop';
     document.body.appendChild(backdrop);
 
-    const isHidden = localStorage.getItem('toc-user-hidden') !== 'false';
-
     const hide = () => {
       tocSidebar.classList.add('toc-user-hidden');
       backdrop.classList.remove('visible');
       tab.innerHTML = chevronR;
       tab.setAttribute('title', '显示目录');
-      localStorage.setItem('toc-user-hidden', 'true');
     };
 
     const show = () => {
@@ -381,7 +379,6 @@ const nextPost =
       backdrop.classList.add('visible');
       tab.innerHTML = chevronL;
       tab.setAttribute('title', '隐藏目录');
-      localStorage.setItem('toc-user-hidden', 'false');
     };
 
     tab.addEventListener('click', () => {
@@ -389,17 +386,11 @@ const nextPost =
     }, { signal });
     backdrop.addEventListener('click', hide, { signal });
 
-    // Apply initial state without transition to avoid flash animation
+    // Always start hidden — overlay blocks content, not suitable to persist open state
     tocSidebar.style.transition = 'none';
-    if (isHidden) {
-      tocSidebar.classList.add('toc-user-hidden');
-      tab.innerHTML = chevronR;
-      tab.setAttribute('title', '显示目录');
-    } else {
-      backdrop.classList.add('visible');
-      tab.innerHTML = chevronL;
-      tab.setAttribute('title', '隐藏目录');
-    }
+    tocSidebar.classList.add('toc-user-hidden');
+    tab.innerHTML = chevronR;
+    tab.setAttribute('title', '显示目录');
     requestAnimationFrame(() => { tocSidebar.style.transition = ''; });
 
     initTOCBehavior();
