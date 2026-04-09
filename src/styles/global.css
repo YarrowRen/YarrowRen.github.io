@@ -188,12 +188,16 @@ article details > ul li ul li a {
 /* TOC Sidebar Styling */
 .toc-sidebar {
   position: fixed;
-  top: 112px;
-  left: 16px;
+  top: 0;
+  left: 0;
   width: 280px;
-  max-height: calc(100vh - 132px);
-  background: var(--color-background);
-  z-index: 40;
+  height: 100vh;
+  max-height: 100vh;
+  background: color-mix(in srgb, var(--color-background) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+  z-index: 100;
   transition: transform 0.3s ease, opacity 0.25s ease;
   overflow: visible;
 }
@@ -210,7 +214,7 @@ article details > ul li ul li a {
   position: fixed;
   z-index: 50;
   left: 0;
-  top: 140px;
+  top: 70vh;
   display: none;
   flex-direction: column;
   align-items: center;
@@ -266,10 +270,10 @@ article details > ul li ul li a {
 
 .toc-content {
   padding: 16px;
-  max-height: calc(100vh - 164px);
+  max-height: calc(100vh - 32px);
   overflow-y: auto;
   overflow-x: hidden;
-  background: var(--color-background);
+  background: transparent;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
 }
@@ -463,116 +467,33 @@ article details > ul li ul li a {
   background-color: rgba(128, 128, 128, 0.12);
 }
 
-/* Main content positioning for TOC - only for screens where TOC is shown */
-@media (min-width: 1280px) {
-  body #main-content {
-    position: relative;
-    transition: margin-left 0.3s ease;
-  }
+
+/* Backdrop for small screen TOC overlay */
+.toc-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99;
 }
 
-/* TOC and content layout - always centered */
-@media (min-width: 1280px) and (max-width: 1919px) {
-  /* Standard wide screens */
-  body.has-toc {
-    --toc-width: 280px;
-    --content-max-width: 960px;
-    --gap: 40px;
-    --total-width: calc(var(--toc-width) + var(--gap) + var(--content-max-width));
-    --left-offset: calc((100vw - var(--total-width)) / 2);
-  }
-  
-  .toc-sidebar {
-    left: var(--left-offset) !important;
-  }
-  
-  body.has-toc #main-content {
-    margin-left: calc(var(--left-offset) + var(--toc-width) + var(--gap)) !important;
-    margin-right: auto !important;
-    max-width: var(--content-max-width) !important;
-  }
-}
-
-@media (min-width: 1920px) and (max-width: 2559px) {
-  /* Ultra-wide screens */
-  body.has-toc {
-    --toc-width: 300px;
-    --content-max-width: 1000px;
-    --gap: 40px;
-    --total-width: calc(var(--toc-width) + var(--gap) + var(--content-max-width));
-    --left-offset: calc((100vw - var(--total-width)) / 2);
-  }
-  
-  .toc-sidebar {
-    left: var(--left-offset) !important;
-  }
-  
-  body.has-toc #main-content {
-    margin-left: calc(var(--left-offset) + var(--toc-width) + var(--gap)) !important;
-    margin-right: auto !important;
-    max-width: var(--content-max-width) !important;
-  }
-}
-
-@media (min-width: 2560px) {
-  /* Extra ultra-wide screens */
-  body.has-toc {
-    --toc-width: 320px;
-    --content-max-width: 1200px;
-    --gap: 40px;
-    --total-width: calc(var(--toc-width) + var(--gap) + var(--content-max-width));
-    --left-offset: calc((100vw - var(--total-width)) / 2);
-  }
-  
-  .toc-sidebar {
-    left: var(--left-offset) !important;
-  }
-  
-  body.has-toc #main-content {
-    margin-left: calc(var(--left-offset) + var(--toc-width) + var(--gap)) !important;
-    margin-right: auto !important;
-    max-width: var(--content-max-width) !important;
-  }
-}
-
-/* Medium and small screens: hide TOC, center content */
-@media (max-width: 1279px) {
-  .toc-sidebar,
-  .toc-sidebar.lg\:block,
-  #toc-sidebar {
-    display: none !important;
-  }
-  
-  #main-content,
-  body.has-toc #main-content {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    width: auto !important;
-  }
+.toc-backdrop.visible {
+  display: block;
 }
 
 /* Tablet screens */
 @media (min-width: 768px) and (max-width: 1279px) {
-  #main-content,
-  body.has-toc #main-content {
+  #main-content {
     max-width: 960px !important;
   }
 }
 
 /* Mobile screens */
 @media (max-width: 767px) {
-  #main-content,
-  body.has-toc #main-content {
+  #main-content {
     max-width: 100% !important;
     padding-left: 1rem !important;
     padding-right: 1rem !important;
-  }
-}
-
-/* Add relative positioning for medium screens only */
-@media (min-width: 1024px) and (max-width: 1279px) {
-  #main-content {
-    position: relative;
   }
 }
 

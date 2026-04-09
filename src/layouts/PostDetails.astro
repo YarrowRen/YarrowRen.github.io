@@ -93,7 +93,7 @@ const nextPost =
   >
     <!-- TOC Sidebar -->
     {!hideToc && (
-      <div id="toc-sidebar" class="toc-sidebar hidden lg:block">
+      <div id="toc-sidebar" class="toc-sidebar toc-user-hidden">
         <div id="toc-content" class="toc-content">
           <!-- TOC will be moved here by JavaScript -->
         </div>
@@ -188,7 +188,6 @@ const nextPost =
 
   window.__tocCleanup = () => {
     _ctrl.abort();
-    document.body.classList.remove('has-toc');
   };
 
   // Cleanup before next page swap
@@ -305,19 +304,7 @@ const nextPost =
 
   function initTOCBehavior() {
     const tocSidebar = document.getElementById("toc-sidebar");
-    const header = document.querySelector("header");
     if (!tocSidebar) return;
-
-    function updatePosition() {
-      const scrollY = window.scrollY;
-      const headerVisible = Math.max(0, (header?.offsetHeight ?? 0) - scrollY);
-      const topOffset = headerVisible + 20;
-      const available = window.innerHeight - topOffset - 20;
-      tocSidebar.style.top = `${topOffset}px`;
-      tocSidebar.style.maxHeight = `${available}px`;
-      const tocContent = tocSidebar.querySelector('.toc-content');
-      if (tocContent) tocContent.style.maxHeight = `${available - 32}px`;
-    }
 
     function updateActiveLink() {
       const headings = tocSidebar.closest('body')
@@ -339,12 +326,10 @@ const nextPost =
     let ticking = false;
     window.addEventListener('scroll', () => {
       if (!ticking) {
-        requestAnimationFrame(() => { updatePosition(); updateActiveLink(); ticking = false; });
+        requestAnimationFrame(() => { updateActiveLink(); ticking = false; });
         ticking = true;
       }
     }, { signal });
-    window.addEventListener('resize', updatePosition, { signal });
-    updatePosition();
     updateActiveLink();
   }
 
@@ -367,26 +352,25 @@ const nextPost =
 
     tocContent.appendChild(buildTOCList(headings));
 
-    // ── Single toggle tab fixed at sidebar's right edge ──
+    // ── Toggle tab ──
     const tab = document.createElement('button');
-    tab.className = 'toc-toggle-tab';
+    tab.className = 'toc-toggle-tab toc-tab-visible';
     const tabLabel = document.createElement('span');
     tabLabel.className = 'toc-tab-label';
     tabLabel.textContent = '目录';
     tab.appendChild(tabLabel);
     document.body.appendChild(tab);
 
-    const isHidden = localStorage.getItem('toc-user-hidden') === 'true';
+    // ── Backdrop (small screens) ──
+    const backdrop = document.createElement('div');
+    backdrop.className = 'toc-backdrop';
+    document.body.appendChild(backdrop);
 
-    const updateTabPos = () => {
-      if (window.innerWidth < 1280) tab.classList.remove('toc-tab-visible');
-      else tab.classList.add('toc-tab-visible');
-    };
+    const isHidden = localStorage.getItem('toc-user-hidden') !== 'false';
 
     const hide = () => {
       tocSidebar.classList.add('toc-user-hidden');
-      // Wait for sidebar slide-out to finish before re-centering content
-      setTimeout(() => document.body.classList.remove('has-toc'), 100);
+      backdrop.classList.remove('visible');
       tab.innerHTML = chevronR;
       tab.setAttribute('title', '显示目录');
       localStorage.setItem('toc-user-hidden', 'true');
@@ -394,7 +378,7 @@ const nextPost =
 
     const show = () => {
       tocSidebar.classList.remove('toc-user-hidden');
-      if (window.innerWidth >= 1280) document.body.classList.add('has-toc');
+      backdrop.classList.add('visible');
       tab.innerHTML = chevronL;
       tab.setAttribute('title', '隐藏目录');
       localStorage.setItem('toc-user-hidden', 'false');
@@ -403,26 +387,19 @@ const nextPost =
     tab.addEventListener('click', () => {
       tocSidebar.classList.contains('toc-user-hidden') ? show() : hide();
     }, { signal });
-
-    // ── Screen-size sync ──
-    const syncDisplay = () => {
-      const userHidden = tocSidebar.classList.contains('toc-user-hidden');
-      if (window.innerWidth >= 1280 && !userHidden) {
-        document.body.classList.add('has-toc');
-      } else {
-        document.body.classList.remove('has-toc');
-      }
-      requestAnimationFrame(updateTabPos);
-    };
-    window.addEventListener('resize', syncDisplay, { signal });
+    backdrop.addEventListener('click', hide, { signal });
 
     // Apply initial state without transition to avoid flash animation
     tocSidebar.style.transition = 'none';
-    if (isHidden) tocSidebar.classList.add('toc-user-hidden');
-    tab.innerHTML = isHidden ? chevronR : chevronL;
-    tab.setAttribute('title', isHidden ? '显示目录' : '隐藏目录');
-    syncDisplay();
-    // Re-enable transition after initial paint
+    if (isHidden) {
+      tocSidebar.classList.add('toc-user-hidden');
+      tab.innerHTML = chevronR;
+      tab.setAttribute('title', '显示目录');
+    } else {
+      backdrop.classList.add('visible');
+      tab.innerHTML = chevronL;
+      tab.setAttribute('title', '隐藏目录');
+    }
     requestAnimationFrame(() => { tocSidebar.style.transition = ''; });
 
     initTOCBehavior();
