@@ -32,6 +32,7 @@ const {
   timezone,
   tags,
   hideEditPost,
+  hideToc,
 } = post.data;
 
 const { Content } = await render(post);
@@ -91,11 +92,13 @@ const nextPost =
     data-pagefind-body
   >
     <!-- TOC Sidebar -->
-    <div id="toc-sidebar" class="toc-sidebar hidden lg:block">
-      <div id="toc-content" class="toc-content">
-        <!-- TOC will be moved here by JavaScript -->
+    {!hideToc && (
+      <div id="toc-sidebar" class="toc-sidebar hidden lg:block">
+        <div id="toc-content" class="toc-content">
+          <!-- TOC will be moved here by JavaScript -->
+        </div>
       </div>
-    </div>
+    )}
     <h1
       transition:name={slugifyStr(title)}
       class="inline-block text-2xl font-bold text-accent sm:text-3xl"
