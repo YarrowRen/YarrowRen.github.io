@@ -194,8 +194,61 @@ article details > ul li ul li a {
   max-height: calc(100vh - 132px);
   background: var(--color-background);
   z-index: 40;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.25s ease;
   overflow: visible;
+}
+
+/* User has manually hidden the TOC - slides off to the left */
+.toc-sidebar.toc-user-hidden {
+  transform: translateX(calc(-100% - 40px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Toggle tab - fixed at left edge below header */
+.toc-toggle-tab {
+  position: fixed;
+  z-index: 50;
+  left: 0;
+  top: 140px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 22px;
+  height: 72px;
+  background: rgba(128, 128, 128, 0.15);
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  color: var(--color-foreground);
+  opacity: 0.6;
+  cursor: pointer;
+  line-height: 0;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+  transition: color 0.15s, border-color 0.15s, opacity 0.15s, background-color 0.15s;
+}
+
+.toc-toggle-tab.toc-tab-visible {
+  display: flex;
+}
+
+.toc-toggle-tab:hover {
+  opacity: 1;
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* Vertical label inside tab */
+.toc-toggle-tab .toc-tab-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  opacity: 0.8;
 }
 
 /* TOC width adjustments for larger screens */
@@ -244,15 +297,6 @@ article details > ul li ul li a {
   position: relative;
 }
 
-/* H1 level */
-.toc-content li[data-heading-level="1"]::before {
-  content: "#";
-  color: var(--color-accent);
-  font-weight: 600;
-  margin-right: 0.5rem;
-  font-size: 1rem;
-}
-
 /* 统一的::before样式 */
 .toc-content li::before {
   color: var(--color-accent);
@@ -262,6 +306,7 @@ article details > ul li ul li a {
 
 /* H1 level */
 .toc-content li[data-heading-level="1"]::before {
+  content: "#";
   font-weight: 600;
   font-size: 1rem;
 }
@@ -380,10 +425,49 @@ article details > ul li ul li a {
   font-weight: 700 !important;
 }
 
+/* TOC header with toggle button */
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--color-border, rgba(128,128,128,0.2));
+}
+
+.toc-title {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  opacity: 0.7;
+}
+
+.toc-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px 4px;
+  color: var(--color-muted);
+  border-radius: 4px;
+  line-height: 0;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.toc-toggle-btn:hover {
+  color: var(--color-accent);
+  background-color: rgba(128, 128, 128, 0.12);
+}
+
 /* Main content positioning for TOC - only for screens where TOC is shown */
 @media (min-width: 1280px) {
   body #main-content {
     position: relative;
+    transition: margin-left 0.3s ease;
   }
 }
 

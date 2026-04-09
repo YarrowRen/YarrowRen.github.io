@@ -179,70 +179,57 @@ const nextPost =
 </Layout>
 
 <script is:inline data-astro-rerun>
-  /** Create a progress indicator
-   *  at the top */
-  function createProgressBar() {
-    // Create the main container div
-    const progressContainer = document.createElement("div");
-    progressContainer.className =
-      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+(function () {
+  // ── Cleanup previous instance to prevent listener accumulation ──
+  if (typeof window.__tocCleanup === 'function') window.__tocCleanup();
 
-    // Create the progress bar div
+  const _ctrl = new AbortController();
+  const { signal } = _ctrl;
+
+  window.__tocCleanup = () => {
+    _ctrl.abort();
+    document.body.classList.remove('has-toc');
+  };
+
+  // Cleanup before next page swap
+  document.addEventListener('astro:before-swap', () => {
+    window.__tocCleanup?.();
+    window.__tocCleanup = null;
+  }, { signal, once: true });
+
+  // ── Progress Bar ──
+  function createProgressBar() {
+    const progressContainer = document.createElement("div");
+    progressContainer.className = "progress-container fixed top-0 z-10 h-1 w-full bg-background";
     const progressBar = document.createElement("div");
     progressBar.className = "progress-bar h-1 w-0 bg-accent";
     progressBar.id = "myBar";
-
-    // Append the progress bar to the progress container
     progressContainer.appendChild(progressBar);
-
-    // Append the progress container to the document body or any other desired parent element
     document.body.appendChild(progressContainer);
   }
   createProgressBar();
 
-  /** Update the progress bar
-   *  when user scrolls */
-  function updateScrollProgress() {
-    document.addEventListener("scroll", () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (document) {
-        const myBar = document.getElementById("myBar");
-        if (myBar) {
-          myBar.style.width = scrolled + "%";
-        }
-      }
-    });
-  }
-  updateScrollProgress();
+  window.addEventListener("scroll", () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const myBar = document.getElementById("myBar");
+    if (myBar) myBar.style.width = ((winScroll / height) * 100) + "%";
+  }, { signal });
 
-  /** Attaches links to headings in the document,
-   *  allowing sharing of sections easily */
+  // ── Heading Links ──
   function addHeadingLinks() {
-    const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6")
-    );
-    for (const heading of headings) {
-      // Generate ID from heading text if not exists
+    for (const heading of document.querySelectorAll("h2, h3, h4, h5, h6")) {
       if (!heading.id) {
-        const text = heading.textContent || "";
-        heading.id = text
+        heading.id = (heading.textContent || "")
           .toLowerCase()
-          .replace(/[^\w\u4e00-\u9fff\s-]/g, "") // Keep alphanumeric, Chinese, spaces, hyphens
-          .replace(/\s+/g, "-") // Replace spaces with hyphens
-          .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+          .replace(/[^\w\u4e00-\u9fff\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/^-|-$/g, "");
       }
-      
       heading.classList.add("group");
       const link = document.createElement("a");
-      link.className =
-        "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
+      link.className = "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
       link.href = "#" + heading.id;
-
       const span = document.createElement("span");
       span.ariaHidden = "true";
       span.innerText = "#";
@@ -252,267 +239,197 @@ const nextPost =
   }
   addHeadingLinks();
 
-  /** Attaches copy buttons to code blocks in the document,
-   * allowing users to copy code easily. */
+  // ── Copy Buttons ──
   function attachCopyButtons() {
-    const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre")).filter(
-      codeBlock => !!codeBlock.querySelector("code")
-    );
-
-    for (const codeBlock of codeBlocks) {
-      if (codeBlock.querySelector(".copy-code")) continue;
-
+    for (const codeBlock of document.querySelectorAll("pre")) {
+      if (!codeBlock.querySelector("code") || codeBlock.querySelector(".copy-code")) continue;
       const wrapper = document.createElement("div");
       wrapper.style.position = "relative";
-
       const copyButton = document.createElement("button");
-      copyButton.className =
-        "copy-code absolute right-3 -top-3 rounded bg-muted px-2 py-1 text-xs leading-4 text-foreground font-medium";
-      copyButton.innerHTML = copyButtonLabel;
+      copyButton.className = "copy-code absolute right-3 -top-3 rounded bg-muted px-2 py-1 text-xs leading-4 text-foreground font-medium";
+      copyButton.innerHTML = "Copy";
       codeBlock.setAttribute("tabindex", "0");
       codeBlock.appendChild(copyButton);
-
-      // wrap codebock with relative parent element
-      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      codeBlock.parentNode?.insertBefore(wrapper, codeBlock);
       wrapper.appendChild(codeBlock);
-
       copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
+        const text = codeBlock.querySelector("code")?.innerText ?? "";
+        await navigator.clipboard.writeText(text);
+        copyButton.innerText = "Copied";
+        setTimeout(() => { copyButton.innerText = "Copy"; }, 700);
       });
-    }
-
-    async function copyCode(block, button) {
-      const code = block.querySelector("code");
-      const text = code?.innerText;
-
-      await navigator.clipboard.writeText(text ?? "");
-
-      // visual feedback that task is completed
-      button.innerText = "Copied";
-
-      setTimeout(() => {
-        button.innerText = copyButtonLabel;
-      }, 700);
     }
   }
   attachCopyButtons();
-  document.addEventListener("astro:page-load", attachCopyButtons);
+  document.addEventListener("astro:page-load", attachCopyButtons, { signal });
 
-  /** Scrolls the document to the top when
-   * the "Back to Top" button is clicked. */
-  function backToTop() {
-    document.querySelector("#back-to-top")?.addEventListener("click", () => {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    });
-  }
-  backToTop();
+  // ── Back to Top ──
+  document.querySelector("#back-to-top")?.addEventListener("click", () => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }, { signal });
 
-  /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
-  );
+  , { signal });
 
-  /** Generate TOC automatically from headings */
-  function generateTOC() {
-    console.log("Starting generateTOC function");
-    const tocSidebar = document.getElementById("toc-sidebar");
-    const tocContent = document.getElementById("toc-content");
-    
-    if (!tocSidebar || !tocContent) {
-      console.log("Missing TOC elements, returning");
-      return;
-    }
-
-    // Find all headings in the article (h1, h2, h3, h4, h5, h6) - excluding the page title
-    const headings = Array.from(document.querySelectorAll("article h1, article h2, article h3, article h4, article h5, article h6"))
-      .filter(heading => heading.id !== 'table-of-contents'); // Exclude the old TOC heading
-    console.log("Found headings:", headings.length);
-
-    if (headings.length === 0) {
-      console.log("No headings found, not showing TOC");
-      return;
-    }
-
-    // Remove any existing "Table of contents" heading and its content
-    const existingTocHeading = document.querySelector('article h1#table-of-contents');
-    if (existingTocHeading) {
-      existingTocHeading.remove();
-    }
-
-    // Generate TOC HTML
-    const tocList = generateTOCList(headings);
-    tocContent.appendChild(tocList);
-    
-    // Function to handle TOC display based on screen size
-    const handleTOCDisplay = () => {
-      if (window.innerWidth >= 1280) {
-        tocSidebar.classList.remove("hidden");
-        document.body.classList.add("has-toc");
-      } else {
-        tocSidebar.classList.add("hidden");
-        document.body.classList.remove("has-toc");
-      }
-    };
-    
-    // Initial setup
-    handleTOCDisplay();
-    
-    // Listen for window resize
-    window.addEventListener('resize', handleTOCDisplay);
-    console.log("TOC generated and moved to sidebar");
-    
-    // Initialize TOC scroll behavior
-    initializeTOCBehavior();
-  }
-  
-  /** Initialize TOC floating behavior */
-  function initializeTOCBehavior() {
-    const tocSidebar = document.getElementById("toc-sidebar");
-    const mainContent = document.getElementById("main-content");
-    const header = document.querySelector("header");
-    if (!tocSidebar || !mainContent) return;
-    
-    // Update TOC position and height based on scroll and header visibility
-    function updateTOCPosition() {
-      const scrollY = window.scrollY;
-      
-      // Calculate how much of header is still visible
-      const headerHeight = header ? header.offsetHeight : 0;
-      const headerVisible = Math.max(0, headerHeight - scrollY);
-      
-      // TOC should be positioned relative to viewport top, considering visible header
-      // When header is fully visible: headerVisible + 20px offset
-      // When header is hidden: 20px from top
-      const topOffset = headerVisible + 20;
-      
-      // Calculate dynamic height to fill remaining viewport
-      const bottomPadding = 20; // Bottom margin
-      const availableHeight = window.innerHeight - topOffset - bottomPadding;
-      
-      tocSidebar.style.top = `${topOffset}px`;
-      tocSidebar.style.maxHeight = `${availableHeight}px`;
-      
-      // Update toc-content height accordingly
-      const tocContent = tocSidebar.querySelector('.toc-content');
-      if (tocContent) {
-        const contentPadding = 32; // 16px padding top + 16px padding bottom
-        tocContent.style.maxHeight = `${availableHeight - contentPadding}px`;
-      }
-    }
-    
-    // Function to update active TOC links based on scroll position
-    function updateActiveTOCLink() {
-      const headings = document.querySelectorAll('article h1[id], article h2[id], article h3[id], article h4[id], article h5[id], article h6[id]');
-      const tocLinks = document.querySelectorAll('.toc-content a[href^="#"]');
-      
-      if (!headings.length || !tocLinks.length) return;
-      
-      // Find the current heading in viewport
-      let current = null;
-      const scrollY = window.scrollY;
-      const offset = 100; // Offset from top of viewport
-      
-      for (let i = headings.length - 1; i >= 0; i--) {
-        const heading = headings[i];
-        const rect = heading.getBoundingClientRect();
-        const headingTop = scrollY + rect.top;
-        
-        if (headingTop <= scrollY + offset) {
-          current = heading.id;
-          break;
-        }
-      }
-      
-      // Remove all active classes
-      tocLinks.forEach(link => link.classList.remove('toc-active'));
-      
-      // Add active class to current heading's TOC link
-      if (current) {
-        const activeLink = document.querySelector(`.toc-content a[href="#${current}"]`);
-        if (activeLink) {
-          activeLink.classList.add('toc-active');
-        }
-      }
-    }
-
-    // Throttled scroll handler for better performance
-    let ticking = false;
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateTOCPosition();
-          updateActiveTOCLink();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
-    
-    window.addEventListener('scroll', onScroll);
-    window.addEventListener('resize', updateTOCPosition);
-    updateTOCPosition(); // Initial call
-    updateActiveTOCLink(); // Initial active link detection
-  }
-
-  function generateTOCList(headings) {
-    if (headings.length === 0) return document.createElement("ul");
-    
-    // Find the minimum heading level in the document
-    const minLevel = Math.min(...headings.map(h => parseInt(h.tagName.charAt(1))));
-    
+  // ── TOC ──
+  function buildTOCList(headings) {
+    if (!headings.length) return document.createElement("ul");
+    const minLevel = Math.min(...headings.map(h => parseInt(h.tagName[1])));
     const ul = document.createElement("ul");
-    const stack = [{ level: minLevel - 1, ul: ul }];
+    const stack = [{ level: minLevel - 1, ul }];
 
-    headings.forEach(heading => {
-      // Generate ID if not exists
-      if (!heading.id) {
-        const text = heading.textContent || "";
-        heading.id = text
-          .toLowerCase()
-          .replace(/[^\w\u4e00-\u9fff\s-]/g, "") // Keep alphanumeric, Chinese, spaces, hyphens
-          .replace(/\s+/g, "-") // Replace spaces with hyphens
-          .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
-      }
+    for (const heading of headings) {
+      const level = parseInt(heading.tagName[1]);
+      // IDs already set by addHeadingLinks(); no need to generate again
+      const text = (heading.textContent || "").replace(/#$/, "").trim();
 
-      const level = parseInt(heading.tagName.charAt(1)); // h2 -> 2, h3 -> 3, etc.
-      const text = (heading.textContent || "").replace(/#$/, "").trim(); // Remove trailing # and whitespace
-      
-      // Find the appropriate parent level
-      while (stack.length > 1 && stack[stack.length - 1].level >= level) {
-        stack.pop();
-      }
-
-      // Create new nested list if needed
+      while (stack.length > 1 && stack[stack.length - 1].level >= level) stack.pop();
       if (stack[stack.length - 1].level < level) {
-        const nestedUl = document.createElement("ul");
+        const nested = document.createElement("ul");
         const lastLi = stack[stack.length - 1].ul.lastElementChild;
-        if (lastLi) {
-          lastLi.appendChild(nestedUl);
-        } else {
-          stack[stack.length - 1].ul.appendChild(nestedUl);
-        }
-        stack.push({ level: level, ul: nestedUl });
+        (lastLi ?? stack[stack.length - 1].ul).appendChild(nested);
+        stack.push({ level, ul: nested });
       }
-
-      // Create list item and link
       const li = document.createElement("li");
-      
-      // Add data attribute to indicate the actual heading level
-      li.setAttribute('data-heading-level', level);
-      
+      li.setAttribute("data-heading-level", level);
       const a = document.createElement("a");
       a.href = "#" + heading.id;
       a.textContent = text;
       li.appendChild(a);
-      
       stack[stack.length - 1].ul.appendChild(li);
-    });
-
+    }
     return ul;
   }
+
+  function initTOCBehavior() {
+    const tocSidebar = document.getElementById("toc-sidebar");
+    const header = document.querySelector("header");
+    if (!tocSidebar) return;
+
+    function updatePosition() {
+      const scrollY = window.scrollY;
+      const headerVisible = Math.max(0, (header?.offsetHeight ?? 0) - scrollY);
+      const topOffset = headerVisible + 20;
+      const available = window.innerHeight - topOffset - 20;
+      tocSidebar.style.top = `${topOffset}px`;
+      tocSidebar.style.maxHeight = `${available}px`;
+      const tocContent = tocSidebar.querySelector('.toc-content');
+      if (tocContent) tocContent.style.maxHeight = `${available - 32}px`;
+    }
+
+    function updateActiveLink() {
+      const headings = tocSidebar.closest('body')
+        ?.querySelectorAll('article h1[id], article h2[id], article h3[id], article h4[id], article h5[id], article h6[id]');
+      const tocLinks = tocSidebar.querySelectorAll('.toc-content a[href^="#"]');
+      if (!headings?.length || !tocLinks.length) return;
+
+      let current = null;
+      for (let i = headings.length - 1; i >= 0; i--) {
+        if (headings[i].getBoundingClientRect().top <= 100) {
+          current = headings[i].id;
+          break;
+        }
+      }
+      tocLinks.forEach(l => l.classList.remove('toc-active'));
+      if (current) tocSidebar.querySelector(`.toc-content a[href="#${current}"]`)?.classList.add('toc-active');
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => { updatePosition(); updateActiveLink(); ticking = false; });
+        ticking = true;
+      }
+    }, { signal });
+    window.addEventListener('resize', updatePosition, { signal });
+    updatePosition();
+    updateActiveLink();
+  }
+
+  function generateTOC() {
+    const tocSidebar = document.getElementById("toc-sidebar");
+    const tocContent = document.getElementById("toc-content");
+    if (!tocSidebar || !tocContent) return;
+
+    tocContent.innerHTML = '';
+    document.querySelector('article h1#table-of-contents')?.remove();
+
+    const headings = Array.from(
+      document.querySelectorAll("article h1, article h2, article h3, article h4, article h5, article h6")
+    ).filter(h => h.id !== 'table-of-contents');
+
+    if (!headings.length) return;
+
+    const chevronL = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>`;
+    const chevronR = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`;
+
+    tocContent.appendChild(buildTOCList(headings));
+
+    // ── Single toggle tab fixed at sidebar's right edge ──
+    const tab = document.createElement('button');
+    tab.className = 'toc-toggle-tab';
+    const tabLabel = document.createElement('span');
+    tabLabel.className = 'toc-tab-label';
+    tabLabel.textContent = '目录';
+    tab.appendChild(tabLabel);
+    document.body.appendChild(tab);
+
+    const isHidden = localStorage.getItem('toc-user-hidden') === 'true';
+
+    const updateTabPos = () => {
+      if (window.innerWidth < 1280) tab.classList.remove('toc-tab-visible');
+      else tab.classList.add('toc-tab-visible');
+    };
+
+    const hide = () => {
+      tocSidebar.classList.add('toc-user-hidden');
+      // Wait for sidebar slide-out to finish before re-centering content
+      setTimeout(() => document.body.classList.remove('has-toc'), 100);
+      tab.innerHTML = chevronR;
+      tab.setAttribute('title', '显示目录');
+      localStorage.setItem('toc-user-hidden', 'true');
+    };
+
+    const show = () => {
+      tocSidebar.classList.remove('toc-user-hidden');
+      if (window.innerWidth >= 1280) document.body.classList.add('has-toc');
+      tab.innerHTML = chevronL;
+      tab.setAttribute('title', '隐藏目录');
+      localStorage.setItem('toc-user-hidden', 'false');
+    };
+
+    tab.addEventListener('click', () => {
+      tocSidebar.classList.contains('toc-user-hidden') ? show() : hide();
+    }, { signal });
+
+    // ── Screen-size sync ──
+    const syncDisplay = () => {
+      const userHidden = tocSidebar.classList.contains('toc-user-hidden');
+      if (window.innerWidth >= 1280 && !userHidden) {
+        document.body.classList.add('has-toc');
+      } else {
+        document.body.classList.remove('has-toc');
+      }
+      requestAnimationFrame(updateTabPos);
+    };
+    window.addEventListener('resize', syncDisplay, { signal });
+
+    // Apply initial state without transition to avoid flash animation
+    tocSidebar.style.transition = 'none';
+    if (isHidden) tocSidebar.classList.add('toc-user-hidden');
+    tab.innerHTML = isHidden ? chevronR : chevronL;
+    tab.setAttribute('title', isHidden ? '显示目录' : '隐藏目录');
+    syncDisplay();
+    // Re-enable transition after initial paint
+    requestAnimationFrame(() => { tocSidebar.style.transition = ''; });
+
+    initTOCBehavior();
+  }
+
   generateTOC();
+})();
 </script>
 
 <script>
