@@ -193,7 +193,7 @@ article details > ul li ul li a {
   width: 280px;
   height: 100vh;
   max-height: 100vh;
-  background: color-mix(in srgb, var(--color-background) 72%, transparent);
+  background: rgba(253, 253, 253, 0.72);
   backdrop-filter: blur(16px) saturate(1.4);
   -webkit-backdrop-filter: blur(16px) saturate(1.4);
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
@@ -509,6 +509,10 @@ article details > ul li ul li a {
 .social-icon img {
   filter: brightness(0) saturate(100%) invert(17%) sepia(8%) saturate(1037%) hue-rotate(314deg) brightness(95%) contrast(86%);
   transition: filter 0.2s ease;
+}
+
+html[data-theme="dark"] .toc-sidebar {
+  background: rgba(33, 39, 55, 0.72);
 }
 
 /* Dark theme filter for social icons */
