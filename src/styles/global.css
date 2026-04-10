@@ -193,21 +193,11 @@ article details > ul li ul li a {
   width: 280px;
   height: 100vh;
   max-height: 100vh;
-  /* Solid fallback for browsers where backdrop-filter fails */
-  background: rgba(253, 253, 253, 0.96);
+  background: var(--color-background);
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
   z-index: 100;
   transition: transform 0.3s ease, opacity 0.25s ease;
   overflow: visible;
-}
-
-/* Frosted glass — progressive enhancement */
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-  .toc-sidebar {
-    background: rgba(253, 253, 253, 0.72);
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  }
 }
 
 /* User has manually hidden the TOC - slides off to the left */
@@ -517,16 +507,6 @@ article details > ul li ul li a {
 .social-icon img {
   filter: brightness(0) saturate(100%) invert(17%) sepia(8%) saturate(1037%) hue-rotate(314deg) brightness(95%) contrast(86%);
   transition: filter 0.2s ease;
-}
-
-html[data-theme="dark"] .toc-sidebar {
-  background: rgba(33, 39, 55, 0.96);
-}
-
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-  html[data-theme="dark"] .toc-sidebar {
-    background: rgba(33, 39, 55, 0.72);
-  }
 }
 
 /* Dark theme filter for social icons */
