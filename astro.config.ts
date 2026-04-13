@@ -18,7 +18,35 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   site: SITE.website,
   integrations: [sitemap({
-    filter: page => SITE.showArchives || !page.endsWith("/archives"),
+    filter: page => {
+      // Extract pathname from full URL (filter receives full URLs)
+      const url = new URL(page);
+      const path = url.pathname;
+
+      // Always exclude taxonomy pages
+      if (path.startsWith("/tags/")) return false;
+      // Always exclude search page
+      if (path.startsWith("/search")) return false;
+      // Always exclude gallery pages
+      if (path.startsWith("/gallery")) return false;
+      // Always exclude 404 page
+      if (path.includes("/404")) return false;
+      // Always exclude character page (not a content page)
+      if (path === "/character/" || path === "/character") return false;
+
+      // Exclude posts listing and paginated pages (/posts/, /posts/2/, /posts/3/, ...)
+      if (path.startsWith("/posts/")) {
+        const slug = path.slice("/posts/".length).replace(/\/$/, "");
+        // Only include individual articles: /posts/some-title/
+        // Exclude: "" (root listing), "2", "3", etc. (pagination)
+        if (slug === "" || /^\d+$/.test(slug)) return false;
+      }
+
+      // Include archives conditionally
+      if (path.endsWith("/archives")) return SITE.showArchives;
+
+      return true;
+    },
   }), react(), mdx()],
   markdown: {
     remarkPlugins: [remarkMath, remarkToc, [remarkCollapse, { test: "Table of contents" }]],
