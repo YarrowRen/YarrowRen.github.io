@@ -28,7 +28,7 @@ lang: "cn"
 
   <!-- 右侧头像 -->
   <div class="lg:w-1/5 hidden lg:block">
-    <img src="/title.jpg" alt="头像" class="rounded-xl shadow-md w-full h-auto object-cover" />
+    <img src="/title.png" alt="头像" class="rounded-xl shadow-md w-full h-auto object-cover" />
   </div>
 </div>
 

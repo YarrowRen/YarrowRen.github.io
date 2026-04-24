@@ -26,7 +26,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         <div class="w-full sm:w-[25%] flex flex-col items-center sm:items-start text-center sm:text-left shrink-0">
           <div id="avatar-wrapper" class="relative mb-4" style="width:96px;height:96px;">
             <div style="width:96px;height:96px;border-radius:50%;overflow:hidden;position:relative;z-index:1;">
-              <img id="hero-avatar" src="/title.jpg" alt="avatar" class="w-24 h-24 rounded-full border shadow cursor-pointer select-none" />
+              <img id="hero-avatar" src="/title.png" alt="avatar" class="w-24 h-24 rounded-full border shadow cursor-pointer select-none" />
             </div>
             <svg id="avatar-ring-svg" width="104" height="104" viewBox="0 0 104 104"
               style="position:absolute;top:-4px;left:-4px;pointer-events:none;z-index:2;">
@@ -157,7 +157,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     const ringCircle = document.getElementById("avatar-ring-circle") as SVGCircleElement | null;
     if (!avatar || !ringCircle) return;
 
-    const normalSrc = "/title.jpg";
+    const normalSrc = "/title.png";
     const easterSrc = "/favicon.svg";
     let clickCount = 0;
     let clickTimer: ReturnType<typeof setTimeout> | null = null;
